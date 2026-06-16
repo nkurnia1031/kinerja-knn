@@ -1,12 +1,13 @@
 @php
     $diagramId = 'activity-diagram-' . $useCase['no'];
     $title = $useCase['title'];
+    $shouldRenderActivityDiagram = !in_array($useCase['no'], [14, 15], true);
     $figureNumber = '4.' . ($useCase['no'] + 4);
     $activityNarratives = [
         1 => '<i>Activity Diagram</i> <i>Login</i> menyajikan alur autentikasi pengguna secara sistematis yang dimulai dari pengisian <i>username</i> dan <i>password</i>, dilanjutkan dengan proses verifikasi kredensial oleh sistem, kemudian menghasilkan keputusan berupa penolakan akses disertai pesan kegagalan login atau pembentukan sesi dan pengalihan pengguna ke <i>dashboard</i> sesuai hak akses.',
         2 => '<i>Activity Diagram</i> <i>Logout</i> menjelaskan prosedur pengakhiran sesi penggunaan sistem yang diawali ketika pengguna memilih menu <i>logout</i>, kemudian sistem menghapus sesi login yang masih aktif dan mengarahkan pengguna kembali ke halaman login sebagai bentuk pengamanan akses.',
         3 => '<i>Activity Diagram</i> <i>Dashboard</i> menggambarkan alur ketika pengguna membuka halaman utama sistem, di mana sistem memuat data dan komponen tampilan sesuai hak akses, menampilkan ringkasan informasi, tabel, dan grafik, kemudian memfasilitasi pengguna untuk meninjau informasi awal dan memilih menu lanjutan yang diperlukan.',
-        4 => '<i>Activity Diagram</i> <i>Data Karyawan</i> menguraikan proses pengelolaan data karyawan yang dimulai dari pembukaan menu terkait, penampilan daftar data oleh sistem, pemilihan aksi oleh pengguna berupa tambah, ubah, hapus, atau filter, hingga respons sistem dalam menampilkan formulir, memproses konfirmasi, menyimpan perubahan, atau menampilkan hasil penyaringan data.',
+        4 => '<i>Activity Diagram</i> <i>Data Karyawan</i> memaparkan proses pengelolaan data karyawan ketika pengguna membuka menu terkait, sistem menampilkan daftar data beserta sarana pengelolaan, pengguna melakukan tambah, ubah, hapus, atau filter data, lalu sistem memvalidasi masukan dan memperbarui tampilan data karyawan.',
         5 => '<i>Activity Diagram</i> <i>Relasi Atasan</i> menjelaskan alur penetapan hubungan struktural antara karyawan dan atasan, dimulai dari penampilan daftar karyawan beserta relasi yang telah tersedia, dilanjutkan dengan pemilihan karyawan oleh pengguna, penampilan opsi atasan oleh sistem, dan diakhiri dengan penyimpanan relasi yang telah ditetapkan.',
         6 => '<i>Activity Diagram</i> <i>Kriteria Penilaian</i> memaparkan proses pengelolaan kriteria yang digunakan dalam penilaian kinerja, yaitu ketika pengguna membuka menu terkait, sistem menampilkan daftar kriteria beserta formulir pengelolaan, pengguna melakukan tambah, ubah, atau hapus data, lalu sistem memvalidasi masukan, menyimpan perubahan, dan memperbarui total bobot penilaian.',
         7 => '<i>Activity Diagram</i> <i>Periode Penilaian</i> menggambarkan mekanisme pengelolaan periode penilaian yang melibatkan penampilan daftar periode oleh sistem, penambahan atau perubahan data oleh pengguna, serta keputusan sistem untuk hanya menyimpan perubahan atau sekaligus menonaktifkan periode lain dan mengaktifkan periode yang dipilih.',
@@ -83,26 +84,12 @@
             $pumlLines = array_merge($pumlLines, [
                 ':Membuka menu Data Karyawan;',
                 '|Sistem|',
-                ':Menampilkan daftar data karyawan;',
+                ':Menampilkan daftar data karyawan dan form pengelolaan;',
                 '|Pengguna|',
-                ':Memilih aksi tambah, ubah, hapus, atau filter;',
+                ':Menambah, mengubah, menghapus, atau memfilter data karyawan;',
                 '|Sistem|',
-                'if (Aksi yang dipilih?) then (Tambah/Ubah)',
-                '  :Menampilkan form data karyawan;',
-                '  |Pengguna|',
-                '  :Mengisi data dan menekan simpan;',
-                '  |Sistem|',
-                '  :Menyimpan perubahan ke database;',
-                'elseif (Hapus)',
-                '  :Menampilkan konfirmasi hapus;',
-                '  |Pengguna|',
-                '  :Menyetujui penghapusan;',
-                '  |Sistem|',
-                '  :Menghapus data karyawan;',
-                'else (Filter)',
-                '  :Menerapkan filter pencarian;',
-                '  :Menampilkan hasil filter;',
-                'endif',
+                ':Memvalidasi data dan menyimpan perubahan;',
+                ':Memperbarui daftar data karyawan;',
                 'stop',
             ]);
             break;
@@ -309,6 +296,7 @@
 
     $pumlLines[] = '@enduml';
 @endphp
+@if ($shouldRenderActivityDiagram)
 <div class="card mb-3">
     <div class="card-header bg-white d-flex justify-content-between align-items-center">
         <div>
@@ -323,7 +311,13 @@
             <div class="alert alert-info">
                 {!! $activityDescription !!}
             </div>
-            <pre class="bg-dark text-light p-3 rounded mb-0"><code>{{ implode("\n", $pumlLines) }}</code></pre>
+            <textarea
+                class="form-control font-monospace small"
+                rows="{{ max(12, count($pumlLines) + 1) }}"
+                readonly
+                spellcheck="false"
+            >{{ implode("\n", $pumlLines) }}</textarea>
         </div>
     </div>
 </div>
+@endif

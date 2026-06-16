@@ -1,0 +1,620 @@
+<mxfile host="app.diagrams.net" agent="draw.io" pages="4">
+  <diagram name="Pimpinan" id="pimpinan">
+    <mxGraphModel dx="1666" dy="714" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="750" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;" value="Flowchart Sistem Penilaian Kinerja - Pimpinan" vertex="1">
+          <mxGeometry height="30" width="500" x="175" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="p_start" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="Start" vertex="1">
+          <mxGeometry height="50" width="100" x="375" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="p_input" parent="1" style="shape=parallelogram;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Input pilihan" vertex="1">
+          <mxGeometry height="60" width="200" x="325" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p_pil1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil1" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="p_login" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Login" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="255" as="geometry" />
+        </mxCell>
+        <mxCell id="p_pil2" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil2" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="p_dashboard" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Dashboard" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="p_pil3" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil3" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="p_laporan" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Laporan" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="p_pil4" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil4" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="p_logout" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Logout" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="p_end" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;" value="End" vertex="1">
+          <mxGeometry height="50" width="100" x="375" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="p_start" style="edgeStyle=orthogonalEdgeStyle;" target="p_input">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="p_input" style="edgeStyle=orthogonalEdgeStyle;" target="p_pil1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="p_pil1" style="edgeStyle=orthogonalEdgeStyle;" target="p_login" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="p_pil1" style="edgeStyle=orthogonalEdgeStyle;" target="p_pil2" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="p_pil2" style="edgeStyle=orthogonalEdgeStyle;" target="p_dashboard" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="p_pil2" style="edgeStyle=orthogonalEdgeStyle;" target="p_pil3" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="p_pil3" style="edgeStyle=orthogonalEdgeStyle;" target="p_laporan" value="Ya">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="p_pil3" style="edgeStyle=orthogonalEdgeStyle;" target="p_pil4" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="p_pil4" style="edgeStyle=orthogonalEdgeStyle;" target="p_logout" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="p_pil4" style="edgeStyle=orthogonalEdgeStyle;" target="p_end" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="el1" edge="1" parent="1" source="p_login" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="p_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="275" />
+              <mxPoint x="690" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="el2" edge="1" parent="1" source="p_dashboard" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="p_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="375" />
+              <mxPoint x="700" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="el3" edge="1" parent="1" source="p_laporan" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="p_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="475" />
+              <mxPoint x="710" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="el4" edge="1" parent="1" source="p_logout" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="p_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="575" />
+              <mxPoint x="720" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="enloop" edge="1" parent="1" source="p_pil4" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" target="p_input" value="Tidak">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="575" />
+              <mxPoint x="200" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Admin" id="admin">
+    <mxGraphModel dx="2051" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;" value="Flowchart Sistem Penilaian Kinerja - Admin" vertex="1">
+          <mxGeometry height="30" width="500" x="175" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="a_start" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="Start" vertex="1">
+          <mxGeometry height="50" width="100" x="375" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_input" parent="1" style="shape=parallelogram;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Input pilihan" vertex="1">
+          <mxGeometry height="60" width="200" x="325" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pil1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil1" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="a_login" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Login" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="255" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pil2" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil2" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="a_dashboard" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Dashboard" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pil3" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil3" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="a_datakary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Data Karyawan" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pil4" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil4" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="a_kriteria" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Atur Relasi Atasan" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pil5" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil5" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="a_periode" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Kriteria Penilaian" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pil6" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil6" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="a_rekap" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Periode Penilaian" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="755" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pil7" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil7" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="a_analisa" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Rekap Penilaian" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="855" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pil8" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil8" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="a_laporan" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Analisa Kinerja" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="955" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pil9" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil9" vertex="1">
+          <mxGeometry height="70" width="100" x="350" y="1040" as="geometry" />
+        </mxCell>
+        <mxCell id="a_logout" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Laporan" vertex="1">
+          <mxGeometry height="40" width="120" x="510" y="1055" as="geometry" />
+        </mxCell>
+        <mxCell id="a_end" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;" value="End" vertex="1">
+          <mxGeometry height="50" width="100" x="375" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="ae1" edge="1" parent="1" source="a_start" style="edgeStyle=orthogonalEdgeStyle;" target="a_input">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae2" edge="1" parent="1" source="a_input" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae3" edge="1" parent="1" source="a_pil1" style="edgeStyle=orthogonalEdgeStyle;" target="a_login" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae4" edge="1" parent="1" source="a_pil1" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil2" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae5" edge="1" parent="1" source="a_pil2" style="edgeStyle=orthogonalEdgeStyle;" target="a_dashboard" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae6" edge="1" parent="1" source="a_pil2" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil3" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae7" edge="1" parent="1" source="a_pil3" style="edgeStyle=orthogonalEdgeStyle;" target="a_datakary" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae8" edge="1" parent="1" source="a_pil3" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil4" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae9" edge="1" parent="1" source="a_pil4" style="edgeStyle=orthogonalEdgeStyle;" target="a_kriteria" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae10" edge="1" parent="1" source="a_pil4" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil5" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae11" edge="1" parent="1" source="a_pil5" style="edgeStyle=orthogonalEdgeStyle;" target="a_periode" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae12" edge="1" parent="1" source="a_pil5" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil6" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae13" edge="1" parent="1" source="a_pil6" style="edgeStyle=orthogonalEdgeStyle;" target="a_rekap" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae14" edge="1" parent="1" source="a_pil6" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil7" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae15" edge="1" parent="1" source="a_pil7" style="edgeStyle=orthogonalEdgeStyle;" target="a_analisa" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae16" edge="1" parent="1" source="a_pil7" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil8" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae17" edge="1" parent="1" source="a_pil8" style="edgeStyle=orthogonalEdgeStyle;" target="a_laporan" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae18" edge="1" parent="1" source="a_pil8" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil9" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae19" edge="1" parent="1" source="a_pil9" style="edgeStyle=orthogonalEdgeStyle;" target="a_logout" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae20" edge="1" parent="1" source="a_pil9" style="edgeStyle=orthogonalEdgeStyle;" target="a_pil10" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ael1" edge="1" parent="1" source="a_login" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="a_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="275" />
+              <mxPoint x="690" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ael2" edge="1" parent="1" source="a_dashboard" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="a_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="375" />
+              <mxPoint x="700" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ael3" edge="1" parent="1" source="a_datakary" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="a_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="475" />
+              <mxPoint x="710" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ael4" edge="1" parent="1" source="a_kriteria" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="a_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="575" />
+              <mxPoint x="720" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ael5" edge="1" parent="1" source="a_periode" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="a_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="675" />
+              <mxPoint x="730" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ael6" edge="1" parent="1" source="a_rekap" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="a_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="775" />
+              <mxPoint x="740" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ael7" edge="1" parent="1" source="a_analisa" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="a_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="750" y="875" />
+              <mxPoint x="750" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ael8" edge="1" parent="1" source="a_laporan" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="a_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="975" />
+              <mxPoint x="760" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ael9" edge="1" parent="1" source="a_logout" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="a_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="770" y="1075" />
+              <mxPoint x="770" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aenloop" edge="1" parent="1" source="a_pil10" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" target="a_input" value="Tidak">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="1175" />
+              <mxPoint x="200" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a_pil10" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="pil10" vertex="1">
+          <mxGeometry x="350" y="1140" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_logout_final" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Logout" vertex="1">
+          <mxGeometry x="510" y="1155" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ae21" edge="1" parent="1" source="a_pil10" target="a_logout_final" style="edgeStyle=orthogonalEdgeStyle;" value="Ya">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ae22" edge="1" parent="1" source="a_pil10" target="a_end" style="edgeStyle=orthogonalEdgeStyle;" value="Tidak">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ael10" edge="1" parent="1" source="a_logout_final" target="a_input" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="1175" />
+              <mxPoint x="780" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Atasan" id="atasan">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title3" value="Flowchart Sistem Penilaian Kinerja - Atasan" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="175" y="20" width="500" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="at_start" value="Start" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="375" y="70" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="at_input" value="Input pilihan" style="shape=parallelogram;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="325" y="150" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="at_pil1" value="pil1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="240" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="at_login" value="Login" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="255" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="at_pil2" value="pil2" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="340" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="at_dashboard" value="Dashboard" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="355" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="at_pil3" value="pil3" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="440" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="at_penilaian" value="Penilaian Bawahan" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="455" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="at_pil4" value="pil4" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="540" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="at_review" value="Review Penilaian" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="555" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="at_pil5" value="pil5" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="640" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="at_daftar" value="Daftar Bawahan" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="655" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="at_pil6" value="pil6" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="740" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="at_logout" value="Logout" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="755" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="at_end" value="End" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="375" y="840" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ate1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_start" target="at_input" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_input" target="at_pil1" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate3" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil1" target="at_login" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate4" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil1" target="at_pil2" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate5" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil2" target="at_dashboard" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate6" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil2" target="at_pil3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate7" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil3" target="at_penilaian" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate8" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil3" target="at_pil4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate9" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil4" target="at_review" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate10" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil4" target="at_pil5" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate11" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil5" target="at_daftar" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate12" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil5" target="at_pil6" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate13" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil6" target="at_logout" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ate14" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="at_pil6" target="at_end" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="atel1" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="at_login" target="at_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="275" />
+              <mxPoint x="690" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="atel2" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="at_dashboard" target="at_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="375" />
+              <mxPoint x="700" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="atel3" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="at_penilaian" target="at_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="475" />
+              <mxPoint x="710" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="atel4" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="at_review" target="at_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="575" />
+              <mxPoint x="720" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="atel5" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="at_daftar" target="at_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="675" />
+              <mxPoint x="730" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="atel6" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="at_logout" target="at_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="775" />
+              <mxPoint x="740" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="atenloop" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="at_pil6" target="at_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="775" />
+              <mxPoint x="200" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Karyawan" id="karyawan">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="750" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title4" value="Flowchart Sistem Penilaian Kinerja - Karyawan" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="175" y="20" width="500" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="k_start" value="Start" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="375" y="70" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="k_input" value="Input pilihan" style="shape=parallelogram;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="325" y="150" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="k_pil1" value="pil1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="240" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="k_login" value="Login" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="255" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="k_pil2" value="pil2" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="340" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="k_dashboard" value="Dashboard" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="355" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="k_pil3" value="pil3" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="440" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="k_rekap" value="Rekap Penilaian" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="455" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="k_pil4" value="pil4" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="350" y="540" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="k_logout" value="Logout" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="510" y="555" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="k_end" value="End" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="375" y="640" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ke1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_start" target="k_input" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ke2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_input" target="k_pil1" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ke3" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_pil1" target="k_login" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ke4" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_pil1" target="k_pil2" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ke5" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_pil2" target="k_dashboard" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ke6" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_pil2" target="k_pil3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ke7" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_pil3" target="k_rekap" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ke8" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_pil3" target="k_pil4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ke9" value="Ya" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_pil4" target="k_logout" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ke10" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="k_pil4" target="k_end" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kel1" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="k_login" target="k_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="275" />
+              <mxPoint x="690" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kel2" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="k_dashboard" target="k_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="375" />
+              <mxPoint x="700" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kel3" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="k_rekap" target="k_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="475" />
+              <mxPoint x="710" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kel4" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="k_logout" target="k_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="575" />
+              <mxPoint x="720" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kenloop" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="k_pil4" target="k_input" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="575" />
+              <mxPoint x="200" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

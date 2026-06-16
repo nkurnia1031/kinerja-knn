@@ -1,5 +1,6 @@
 <?php 
  $diagramId = 'sequence-diagram-' . $useCase['no'];
+ $shouldRenderSequenceDiagram = !in_array($useCase['no'], [14, 15], true);
  $figureNumber = '4.' . ($useCase['no'] + 19);
  $sequenceNarratives = [
  1 => '<i>Sequence Diagram</i> <i>Login</i> menggambarkan urutan interaksi antara pengguna, halaman utama, modul login, dan basis data dalam proses autentikasi, dimulai dari penyampaian kredensial hingga sistem memberikan hasil verifikasi dan mengarahkan pengguna sesuai hak aksesnya.',
@@ -19,427 +20,230 @@
  15 => '<i>Sequence Diagram</i> <i>Rekap Penilaian &amp; Klasifikasi</i> memperlihatkan urutan interaksi pada penyajian rekap hasil penilaian dan klasifikasi KNN, mulai dari pemilihan parameter peninjauan, penampilan data hasil evaluasi, hingga penyediaan detail atau keluaran cetak sebagai pendukung pengambilan keputusan.',
  ];
  $sequenceDescription = ($sequenceNarratives[$useCase['no']] ?? ('<i>Sequence Diagram</i> ' . $useCase['title'] . ' menjelaskan urutan interaksi antara pengguna, halaman utama, modul proses, dan basis data pada fitur yang sedang dijalankan.')) . ' Alur tersebut ditunjukkan pada Gambar ' . $figureNumber . '.';
+ $sequenceFlowConfigs = [
+ 1 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Login',
+ 'main_action' => 'Pilih Login',
+ 'display_message' => 'Menampilkan halaman Login',
+ 'user_action' => 'Mengisi username dan password lalu menekan tombol masuk',
+ 'result_message' => 'Menampilkan pesan gagal login atau dashboard sesuai hak akses',
+ ],
+ 2 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Logout',
+ 'main_action' => 'Pilih Logout',
+ 'display_message' => 'Menampilkan proses Logout',
+ 'user_action' => 'Mengakhiri sesi penggunaan sistem',
+ 'result_message' => 'Menampilkan halaman Login kembali',
+ ],
+ 3 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Dashboard',
+ 'main_action' => 'Pilih Dashboard',
+ 'display_message' => 'Menampilkan halaman Dashboard',
+ 'user_action' => 'Melihat dashboard dan memilih menu yang tersedia',
+ 'result_message' => 'Menampilkan informasi atau halaman sesuai pilihan pengguna',
+ ],
+ 4 => [
+ 'mode' => 'crud',
+ 'feature_label' => 'Data Karyawan',
+ 'table_label' => 'Tabel Data\nKaryawan',
+ 'main_action' => 'Pilih Data Karyawan',
+ 'query_result' => 'Hasil Query',
+ 'display_message' => 'Menampilkan Data Karyawan',
+ 'user_action_1' => 'Memilih aksi Tambah Data, Hapus, Edit, atau Filter',
+ 'user_action_2' => 'Menambah, menghapus, mengedit, atau memfilter data karyawan',
+ 'process_message' => 'Eksekusi Proses Data Karyawan',
+ 'final_message' => 'Menyampaikan pesan data karyawan telah berhasil diperbarui',
+ ],
+ 5 => [
+ 'mode' => 'crud',
+ 'feature_label' => 'Relasi Atasan',
+ 'table_label' => 'Tabel Relasi\nAtasan',
+ 'main_action' => 'Pilih Relasi Atasan',
+ 'query_result' => 'Hasil Query',
+ 'display_message' => 'Menampilkan daftar karyawan dan relasi atasan',
+ 'user_action_1' => 'Memilih karyawan yang akan diatur relasinya',
+ 'user_action_2' => 'Menetapkan atasan lalu menekan simpan',
+ 'process_message' => 'Eksekusi Proses Relasi Atasan',
+ 'final_message' => 'Menyampaikan pesan relasi atasan telah berhasil diperbarui',
+ ],
+ 6 => [
+ 'mode' => 'crud',
+ 'feature_label' => 'Kriteria Penilaian',
+ 'table_label' => 'Tabel Kriteria\nPenilaian',
+ 'main_action' => 'Pilih Kriteria Penilaian',
+ 'query_result' => 'Hasil Query',
+ 'display_message' => 'Menampilkan Data Kriteria Penilaian',
+ 'user_action_1' => 'Memilih aksi Tambah Data, Hapus, atau Edit',
+ 'user_action_2' => 'Menambah, menghapus, atau mengedit data kriteria penilaian',
+ 'process_message' => 'Eksekusi Proses Kriteria Penilaian',
+ 'final_message' => 'Menyampaikan pesan data kriteria penilaian telah berhasil diperbarui',
+ ],
+ 7 => [
+ 'mode' => 'crud',
+ 'feature_label' => 'Periode Penilaian',
+ 'table_label' => 'Tabel Periode\nPenilaian',
+ 'main_action' => 'Pilih Periode Penilaian',
+ 'query_result' => 'Hasil Query',
+ 'display_message' => 'Menampilkan Data Periode Penilaian',
+ 'user_action_1' => 'Memilih aksi Tambah Data, Edit, atau Aktifkan Periode',
+ 'user_action_2' => 'Menambah, mengubah, atau mengaktifkan periode penilaian',
+ 'process_message' => 'Eksekusi Proses Periode Penilaian',
+ 'final_message' => 'Menyampaikan pesan periode penilaian telah berhasil diperbarui',
+ ],
+ 8 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Rekap Penilaian',
+ 'main_action' => 'Pilih Rekap Penilaian',
+ 'display_message' => 'Menampilkan data Rekap Penilaian',
+ 'user_action' => 'Memilih filter periode penilaian',
+ 'result_message' => 'Menampilkan data rekap sesuai periode atau seluruh data rekap',
+ ],
+ 9 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Analisa Kinerja',
+ 'main_action' => 'Pilih Analisa Kinerja',
+ 'display_message' => 'Menampilkan data Analisa Kinerja',
+ 'user_action' => 'Menentukan parameter analisa lalu menjalankan proses klasifikasi',
+ 'result_message' => 'Menampilkan hasil analisa atau pesan validasi parameter',
+ ],
+ 10 => [
+ 'mode' => 'crud',
+ 'feature_label' => 'Penilaian Bawahan',
+ 'table_label' => 'Tabel Penilaian\nBawahan',
+ 'main_action' => 'Pilih Penilaian Bawahan',
+ 'query_result' => 'Hasil Query',
+ 'display_message' => 'Menampilkan periode aktif dan daftar bawahan',
+ 'user_action_1' => 'Memilih bawahan yang akan dinilai',
+ 'user_action_2' => 'Mengisi nilai kriteria lalu menekan simpan',
+ 'process_message' => 'Eksekusi Proses Penilaian Bawahan',
+ 'final_message' => 'Menyampaikan total nilai, klasifikasi akhir, atau pesan validasi data',
+ ],
+ 11 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Review Penilaian',
+ 'main_action' => 'Pilih Review Penilaian',
+ 'display_message' => 'Menampilkan daftar Review Penilaian',
+ 'user_action' => 'Memilih data penilaian yang akan ditinjau',
+ 'result_message' => 'Menampilkan rincian penilaian atau pesan data tidak ditemukan',
+ ],
+ 12 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Daftar Bawahan',
+ 'main_action' => 'Pilih Daftar Bawahan',
+ 'display_message' => 'Menampilkan daftar bawahan dan ringkasan data',
+ 'user_action' => 'Meninjau data bawahan dan memilih aksi lanjutan',
+ 'result_message' => 'Menampilkan halaman penilaian atau riwayat sesuai pilihan pengguna',
+ ],
+ 13 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Laporan',
+ 'main_action' => 'Pilih Laporan',
+ 'display_message' => 'Menampilkan pilihan jenis laporan',
+ 'user_action' => 'Memilih jenis laporan serta mengisi filter yang diperlukan',
+ 'result_message' => 'Menampilkan hasil laporan dan opsi cetak',
+ ],
+ 14 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Rekap Karyawan',
+ 'main_action' => 'Pilih Rekap Karyawan',
+ 'display_message' => 'Menampilkan filter dan data Rekap Karyawan',
+ 'user_action' => 'Mengisi status, role, pekerjaan, atau kata kunci',
+ 'result_message' => 'Menampilkan hasil rekap karyawan sesuai filter',
+ ],
+ 15 => [
+ 'mode' => 'simple',
+ 'feature_label' => 'Rekap Penilaian & Klasifikasi',
+ 'main_action' => 'Pilih Rekap Penilaian & Klasifikasi',
+ 'display_message' => 'Menampilkan filter Rekap Penilaian dan Klasifikasi',
+ 'user_action' => 'Memilih periode atau klasifikasi KNN',
+ 'result_message' => 'Menampilkan rekap pada halaman atau keluaran laporan cetak',
+ ],
+ ];
+
+ $sequenceFlow = $sequenceFlowConfigs[$useCase['no']] ?? [
+ 'mode' => 'simple',
+ 'feature_label' => $useCase['title'],
+ 'main_action' => 'Pilih ' . $useCase['title'],
+ 'display_message' => 'Menampilkan ' . $useCase['title'],
+ 'user_action' => 'Menjalankan proses pada fitur terkait',
+ 'result_message' => 'Menampilkan hasil proses kepada pengguna',
+ ];
+
+ $isCrudSequence = ($sequenceFlow['mode'] ?? 'simple') === 'crud';
+
+ if ($isCrudSequence) {
  $pumlLines = [
  '@startuml',
  "title Sequence Diagram {$useCase['title']}",
+ 'hide footbox',
  'actor "' . $useCase['actor'] . '" as User',
  'participant "Main" as Main',
- 'participant "' . $useCase['title'] . '" as Feature',
- 'database "Basis Data" as DB',
+ 'participant "' . $sequenceFlow['feature_label'] . '" as Feature',
+ 'participant "Koneksi Data\\nBase" as Connection',
+ 'participant "' . $sequenceFlow['table_label'] . '" as EntityTable',
+ 'autonumber 1',
  '',
+ 'User -> Main: ' . $sequenceFlow['main_action'],
+ 'activate Main',
+ 'Main -> Feature: ' . $sequenceFlow['main_action'],
+ 'activate Feature',
+ 'deactivate Main',
+ '',
+ 'Feature -> Connection: <<create>>',
+ 'activate Connection',
+ 'Connection -> EntityTable: <<create>>',
+ 'activate EntityTable',
+ 'deactivate Connection',
+ 'EntityTable --> Feature: ' . $sequenceFlow['query_result'],
+ '',
+ 'Feature --> User: ' . $sequenceFlow['display_message'],
+ '',
+ 'User -> Feature: ' . $sequenceFlow['user_action_1'],
+ 'User -> Feature: ' . $sequenceFlow['user_action_2'],
+ '',
+ 'Feature -> EntityTable: Membuka Koneksi',
+ 'Feature -> EntityTable: ' . $sequenceFlow['process_message'],
+ 'Feature -> EntityTable: Tutup Koneksi',
+ 'Feature -> EntityTable: <<destroy>>',
+ 'destroy EntityTable',
+ '',
+ 'Feature -> Connection: <<destroy>>',
+ 'activate Connection',
+ 'destroy Connection',
+ '',
+ 'Feature --> User: ' . $sequenceFlow['final_message'],
+ 'deactivate Feature',
  ];
-
- switch ($useCase['no']) {
- case 1:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Mengisi username dan password',
+ } else {
+ $pumlLines = [
+ '@startuml',
+ "title Sequence Diagram {$useCase['title']}",
+ 'hide footbox',
+ 'actor "' . $useCase['actor'] . '" as User',
+ 'participant "Main" as Main',
+ 'participant "' . $sequenceFlow['feature_label'] . '" as Feature',
+ 'autonumber 1',
+ '',
+ 'User -> Main: ' . $sequenceFlow['main_action'],
  'activate Main',
- 'Main -> Feature: Menyampaikan data login',
+ 'Main -> Feature: ' . $sequenceFlow['main_action'],
  'activate Feature',
- 'Feature -> DB: Memeriksa kredensial pengguna',
- 'activate DB',
- 'DB --> Feature: Hasil verifikasi login',
- 'deactivate DB',
- 'alt Kredensial valid',
- '  Feature --> Main: Menyampaikan status login berhasil',
- '  Main --> User: Menampilkan dashboard sesuai hak akses',
- 'else Kredensial tidak valid',
- '  Feature --> Main: Menyampaikan pesan kegagalan login',
- '  Main --> User: Menampilkan notifikasi kesalahan',
- 'end',
- 'deactivate Feature',
  'deactivate Main',
- ]);
- break;
-
- case 2:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu logout',
- 'activate Main',
- 'Main -> Feature: Meneruskan permintaan logout',
- 'activate Feature',
- 'Feature -> DB: Mengakhiri sesi pengguna',
- 'activate DB',
- 'DB --> Feature: Status pengakhiran sesi',
- 'deactivate DB',
- 'Feature --> Main: Menyampaikan hasil logout',
- 'Main --> User: Menampilkan halaman login',
+ '',
+ 'Feature --> User: ' . $sequenceFlow['display_message'],
+ '',
+ 'User -> Feature: ' . $sequenceFlow['user_action'],
+ 'Feature --> User: ' . $sequenceFlow['result_message'],
  'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 3:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Membuka halaman dashboard',
- 'activate Main',
- 'Main -> Feature: Meminta data dashboard',
- 'activate Feature',
- 'Feature -> DB: Mengambil data ringkasan sesuai hak akses',
- 'activate DB',
- 'DB --> Feature: Data dashboard',
- 'deactivate DB',
- 'Feature --> Main: Menyediakan informasi dashboard',
- 'Main --> User: Menampilkan ringkasan dashboard',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 4:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Data Karyawan',
- 'activate Main',
- 'Main -> Feature: Meminta daftar data karyawan',
- 'activate Feature',
- 'Feature -> DB: Mengambil data karyawan',
- 'activate DB',
- 'DB --> Feature: Daftar data karyawan',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan data karyawan',
- 'Main --> User: Menampilkan daftar data karyawan',
- 'alt Tambah atau ubah data',
- '  User -> Main: Mengisi atau memperbarui data karyawan',
- '  Main -> Feature: Meneruskan perubahan data',
- '  Feature -> DB: Menyimpan perubahan data karyawan',
- '  activate DB',
- '  DB --> Feature: Status penyimpanan data',
- '  deactivate DB',
- '  Feature --> Main: Menyampaikan hasil penyimpanan',
- '  Main --> User: Menampilkan data yang telah diperbarui',
- 'else Hapus data',
- '  User -> Main: Mengonfirmasi penghapusan data',
- '  Main -> Feature: Meneruskan permintaan penghapusan',
- '  Feature -> DB: Menghapus data karyawan',
- '  activate DB',
- '  DB --> Feature: Status penghapusan data',
- '  deactivate DB',
- '  Feature --> Main: Menyampaikan hasil penghapusan',
- '  Main --> User: Menampilkan daftar data setelah penghapusan',
- 'else Filter data',
- '  User -> Main: Memasukkan kriteria penyaringan',
- '  Main -> Feature: Meneruskan kriteria penyaringan',
- '  Feature -> DB: Mengambil data sesuai kriteria',
- '  activate DB',
- '  DB --> Feature: Data hasil penyaringan',
- '  deactivate DB',
- '  Feature --> Main: Menyajikan hasil penyaringan',
- '  Main --> User: Menampilkan data yang telah disaring',
- 'end',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 5:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Relasi Atasan',
- 'activate Main',
- 'Main -> Feature: Meminta data relasi atasan',
- 'activate Feature',
- 'Feature -> DB: Mengambil data relasi dan daftar atasan',
- 'activate DB',
- 'DB --> Feature: Data relasi atasan',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan data relasi atasan',
- 'Main --> User: Menampilkan daftar relasi atasan',
- 'User -> Main: Menetapkan atasan untuk karyawan',
- 'Main -> Feature: Meneruskan data relasi baru',
- 'Feature -> DB: Menyimpan relasi atasan',
- 'activate DB',
- 'DB --> Feature: Status penyimpanan relasi',
- 'deactivate DB',
- 'Feature --> Main: Menyampaikan hasil penyimpanan',
- 'Main --> User: Menampilkan relasi atasan yang telah diperbarui',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 6:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Kriteria Penilaian',
- 'activate Main',
- 'Main -> Feature: Meminta daftar kriteria penilaian',
- 'activate Feature',
- 'Feature -> DB: Mengambil data kriteria',
- 'activate DB',
- 'DB --> Feature: Daftar kriteria penilaian',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan data kriteria',
- 'Main --> User: Menampilkan daftar kriteria penilaian',
- 'User -> Main: Menambahkan, mengubah, atau menghapus kriteria',
- 'Main -> Feature: Meneruskan perubahan data kriteria',
- 'Feature -> DB: Menyimpan perubahan data kriteria',
- 'activate DB',
- 'DB --> Feature: Status penyimpanan kriteria',
- 'deactivate DB',
- 'Feature --> Main: Menyampaikan hasil pengelolaan kriteria',
- 'Main --> User: Menampilkan daftar kriteria yang telah diperbarui',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 7:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Periode Penilaian',
- 'activate Main',
- 'Main -> Feature: Meminta daftar periode penilaian',
- 'activate Feature',
- 'Feature -> DB: Mengambil data periode penilaian',
- 'activate DB',
- 'DB --> Feature: Daftar periode penilaian',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan data periode penilaian',
- 'Main --> User: Menampilkan daftar periode penilaian',
- 'User -> Main: Menambahkan atau memperbarui data periode',
- 'Main -> Feature: Meneruskan data periode penilaian',
- 'Feature -> DB: Menyimpan data periode penilaian',
- 'activate DB',
- 'DB --> Feature: Status penyimpanan periode',
- 'deactivate DB',
- 'alt Periode diaktifkan',
- '  Feature -> DB: Memperbarui status periode aktif',
- '  activate DB',
- '  DB --> Feature: Status perubahan periode aktif',
- '  deactivate DB',
- 'end',
- 'Feature --> Main: Menyampaikan hasil pengelolaan periode',
- 'Main --> User: Menampilkan daftar periode yang telah diperbarui',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 8:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Rekap Penilaian',
- 'activate Main',
- 'Main -> Feature: Meminta data rekap penilaian',
- 'activate Feature',
- 'Feature -> DB: Mengambil data rekap penilaian',
- 'activate DB',
- 'DB --> Feature: Data rekap penilaian',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan data rekap penilaian',
- 'Main --> User: Menampilkan rekap penilaian',
- 'User -> Main: Memilih periode atau rincian data',
- 'Main -> Feature: Meneruskan permintaan peninjauan',
- 'Feature -> DB: Mengambil data sesuai pilihan pengguna',
- 'activate DB',
- 'DB --> Feature: Hasil penyaringan atau rincian data',
- 'deactivate DB',
- 'Feature --> Main: Menyediakan hasil peninjauan',
- 'Main --> User: Menampilkan rekap atau rincian penilaian',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 9:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Analisa Kinerja',
- 'activate Main',
- 'Main -> Feature: Meminta data awal analisa',
- 'activate Feature',
- 'Feature -> DB: Mengambil data analisa kinerja',
- 'activate DB',
- 'DB --> Feature: Data analisa awal',
- 'deactivate DB',
- 'Feature --> Main: Menyediakan parameter analisa',
- 'Main --> User: Menampilkan form analisa',
- 'User -> Main: Menentukan parameter dan menjalankan analisa',
- 'Main -> Feature: Meneruskan parameter analisa',
- 'Feature -> DB: Memproses analisa dan klasifikasi KNN',
- 'activate DB',
- 'DB --> Feature: Hasil analisa kinerja',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan hasil analisa',
- 'Main --> User: Menampilkan hasil klasifikasi kinerja',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 10:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Penilaian Bawahan',
- 'activate Main',
- 'Main -> Feature: Meminta data periode aktif dan bawahan',
- 'activate Feature',
- 'Feature -> DB: Mengambil data penilaian bawahan',
- 'activate DB',
- 'DB --> Feature: Data periode dan daftar bawahan',
- 'deactivate DB',
- 'Feature --> Main: Menyediakan form penilaian',
- 'Main --> User: Menampilkan data bawahan yang dapat dinilai',
- 'User -> Main: Mengisi nilai dan catatan penilaian',
- 'Main -> Feature: Meneruskan data penilaian',
- 'Feature -> DB: Mengolah dan menyimpan hasil penilaian',
- 'activate DB',
- 'DB --> Feature: Total nilai dan status penyimpanan',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan hasil penilaian',
- 'Main --> User: Menampilkan hasil penilaian bawahan',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 11:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Review Penilaian',
- 'activate Main',
- 'Main -> Feature: Meminta daftar data penilaian',
- 'activate Feature',
- 'Feature -> DB: Mengambil data penilaian',
- 'activate DB',
- 'DB --> Feature: Daftar data penilaian',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan daftar penilaian',
- 'Main --> User: Menampilkan daftar penilaian',
- 'User -> Main: Memilih data untuk ditinjau',
- 'Main -> Feature: Meneruskan permintaan rincian data',
- 'Feature -> DB: Mengambil rincian penilaian',
- 'activate DB',
- 'DB --> Feature: Rincian penilaian',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan rincian penilaian',
- 'Main --> User: Menampilkan detail hasil penilaian',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 12:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Daftar Bawahan',
- 'activate Main',
- 'Main -> Feature: Meminta data bawahan langsung',
- 'activate Feature',
- 'Feature -> DB: Mengambil data bawahan',
- 'activate DB',
- 'DB --> Feature: Daftar bawahan langsung',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan daftar bawahan',
- 'Main --> User: Menampilkan ringkasan data bawahan',
- 'User -> Main: Memilih tindakan lanjutan',
- 'Main -> Feature: Meneruskan pilihan tindakan',
- 'Feature --> Main: Menyediakan halaman lanjutan',
- 'Main --> User: Menampilkan halaman sesuai pilihan',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 13:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih menu Laporan',
- 'activate Main',
- 'Main -> Feature: Meminta pilihan laporan dan filter',
- 'activate Feature',
- 'Feature -> DB: Mengambil data pendukung laporan',
- 'activate DB',
- 'DB --> Feature: Pilihan laporan dan filter',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan pilihan laporan',
- 'Main --> User: Menampilkan halaman laporan',
- 'User -> Main: Memilih jenis laporan dan filter',
- 'Main -> Feature: Meneruskan permintaan laporan',
- 'alt Rekap Karyawan',
- '  Feature -> DB: Mengambil data rekap karyawan',
- '  activate DB',
- '  DB --> Feature: Data rekap karyawan',
- '  deactivate DB',
- '  Feature --> Main: Menyajikan rekap karyawan',
- 'else Rekap Penilaian & Klasifikasi',
- '  Feature -> DB: Mengambil data rekap penilaian dan klasifikasi',
- '  activate DB',
- '  DB --> Feature: Data rekap penilaian dan klasifikasi',
- '  deactivate DB',
- '  Feature --> Main: Menyajikan rekap penilaian dan klasifikasi',
- 'end',
- 'Main --> User: Menampilkan hasil laporan',
- 'User -> Main: Memilih cetak laporan',
- 'Main -> Feature: Meneruskan permintaan cetak',
- 'Feature --> Main: Menyediakan keluaran laporan',
- 'Main --> User: Menampilkan laporan yang siap dicetak',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 14:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih laporan Rekap Karyawan',
- 'activate Main',
- 'Main -> Feature: Meminta data rekap karyawan',
- 'activate Feature',
- 'Feature -> DB: Mengambil data rekap karyawan',
- 'activate DB',
- 'DB --> Feature: Data rekap karyawan',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan rekap karyawan',
- 'Main --> User: Menampilkan rekap karyawan',
- 'User -> Main: Menentukan filter atau mencetak laporan',
- 'Main -> Feature: Meneruskan kebutuhan peninjauan',
- 'Feature -> DB: Mengambil data sesuai kebutuhan pengguna',
- 'activate DB',
- 'DB --> Feature: Data rekap yang telah disesuaikan',
- 'deactivate DB',
- 'Feature --> Main: Menyediakan hasil peninjauan',
- 'Main --> User: Menampilkan rekap karyawan yang siap ditinjau',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- case 15:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Memilih laporan Rekap Penilaian & Klasifikasi',
- 'activate Main',
- 'Main -> Feature: Meminta data rekap penilaian dan klasifikasi',
- 'activate Feature',
- 'Feature -> DB: Mengambil data rekap penilaian dan klasifikasi',
- 'activate DB',
- 'DB --> Feature: Data rekap penilaian dan klasifikasi',
- 'deactivate DB',
- 'Feature --> Main: Menyajikan rekap penilaian dan klasifikasi',
- 'Main --> User: Menampilkan hasil rekap dan klasifikasi',
- 'User -> Main: Memilih rincian data atau mencetak laporan',
- 'Main -> Feature: Meneruskan permintaan peninjauan',
- 'Feature -> DB: Mengambil rincian atau data cetak',
- 'activate DB',
- 'DB --> Feature: Rincian data atau keluaran laporan',
- 'deactivate DB',
- 'Feature --> Main: Menyediakan hasil peninjauan lanjutan',
- 'Main --> User: Menampilkan rincian atau laporan siap cetak',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
-
- default:
- $pumlLines = array_merge($pumlLines, [
- 'User -> Main: Melakukan aksi pada halaman',
- 'activate Main',
- 'Main -> Feature: Meneruskan permintaan proses',
- 'activate Feature',
- 'Feature -> DB: Mengambil atau menyimpan data',
- 'activate DB',
- 'DB --> Feature: Hasil proses data',
- 'deactivate DB',
- 'Feature --> Main: Menyampaikan hasil proses',
- 'Main --> User: Menampilkan hasil pada halaman',
- 'deactivate Feature',
- 'deactivate Main',
- ]);
- break;
+ ];
  }
 
  $pumlLines[] = '@enduml';
  ?>
+<?php if($shouldRenderSequenceDiagram): ?>
 <div class="card mb-3">
  <div class="card-header bg-white d-flex justify-content-between align-items-center">
  <div>
@@ -455,7 +259,13 @@
  <?php echo $sequenceDescription; ?>
 
  </div>
- <pre class="bg-dark text-light p-3 rounded mb-0"><code class="language-plantuml"><?php echo \htmlentities(implode("\n", $pumlLines)??'', ENT_QUOTES, 'UTF-8', false); ?></code></pre>
+ <textarea
+ class="form-control font-monospace small"
+ rows="<?php echo \htmlentities(max(12, count($pumlLines) + 1)??'', ENT_QUOTES, 'UTF-8', false); ?>"
+ readonly
+ spellcheck="false"
+ ><?php echo \htmlentities(implode("\n", $pumlLines)??'', ENT_QUOTES, 'UTF-8', false); ?></textarea>
  </div>
  </div>
 </div>
+<?php endif; ?>
