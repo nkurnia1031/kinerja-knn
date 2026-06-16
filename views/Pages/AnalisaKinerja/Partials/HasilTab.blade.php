@@ -1,0 +1,61 @@
+<div class="col-12" v-show="activeTab === 'hasil' && !isLoading">
+    <div class="card shadow mb-4" v-if="hasilKlasifikasi">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">
+                <i class="fas fa-poll mr-2"></i>Hasil Klasifikasi KNN (@{{ hasilKlasifikasi.length }} Karyawan)
+            </h6>
+            <small class="text-muted">Periode dimuat: @{{ selectedPeriodeLabel }}</small>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-primary">
+                <strong>Akses detail perhitungan:</strong>
+                Klik tombol <span class="badge badge-info">Detail Hitung</span> pada setiap baris untuk membuka uraian proses KNN,
+                termasuk tetangga terdekat dan langkah hitung jarak Euclidean.
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th class="text-center" width="50">No</th>
+                            <th>Nama Karyawan</th>
+                            <th>Periode</th>
+                            <th>Jabatan</th>
+                            <th>Pekerjaan</th>
+                            <th class="text-center" width="80">Rata-rata</th>
+                            <th class="text-center" width="120">Klasifikasi Penilaian</th>
+                            <th class="text-center" width="120">Klasifikasi KNN</th>
+                            <th class="text-center" width="80">Confidence</th>
+                            <th class="text-center" width="140">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(h, index) in hasilKlasifikasi" :key="h.karyawan.id || index">
+                            <td class="text-center">@{{ index + 1 }}</td>
+                            <td class="font-weight-bold">@{{ h.karyawan.nama }}</td>
+                            <td>@{{ h.karyawan.nama_periode || '-' }}</td>
+                            <td>@{{ h.karyawan.jabatan || '-' }}</td>
+                            <td>@{{ h.karyawan.pekerjaan || '-' }}</td>
+                            <td class="text-center">@{{ h.rata_rata_nilai || hitungRataRata(h.karyawan.nilai) }}</td>
+                            <td class="text-center">
+                                <span class="badge" :class="'badge-' + getKlasifikasiClass(h.karyawan.klasifikasi_penilaian)">
+                                    @{{ h.karyawan.klasifikasi_penilaian || '-' }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge" :class="'badge-' + getKlasifikasiClass(h.hasil_klasifikasi)">
+                                    @{{ h.hasil_klasifikasi }}
+                                </span>
+                            </td>
+                            <td class="text-center"><span class="badge badge-light">@{{ h.confidence }}%</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-info" @click="lihatDetail(h)" title="Buka detail dan perhitungan KNN">
+                                    <i class="fas fa-search mr-1"></i> Detail Hitung
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+<?php 
+ use app\Fungsi;
+ ?>
+<?php $_shouldextend[1]=1; ?>
+<?php $this->startSection('js'); ?>
+ <?php echo $this->runChild('Komponen.Lampiran'); ?>
+
+ <script>
+ const {
+ createApp
+ } = Vue
+
+
+ app = createApp({
+ data() {
+ data = dataAwal();
+
+ data.baseURL = 'Transaksi';
+ return data;
+ },
+ computed: {
+ ...computedAwal,
+
+ },
+ mounted() {
+ this.GetData();
+ },
+ beforeUpdated() {},
+ updated() {},
+ methods: {
+ ...methodAwal,
+
+
+
+ }
+ }).mount('#app')
+ </script>
+ <script></script>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('css'); ?>
+ <style>
+ .slide-fade-enter-active {
+ transition: all 0.6s ease-out;
+ }
+
+ .slide-fade-leave-active {
+ transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+ }
+
+ .slide-fade-enter-from,
+ .slide-fade-leave-to {
+ transform: translateX(20px);
+ opacity: 0;
+ }
+
+ .table-surat {
+ color: black !important
+ }
+
+ .table-surat th {
+
+ padding: 0.1rem !important;
+ }
+
+ .table-bordered td,
+ .table-bordered th {
+ color: black !important;
+ border: 1px solid #000000 !important;
+ padding-top: 5px !important;
+ padding-bottom: 5px !important;
+ padding-left: 8px !important;
+ padding-right: 8px !important;
+ }
+
+
+
+ .nol {
+ padding: 0px !important;
+
+ }
+
+ pre {
+ border: 0;
+ padding: 0;
+ font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+ }
+ </style>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('modal'); ?>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('isi'); ?>
+ <div class="row" id="app">
+
+ <?php  $this->startComponent('Pages.Form'); ?>
+ <?php  $this->slot('tambahan'); ?>
+ <template v-else-if="inArray(data.name,['contact_id'])">
+
+ <div class="input-group ">
+ <select v-model="data.val" class="form-control select" data-placeholder="Pilih Customer/Supliter"
+ :id="data.name + '1'" :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.contact" :value="i.id">
+ {{ i.nama }} | {{ i.nohp }}</option>
+ </select>
+ <div class="input-group-append">
+ <button class="btn btn-primary btn-sm" @click="ModalContact('')" type="button" id="button-addon2"><i
+ class="fa fa-plus"></i></button>
+ </div>
+ </div>
+
+ </template>
+ <template v-else-if="inArray(data.name,['jenis'])">
+ <div v-if="(edit && data.val=='Servis')">
+ Servis
+ </div>
+ <div v-else>
+
+ <select v-model="data.val" class="form-control select" data-placeholder="Pilih Jenis" :id="data.name + '1'"
+ :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.jenis" :value="i">
+ {{ i }}</option>
+ </select>
+ </div>
+
+ </template>
+ <?php  $this->endSlot(); ?>
+ <?php echo $this->renderComponent(); ?>
+ <?php  $this->startComponent('Pages.Filter'); ?>
+ <?php echo $this->renderComponent(); ?>
+
+ <?php  $this->startComponent('Pages.Table'); ?>
+ <?php  $this->slot('tambahanth'); ?>
+ <th data-priority="1">Total</th>
+ <th data-priority="1">Final</th>
+ <?php  $this->endSlot(); ?>
+ <?php  $this->slot('td'); ?>
+ <template v-else-if="inArray(a.name,['nota'])">
+ <a href="javascript:;" class="text-nowrap" @click="ViewTransaksi(i.id)">
+ {{ i.nota }}
+ </a>
+
+ </template>
+ <template v-else-if="inArray(a.name,['contact_id'])">
+ <a href="javascript:;" @click="ModalContactView(i.contact_id)">
+ {{ i.contact_nama }}
+ <div class="text-muted">No HP. {{ i.contact_nohp }}</div>
+ </a>
+
+ </template>
+ <?php  $this->endSlot(); ?>
+ <?php  $this->slot('tambahantd'); ?>
+ <td> <span class="text-nowrap"> Rp {{ formatRupiah(i.total) }}</span></td>
+ <td> <span class="text-nowrap text-danger" v-if="i.jenis=='Pembelian'"> Rp {{ formatRupiah(i.final) }}</span>
+ <span class="text-nowrap text-success" v-else> Rp {{ formatRupiah(i.final) }}</span>
+ </td>
+ <?php  $this->endSlot(); ?>
+ <?php  $this->slot('tfoot'); ?>
+ <tr>
+ <th>Total</th>
+ <th v-for="a in countFields"></th>
+ <th></th>
+ <th> Rp {{ formatRupiah(tambahan.final) }}</th>
+ <th></th>
+ </tr>
+ <?php  $this->endSlot(); ?>
+ <?php echo $this->renderComponent(); ?>
+
+ <!-- Column -->
+ </div>
+<?php $this->stopSection(); ?>
+
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('Layout.html'); } ?>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<?php echo $this->runChild('Layout.head'); ?>
+
+
+
+
+<body class="bg-white" onload='print()'>
+
+ <?php echo $this->yieldContent('isi'); ?>
+
+
+
+ <?php echo $this->runChild('Layout.js'); ?>
+ <?php echo $this->yieldContent('js'); ?>
+
+
+</body>
+
+
+
+</html>

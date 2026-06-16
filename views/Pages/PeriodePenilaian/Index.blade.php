@@ -1,0 +1,193 @@
+@php
+    use app\Fungsi;
+@endphp
+@extends('Layout.html')
+@section('js')
+    <script>
+        const {
+            createApp
+        } = Vue
+
+        app = createApp({
+            data() {
+                data = dataAwal();
+                data.baseURL = 'PeriodePenilaian';
+                return data;
+            },
+            computed: computedAwal,
+            mounted() {
+                this.GetData();
+            },
+            beforeUpdated() {},
+            updated() {},
+            methods: {
+                ...methodAwal,
+                aktivasiPeriode(id) {
+                    if (confirm(
+                            'Apakah Anda yakin ingin mengaktifkan periode ini? Periode lain akan dinonaktifkan.')) {
+                        // Inisialisasi FormData sesuai format yang diminta
+                        const formData = new FormData();
+                        formData.append('update', true);
+                        formData.append('key', id);
+                        formData.append('input[status]', 'aktif');
+
+                        // Mengirimkan formData melalui axiosInstance
+                        axiosInstance.post('PeriodePenilaian-CRUD', formData)
+                            .then(res => {
+                                if (res.data.status) {
+                                    new Toast({
+                                        message: 'Periode berhasil diaktifkan!',
+                                        type: 'success'
+                                    });
+                                    this.GetData();
+                                } else {
+                                    new Toast({
+                                        message: 'Gagal mengaktifkan periode: ' + res.data.message,
+                                        type: 'danger'
+                                    });
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                new Toast({
+                                    message: 'Terjadi kesalahan sistem.',
+                                    type: 'danger'
+                                });
+                            });
+                    }
+                },
+                afterGetdata() {
+                    this.fields = collect([
+                        { name: 'nama_periode', label: 'Nama Periode' },
+                        { name: 'tanggal_mulai', label: 'Tanggal Mulai' },
+                        { name: 'tanggal_selesai', label: 'Tanggal Selesai' },
+                        { name: 'progress', label: 'Progress' },
+                        { name: 'status', label: 'Status' }
+                    ]);
+                }
+            }
+        }).mount('#app')
+    </script>
+@endsection
+@section('css')
+    <style>
+        .slide-fade-enter-active {
+            transition: all 0.3s ease-out;
+        }
+
+        .slide-fade-leave-active {
+            transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+        }
+
+        .slide-fade-enter-from,
+        .slide-fade-leave-to {
+            transform: translateX(20px);
+            opacity: 0;
+        }
+
+        .table-bordered td,
+        .table-bordered th {
+            color: black !important;
+            border: 1px solid #000000 !important;
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+        }
+
+        .periode-aktif {
+            background-color: #d4edda !important;
+        }
+    </style>
+@endsection
+@section('modal')
+@endsection
+@section('isi')
+    <div class="row" id="app">
+        {{-- Info Card --}}
+        <div class="col-12 mb-3">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <strong>Periode Penilaian</strong> - Kelola periode penilaian kinerja tahunan.
+                Hanya satu periode yang dapat aktif pada satu waktu.
+            </div>
+        </div>
+
+        @component('Pages.Form')
+            @slot('tambahan')
+                <template v-else-if="inArray(data.name,['status'])">
+                    <select class="form-control" :name="'input[' + data.name + ']'" :id="data.name + '1'">
+                        <option value="">-- Pilih Status --</option>
+                        <option value="aktif" :selected="data.val == 'aktif'">Aktif</option>
+                        <option value="nonaktif" :selected="data.val == 'nonaktif'">Non-Aktif</option>
+                        <option value="selesai" :selected="data.val == 'selesai'">Selesai</option>
+                    </select>
+                </template>
+                <template v-else-if="inArray(data.name,['tanggal_mulai','tanggal_selesai'])">
+                    <input type="date" class="form-control" :name="'input[' + data.name + ']'" :id="data.name + '1'"
+                        :value="data.val">
+                </template>
+            @endslot
+        @endcomponent
+        @component('Pages.Filter')
+        @endcomponent
+        @component('Pages.Table', [
+            'title' => 'Data Periode Penilaian',
+            'showAdd' => false,
+            'showPrint' => false,
+            'showExcel' => false,
+            'showRefresh' => false,
+            'rowClassExpr' => "{ 'periode-aktif': i.status == 'aktif' }",
+            'customHeaderAksi' => '
+                <a @click="setAwal" class="btn mr-1 mb-1 btn-sm btn-primary">
+                    <i class="fa fa-plus"></i> Tambah Periode
+                </a>
+                <a href="javascript:;" @click="GetData()" class="btn mr-1 mb-1 btn-sm btn-secondary">
+                    <i class="fa fa-sync"></i> Refresh
+                </a>
+            ',
+            'customAksi' => '
+                <div class="d-flex justify-content-center flex-wrap">
+                    <button v-if="i.status != \'aktif\'" @click="aktivasiPeriode(i.id)"
+                        class="btn btn-sm btn-success mr-1" title="Aktifkan Periode">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button @click="EditData(index)" class="btn btn-sm btn-warning mr-1" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button @click="HapusData(index)" class="btn btn-sm btn-danger" title="Hapus">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            '
+        ])
+            @slot('td')
+                <template v-else-if="inArray(a.name,['nama_periode'])">
+                    <strong>@{{ i.nama_periode }}</strong>
+                    <span v-if="i.status == 'aktif'" class="badge badge-success ml-2">AKTIF</span>
+                </template>
+                <template v-else-if="inArray(a.name,['tanggal_mulai','tanggal_selesai'])">
+                    <span class="text-nowrap">@{{ i[a.name] }}</span>
+                </template>
+                <template v-else-if="inArray(a.name,['progress'])">
+                    <div class="text-center">
+                        <div class="progress" style="height: 20px; min-width: 140px;">
+                            <div class="progress-bar bg-success" role="progressbar"
+                                :style="'width: ' + (i.progress || 0) + '%'">
+                                @{{ i.progress || 0 }}%
+                            </div>
+                        </div>
+                        <small class="text-muted d-block mt-1">
+                            @{{ i.sudah_dinilai || 0 }}/@{{ i.total_karyawan || 0 }} karyawan dinilai
+                        </small>
+                    </div>
+                </template>
+                <template v-else-if="inArray(a.name,['status'])">
+                    <span v-if="i.status == 'aktif'" class="badge badge-success">Aktif</span>
+                    <span v-else-if="i.status == 'nonaktif'" class="badge badge-secondary">Non-Aktif</span>
+                    <span v-else class="badge badge-info">Selesai</span>
+                </template>
+            @endslot
+        @endcomponent
+    </div>
+@endsection

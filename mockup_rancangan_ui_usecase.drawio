@@ -1,0 +1,409 @@
+<mxfile host="app.diagrams.net" pages="13">
+  <diagram name="Login Mockup" id="mock-login">
+    <mxGraphModel dx="1904" dy="816" grid="0" gridSize="10" guides="1" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p1_t1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=16;fontStyle=1;align=center;verticalAlign=middle;arcSize=8;" value="MOCKUP UI - LOGIN" vertex="1">
+          <mxGeometry height="46" width="1120" x="20" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;strokeWidth=1;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="700" width="1120" x="20" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_formcard" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="480" width="480" x="359" y="153" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_formhead" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;fontColor=#000000;" value="Sistem Penilaian Kinerja" vertex="1">
+          <mxGeometry height="30" width="360" x="424" y="183" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_formsub" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#000000;" value="Masuk menggunakan kredensial yang valid" vertex="1">
+          <mxGeometry height="20" width="340" x="434" y="218" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_u1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=10;" value="Username [X(50)]" vertex="1">
+          <mxGeometry height="48" width="380" x="414" y="273" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_p1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=10;" value="Password [X(255)]" vertex="1">
+          <mxGeometry height="48" width="380" x="414" y="337" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_btn1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=13;fontStyle=1;align=center;" value="Login" vertex="1">
+          <mxGeometry height="44" width="380" x="414" y="483" as="geometry" />
+        </mxCell>
+        <mxCell id="p1_note1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;align=left;spacingLeft=10;" value="Output: pesan gagal login atau redirect ke dashboard sesuai hak akses" vertex="1">
+          <mxGeometry height="56" width="380" x="414" y="541" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Dashboard Mockup" id="mock-dashboard">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p2_top" value="TOPBAR - Dashboard" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_side" value="Sidebar&#xa;Dashboard&#xa;Penilaian Kinerja&#xa;Data Master&#xa;Laporan dan Analisis&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_welcome" value="Selamat Datang" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="102" width="854" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_card1" value="Total Karyawan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="190" width="200" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_card2" value="Total Kriteria" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="478" y="190" width="200" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_card3" value="Total Penilaian" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="690" y="190" width="200" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_card4" value="Periode Aktif" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="902" y="190" width="198" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_chart" value="Diagram Klasifikasi Kinerja&#xa;Sangat Baik / Baik / Cukup / Kurang / Sangat Kurang" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="266" y="300" width="430" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_table" value="Tabel Aktivitas / Data Terbaru&#xa;No | Nama | Jabatan | Status | Aksi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="708" y="300" width="392" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="p2_quick" value="Widget / menu cepat sesuai role pengguna" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=10;">
+          <mxGeometry x="266" y="580" width="834" height="160" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Data Karyawan Mockup" id="mock-karyawan">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p3_top" value="TOPBAR - Data Karyawan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_side" value="Sidebar&#xa;Dashboard&#xa;Data Karyawan&#xa;Kriteria Penilaian&#xa;Periode Penilaian&#xa;Relasi Atasan&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_info" value="Informasi penggunaan halaman" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="102" width="854" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_form" value="FORM DATA KARYAWAN&#xa;Nama [X(100)]&#xa;Jabatan [X(100)]&#xa;Jenis Pekerjaan [X(255)]&#xa;Tanggal Bergabung [X(10)]&#xa;Status [X(20)]&#xa;Role [X(20)]&#xa;Username [X(50)]&#xa;Password [X(255)]" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="266" y="172" width="336" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_table" value="TABEL DATA&#xa;No | Nama | Jabatan | Jenis Pekerjaan | Tgl Bergabung | Status | Role | Username | Atasan | Aksi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="618" y="172" width="522" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_actions" value="Tombol: Tambah, Refresh, Edit, Atur Atasan, Hapus" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="552" width="874" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p3_modal" value="Modal Atur Atasan&#xa;Pilih Atasan [Pilihan]&#xa;Batal | Simpan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;dashed=1;">
+          <mxGeometry x="814" y="552" width="326" height="150" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Kriteria Mockup" id="mock-kriteria">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p4_top" value="TOPBAR - Kriteria Penilaian" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_side" value="Sidebar&#xa;Dashboard&#xa;Data Karyawan&#xa;Kriteria Penilaian&#xa;Periode Penilaian&#xa;Laporan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_stat1" value="Total Kriteria" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;">
+          <mxGeometry x="266" y="102" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_stat2" value="Total Bobot" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;">
+          <mxGeometry x="562" y="102" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_stat3" value="Status Bobot" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;">
+          <mxGeometry x="858" y="102" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_form" value="FORM KRITERIA&#xa;Kode [X(10)]&#xa;Nama [X(150)]&#xa;Nama Inggris [X(150)]&#xa;Deskripsi [X(255)]&#xa;Bobot [9(5)]&#xa;Tipe [Pilihan]&#xa;Status [Pilihan]&#xa;Urutan [9(5)]" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="266" y="208" width="336" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_table" value="TABEL KRITERIA&#xa;Kode | Nama | Nama Inggris | Bobot | Tipe | Status | Urutan | Aksi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="618" y="208" width="522" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="p4_actions" value="Tombol: Tambah, Refresh, Simpan, Batal, Edit, Hapus" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="576" width="874" height="86" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Periode Mockup" id="mock-periode">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p5_top" value="TOPBAR - Periode Penilaian" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_side" value="Sidebar&#xa;Dashboard&#xa;Data Master&#xa;Periode Penilaian&#xa;Relasi Atasan&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_banner" value="Periode aktif hanya satu pada satu waktu" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="102" width="854" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_form" value="FORM PERIODE&#xa;Nama Periode [X(100)]&#xa;Tanggal Mulai [X(10)]&#xa;Tanggal Selesai [X(10)]&#xa;Status [Pilihan]&#xa;Keterangan [X(255)]" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="266" y="172" width="336" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_table" value="TABEL PERIODE&#xa;Nama Periode | Tanggal Mulai | Tanggal Selesai | Status | Progress | Aksi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="618" y="172" width="522" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_actions" value="Tombol: Tambah Periode, Refresh, Aktifkan Periode, Edit, Hapus" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="520" width="874" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="p5_progress" value="Progress bar per periode" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;">
+          <mxGeometry x="266" y="624" width="874" height="92" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Relasi Atasan Mockup" id="mock-relasi">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p6_top" value="TOPBAR - Relasi Atasan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_side" value="Sidebar&#xa;Dashboard&#xa;Data Karyawan&#xa;Relasi Atasan&#xa;Penilaian Bawahan&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_list" value="Daftar karyawan / filter pencarian" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="102" width="290" height="620" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_detail" value="DETAIL RELASI&#xa;Bawahan dipilih&#xa;Atasan dipilih&#xa;Kartu profil singkat" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;fontStyle=1;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="572" y="102" width="284" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_form" value="FORM TAMBAH ATASAN&#xa;Pilih Atasan [Pilihan]&#xa;Batal | Simpan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="872" y="102" width="248" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_table" value="TABEL RELASI&#xa;Bawahan | Jabatan Bawahan | Atasan | Jabatan Atasan | Aksi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="572" y="426" width="548" height="296" as="geometry" />
+        </mxCell>
+        <mxCell id="p6_actions" value="Tombol: Refresh, Batal, Tambah, Hapus" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="740" width="854" height="34" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Penilaian Bawahan Mockup" id="mock-penilaian">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p7_top" value="TOPBAR - Penilaian Bawahan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p7_side" value="Sidebar&#xa;Dashboard&#xa;Penilaian Bawahan&#xa;Review Penilaian&#xa;Daftar Bawahan&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p7_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p7_header" value="Periode aktif dan informasi bawahan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="102" width="854" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p7_summary" value="Kartu Total Nilai&#xa;Klasifikasi Otomatis&#xa;Klasifikasi Final" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="266" y="180" width="240" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p7_form" value="FORM PENILAIAN&#xa;Karyawan [Pilihan]&#xa;Periode [Pilihan]&#xa;Nilai Kriteria [9(1)]&#xa;Klasifikasi Kinerja [X(20)]&#xa;Status Training [9(1)]&#xa;Catatan [X(255)]" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="522" y="180" width="300" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="p7_table" value="TABEL KRITERIA&#xa;Kriteria | Bobot | Nilai (1-4) | Nilai x Bobot | Keterangan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="838" y="180" width="302" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="p7_actions" value="Tombol: Batal, Simpan Penilaian, Update Penilaian" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="348" width="240" height="132" as="geometry" />
+        </mxCell>
+        <mxCell id="p7_list" value="Daftar bawahan yang dapat dinilai" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="266" y="500" width="556" height="180" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Review Penilaian Mockup" id="mock-review">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p8_top" value="TOPBAR - Review Penilaian" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p8_side" value="Sidebar&#xa;Dashboard&#xa;Penilaian Kinerja&#xa;Review Penilaian&#xa;Daftar Bawahan&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p8_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p8_filter" value="Filter / pencarian&#xa;Tanggal [X(10)]&#xa;Nama Karyawan [X(100)]&#xa;Jabatan [X(100)]&#xa;Periode [X(100)]" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="266" y="102" width="290" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="p8_table" value="TABEL REVIEW&#xa;Tanggal | Nama Karyawan | Jabatan | Periode | Total Nilai [9(5)] | Klasifikasi | Aksi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="572" y="102" width="548" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="p8_modal" value="MODAL DETAIL REVIEW&#xa;Identitas penilaian&#xa;Tabel: Kriteria | Bobot | Nilai | Nilai x Bobot&#xa;Ringkasan total nilai" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;dashed=1;">
+          <mxGeometry x="266" y="346" width="854" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="p8_btn" value="Tombol: Detail" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="612" width="854" height="82" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Daftar Bawahan Mockup" id="mock-daftar">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p9_top" value="TOPBAR - Daftar Bawahan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p9_side" value="Sidebar&#xa;Dashboard&#xa;Penilaian Bawahan&#xa;Daftar Bawahan&#xa;Review Penilaian&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p9_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p9_search" value="Cari karyawan [X(100)]" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="102" width="854" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="p9_cards" value="Kartu bawahan per orang&#xa;Nama&#xa;Jabatan&#xa;Pekerjaan&#xa;Nilai Terakhir [9(5)]&#xa;Tombol: Nilai | Riwayat" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="266" y="172" width="854" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="p9_footer" value="Tombol: Refresh" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="552" width="854" height="92" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Rekap Penilaian Mockup" id="mock-rekap">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p10_top" value="TOPBAR - Rekap Penilaian" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p10_side" value="Sidebar&#xa;Dashboard&#xa;Laporan&#xa;Rekap Penilaian&#xa;Analisa Kinerja&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p10_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p10_filter" value="Filter periode [X(100)]" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="102" width="854" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="p10_table" value="TABEL REKAP&#xa;Nomor Pekerja [X(20)] | Nama Karyawan [X(100)] | Jabatan [X(100)] | Pekerjaan [X(255)] | Periode [X(100)] | Penilai [X(100)] | Total Nilai [9(5)] | Klasifikasi Penilaian [X(50)] | Klasifikasi KNN [X(50)] | Tanggal [X(10)] | Aksi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="266" y="172" width="854" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="p10_modal" value="MODAL DETAIL REKAP&#xa;Identitas karyawan&#xa;Detail nilai per kriteria" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;dashed=1;">
+          <mxGeometry x="266" y="448" width="560" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="p10_btn" value="Tombol: Detail" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="842" y="448" width="278" height="200" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Analisa Kinerja Mockup" id="mock-analisa">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p11_top" value="TOPBAR - Analisa Kinerja" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p11_side" value="Sidebar&#xa;Dashboard&#xa;Penilaian Kinerja&#xa;Analisa Kinerja&#xa;Rekap Penilaian&#xa;Laporan&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p11_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p11_param" value="PARAMETER KNN&#xa;Nilai K [9(3)]&#xa;Metode Jarak [X(20)]&#xa;Periode Penilaian [X(100)]&#xa;Nama Analisa [X(100)]&#xa;Tombol: Preview | Proses &amp; Simpan | Refresh | Export JSON" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="266" y="102" width="854" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="p11_cards" value="Kartu statistik klasifikasi&#xa;Sangat Baik | Baik | Cukup | Kurang | Sangat Kurang" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="266" y="240" width="854" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p11_chart" value="Grafik distribusi klasifikasi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="266" y="368" width="420" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="p11_table" value="Riwayat analisa / data training / hasil klasifikasi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="702" y="368" width="418" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="p11_modal" value="MODAL DETAIL KNN&#xa;Perhitungan jarak&#xa;Ranking tetangga terdekat&#xa;Nilai per kriteria&#xa;Hasil klasifikasi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;dashed=1;">
+          <mxGeometry x="266" y="626" width="854" height="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Laporan Mockup" id="mock-laporan">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p12_top" value="TOPBAR - Laporan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p12_side" value="Sidebar&#xa;Dashboard&#xa;Laporan&#xa;Rekap Penilaian&#xa;Analisa Kinerja&#xa;Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=12;">
+          <mxGeometry x="20" y="82" width="210" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p12_content" value="" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f7f7;strokeColor=#000000;">
+          <mxGeometry x="246" y="82" width="894" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="p12_switch" value="Pilihan laporan&#xa;Rekap Karyawan | Rekap Penilaian &amp; Klasifikasi" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="266" y="102" width="854" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="p12_filter" value="Filter laporan&#xa;Cari [X(100)]&#xa;Status [Pilihan]&#xa;Role [Pilihan]&#xa;Pekerjaan [Pilihan]&#xa;Periode Penilaian [Pilihan]&#xa;Klasifikasi [Pilihan]" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="266" y="196" width="280" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="p12_widgets" value="Widget ringkasan&#xa;Total Karyawan / Total Penilaian / Prioritas Apresiasi / Prioritas Pembinaan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;">
+          <mxGeometry x="562" y="196" width="558" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="p12_table" value="Preview tabel laporan&#xa;Rekap Karyawan&#xa;Nomor Pekerja | Nama | Jabatan | Role | Status | Pekerjaan | Tanggal Bergabung&#xa;&#xa;Rekap Penilaian &amp; Klasifikasi&#xa;Nomor Pekerja | Nama | Jabatan | Periode | Penilai | Total Nilai | Klasifikasi | Klasifikasi KNN | Kategori Keputusan | Tanggal" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;spacingTop=10;">
+          <mxGeometry x="266" y="468" width="854" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="p12_btn" value="Tombol: Reset, Tampilkan, Cetak Laporan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=left;spacingLeft=12;">
+          <mxGeometry x="266" y="646" width="854" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="p12_modal" value="Modal widget kategori keputusan" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;align=center;verticalAlign=middle;dashed=1;">
+          <mxGeometry x="900" y="646" width="220" height="92" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Logout Mockup" id="mock-logout">
+    <mxGraphModel dx="1422" dy="762" grid="0" gridSize="10" guides="0" tooltips="0" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p13_top" value="TOPBAR - Logout" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;fontColor=#ffffff;fontSize=13;fontStyle=1;align=left;spacingLeft=12;">
+          <mxGeometry x="20" y="20" width="1120" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p13_center" value="Panel logout sederhana&#xa;Konfirmasi keluar dari sistem&#xa;Tombol Logout / Kembali" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=14;fontStyle=1;align=center;verticalAlign=middle;">
+          <mxGeometry x="220" y="160" width="740" height="380" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

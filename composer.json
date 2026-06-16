@@ -1,0 +1,20 @@
+{
+    "name": "build/framework",
+    "description": "",
+    "homepage": "https://php-download.com/",
+    "type": "project",
+    "require": {
+        "tightenco/collect": "^9.52.0",
+        "clancats/hydrahon": "^1.1",
+        "eftec/bladeone": "^4.8",
+        "plasticbrain/php-flash-messages": "^1.0",
+        "phpmailer/phpmailer": "^6.1",
+        "box/spout": "^3.1",
+        "loilo/fuse": "^6.6",
+        "firebase/php-jwt": "^6.4",
+        "vlucas/phpdotenv": "^5.5",
+        "paragonie/easydb": "3",
+        "robmorgan/phinx": "^0.13.4",
+        "respect/validation": "^2.2"
+    }
+}

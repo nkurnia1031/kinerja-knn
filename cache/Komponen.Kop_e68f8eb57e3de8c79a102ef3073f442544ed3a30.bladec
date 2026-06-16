@@ -1,0 +1,16 @@
+<div style="width: 100%; margin-bottom: 14px; font-family: 'Times New Roman', Times, serif; color: #000;">
+ <table style="width: 100%; border-collapse: collapse;">
+ <tr>
+ <td style="width: 15%; text-align: left; vertical-align: middle;">
+ <img src="assets/Picture1.png" alt="Logo Perusahaan" style="max-height: 92px;">
+ </td>
+ <td style="width: 85%; text-align: center; vertical-align: middle;">
+ <div style="font-size: 22pt; font-weight: bold; text-transform: uppercase;">PT ZETWELL QUANTUM SOLUTION</div>
+ <div style="font-size: 12pt; margin-top: 4px;">JALAN JENDRAL SUDIRMAN (SAMPING GANG KUINI)</div>
+ <div style="font-size: 12pt;">DUMAI - RIAU</div>
+ <div style="font-size: 11pt; margin-top: 4px;">Business Number 718883</div>
+ </td>
+ </tr>
+ </table>
+ <div style="border-top: 3px solid #000; border-bottom: 1px solid #000; margin-top: 10px; height: 5px;"></div>
+</div>

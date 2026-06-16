@@ -1,0 +1,88 @@
+<ul class="navbar-nav bg-1 shadow sidebar rounded-left sidebar-dark accordion"
+ style="background-size: cover;background:no-repeat center center fixed" id="accordionSidebar">
+ <!-- Sidebar - Brand -->
+ <div class="py-2 px-0 rounded-left" style="background: #000000">
+ <img src="assets/img/logo2.png" alt="..." class=" img-fluid shadow-lg ">
+ </div>
+ <!-- Divider -->
+ <hr class="sidebar-divider my-0">
+ <!-- Nav Item - Dashboard -->
+ <li class="nav-item <?php if ($data['link'] == 'Dashboard'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Dashboard">
+ <i class="fas fa-fw fa-desktop"></i>
+ <span>Dashboard</span></a>
+ </li>
+
+ <?php if(!empty($Session['admin'])): ?>
+ <li class="nav-item <?php if ($data['link'] == 'Users'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Users">
+ <i class="fas fa-fw fa-users"></i>
+ <span>Users</span></a>
+ </li>
+ <li class="nav-item <?php if ($data['link'] == 'Contact'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Contact">
+ <i class="fas fa-fw fa-user"></i>
+ <span>Contact</span></a>
+ </li>
+ <li class="nav-item <?php if ($data['link'] == 'Produk'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Produk">
+ <i class="fas fa-fw fa-box"></i>
+ <span>Produk</span></a>
+ </li>
+ <li class="nav-item <?php if ($data['link'] == 'Transaksi'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Transaksi">
+ <i class="fas fa-fw fa-shopping-cart"></i>
+ <span>Transaksi</span></a>
+ </li>
+ <li class="nav-item <?php if ($data['link'] == 'TransaksiLine'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="TransaksiLine">
+ <i class="fas fa-fw fa-boxes"></i>
+ <span>Pembelian & Penjualan</span></a>
+ </li>
+ <li class="nav-item <?php if ($data['link'] == 'Lampiran'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Lampiran">
+ <i class="fas fa-fw fa-paperclip"></i>
+ <span>Lampiran</span></a>
+ </li>
+ <li class="nav-item <?php if ($data['link'] == 'Device'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Device">
+ <i class="fas fa-fw fa-laptop"></i>
+ <span>Device</span></a>
+ </li>
+ <li class="nav-item <?php if ($data['link'] == 'Service'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Service">
+ <i class="fas fa-fw fa-wrench"></i>
+ <span>Servis</span></a>
+ </li>
+ <li class="nav-item <?php if ($data['link'] == 'Pengeluaran'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Pengeluaran">
+ <i class="fas fa-fw fa-money-bill-wave"></i>
+ <span>Pengeluaran</span></a>
+ </li>
+ <?php else: ?>
+ <li class="nav-item <?php if ($data['link'] == 'Logout'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Login">
+ <i class="fas fa-fw fa-sign-in-alt"></i>
+ <span>Login</span></a>
+ </li>
+ <?php endif; ?>
+
+
+
+ <?php if(!empty($Session['admin'])): ?>
+ <li class="nav-item <?php if ($data['link'] == 'Logout'): ?> active <?php endif;?> ">
+ <a class="nav-link text-white" href="Logout">
+ <i class="fas fa-fw fa-sign-out-alt"></i>
+ <span>Logout</span></a>
+ </li>
+ <?php endif; ?>
+
+
+ <!-- Divider -->
+ <!-- Divider -->
+ <hr class="sidebar-divider d-none d-md-block">
+ <!-- Sidebar Toggler (Sidebar) -->
+ <div class="text-center d-none d-md-inline">
+ <button style="display: none;" class="rounded-circle border-0" id="sidebarToggle"></button>
+ </div>
+</ul>

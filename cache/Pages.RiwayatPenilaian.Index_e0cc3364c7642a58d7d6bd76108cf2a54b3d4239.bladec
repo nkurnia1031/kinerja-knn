@@ -1,0 +1,339 @@
+<?php 
+ use app\Fungsi;
+ ?>
+<?php $_shouldextend[1]=1; ?>
+<?php $this->startSection('js'); ?>
+ <script>
+ const {
+ createApp
+ } = Vue
+
+ app = createApp({
+ data() {
+ data = dataAwal();
+ data.baseURL = 'RiwayatPenilaian';
+ data.detailPenilaian = null;
+ data.showDetail = false;
+ return data;
+ },
+ computed: computedAwal,
+ mounted() {
+ this.GetData();
+ },
+ methods: {
+ ...methodAwal,
+ lihatDetail(penilaian) {
+ axiosInstance.get(`RiwayatPenilaian-Detail?id=${penilaian.id}`).then(res => {
+ this.detailPenilaian = res.data.data || null;
+ this.showDetail = true;
+ });
+ },
+ tutupDetail() {
+ this.showDetail = false;
+ this.detailPenilaian = null;
+ },
+ getKlasifikasiClass(klasifikasi) {
+ const mapping = {
+ 'Sangat Baik': 'success',
+ 'Baik': 'primary',
+ 'Cukup': 'warning',
+ 'Kurang': 'danger',
+ 'Sangat Kurang': 'dark'
+ };
+ return mapping[klasifikasi] || 'secondary';
+ },
+ cetakPenilaian(id) {
+ window.open('RiwayatPenilaian-Cetak?id=' + id, '_blank');
+ }
+ }
+ }).mount('#app')
+ </script>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('css'); ?>
+ <style>
+ .timeline-item {
+ position: relative;
+ padding-left: 30px;
+ border-left: 3px solid #4e73df;
+ margin-bottom: 20px;
+ }
+
+ .timeline-item::before {
+ content: '';
+ position: absolute;
+ left: -8px;
+ top: 0;
+ width: 13px;
+ height: 13px;
+ border-radius: 50%;
+ background: #4e73df;
+ }
+
+ .nilai-card {
+ transition: all 0.3s ease;
+ }
+
+ .nilai-card:hover {
+ transform: scale(1.02);
+ }
+
+ .progress-label {
+ display: flex;
+ justify-content: space-between;
+ margin-bottom: 5px;
+ }
+ </style>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('modal'); ?>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('isi'); ?>
+ <div class="row" id="app">
+ <?php /* Header Info */ ?>
+ <div class="col-12 mb-3">
+ <div class="card bg-gradient-primary text-white shadow">
+ <div class="card-body">
+ <div class="row align-items-center">
+ <div class="col-md-8">
+ <h4 class="mb-1">Rekap Penilaian Kinerja Anda</h4>
+ <p class="mb-0 opacity-75">
+ Lihat seluruh riwayat penilaian kinerja yang telah diberikan oleh atasan Anda
+ </p>
+ </div>
+ <div class="col-md-4 text-md-right mt-3 mt-md-0">
+ <i class="fas fa-history fa-4x opacity-50"></i>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <?php /* Detail Penilaian Modal */ ?>
+ <div v-if="showDetail && detailPenilaian" class="col-12 mb-3">
+ <div class="card shadow">
+ <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+ <h6 class="m-0 font-weight-bold">
+ <i class="fas fa-file-alt"></i> Detail Penilaian - {{ detailPenilaian.periode }}
+ </h6>
+ <div>
+ <button @click="tutupDetail" class="btn btn-sm btn-light">
+ <i class="fas fa-times"></i> Tutup
+ </button>
+ </div>
+ </div>
+ <div class="card-body">
+ <?php /* Ringkasan */ ?>
+ <div class="row mb-4">
+ <div class="col-md-4">
+ <div class="card bg-light">
+ <div class="card-body text-center">
+ <h6 class="text-muted">Total Nilai</h6>
+ <h2 :class="'text-' + getKlasifikasiClass(detailPenilaian.klasifikasi)">
+ {{ detailPenilaian.total_nilai }}
+ </h2>
+ <span :class="'badge badge-lg badge-' + getKlasifikasiClass(detailPenilaian.klasifikasi)">
+ {{ detailPenilaian.klasifikasi }}
+ </span>
+ <span class="d-inline-block ml-1 mt-1" :class="'badge badge-' + getKlasifikasiClass(detailPenilaian.klasifikasi_knn)">
+ KNN: {{ detailPenilaian.klasifikasi_knn || '-' }}
+ </span>
+ </div>
+ </div>
+ </div>
+ <div class="col-md-4">
+ <div class="card bg-light">
+ <div class="card-body text-center">
+ <h6 class="text-muted">Periode</h6>
+ <h4 class="text-primary">{{ detailPenilaian.periode }}</h4>
+ <small class="text-muted">{{ detailPenilaian.tanggal_penilaian }}</small>
+ </div>
+ </div>
+ </div>
+ <div class="col-md-4">
+ <div class="card bg-light">
+ <div class="card-body text-center">
+ <h6 class="text-muted">Penilai</h6>
+ <h4 class="text-dark">{{ detailPenilaian.nama_penilai }}</h4>
+ <small class="text-muted">{{ detailPenilaian.jabatan_penilai }}</small>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <?php /* Detail Per Kriteria */ ?>
+ <h6 class="font-weight-bold mb-3">Detail Nilai Per Kriteria</h6>
+ <div class="table-responsive">
+ <table class="table table-bordered">
+ <thead class="bg-light">
+ <tr>
+ <th>No</th>
+ <th>Kriteria</th>
+ <th>Bobot</th>
+ <th>Nilai</th>
+ <th>Nilai x Bobot</th>
+ <th>Grafik</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr v-for="(detail, index) in detailPenilaian.detail_kriteria">
+ <td class="text-center">{{ index + 1 }}</td>
+ <td>{{ detail.nama_kriteria }}</td>
+ <td class="text-center">{{ detail.bobot }}%</td>
+ <td class="text-center">{{ detail.nilai }}</td>
+ <td class="text-center">{{ detail.nilai_bobot }}</td>
+ <td style="width: 200px;">
+ <div class="progress" style="height: 20px;">
+ <div class="progress-bar" role="progressbar" 
+ :style="'width: ' + detail.progress + '%'"
+ :class="'bg-' + getKlasifikasiClass(detail.progress >= 90 ? 'Sangat Baik' : detail.progress >= 80 ? 'Baik' : detail.progress >= 70 ? 'Cukup' : 'Kurang')">
+ {{ detail.progress }}%
+ </div>
+ </div>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+
+ <?php /* Catatan */ ?>
+ <div v-if="detailPenilaian.catatan" class="mt-4">
+ <h6 class="font-weight-bold">Catatan dari Penilai:</h6>
+ <div class="alert alert-secondary">
+ {{ detailPenilaian.catatan }}
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <?php /* Statistik */ ?>
+ <div class="col-lg-3 col-md-6 mb-3">
+ <div class="card border-left-primary shadow h-100 py-2">
+ <div class="card-body">
+ <div class="row no-gutters align-items-center">
+ <div class="col mr-2">
+ <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+ Total Penilaian</div>
+ <div class="h5 mb-0 font-weight-bold text-gray-800">{{ data2.length }}</div>
+ </div>
+ <div class="col-auto">
+ <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="col-lg-3 col-md-6 mb-3">
+ <div class="card border-left-success shadow h-100 py-2">
+ <div class="card-body">
+ <div class="row no-gutters align-items-center">
+ <div class="col mr-2">
+ <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+ Nilai Tertinggi</div>
+ <div class="h5 mb-0 font-weight-bold text-gray-800">
+ {{ data2.length > 0 ? Math.max(...data2.map(d => parseFloat(d.total_nilai))).toFixed(2) : '-' }}
+ </div>
+ </div>
+ <div class="col-auto">
+ <i class="fas fa-trophy fa-2x text-gray-300"></i>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="col-lg-3 col-md-6 mb-3">
+ <div class="card border-left-info shadow h-100 py-2">
+ <div class="card-body">
+ <div class="row no-gutters align-items-center">
+ <div class="col mr-2">
+ <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+ Rata-rata Nilai</div>
+ <div class="h5 mb-0 font-weight-bold text-gray-800">
+ {{ data2.length > 0 ? (data2.reduce((sum, d) => sum + parseFloat(d.total_nilai), 0) / data2.length).toFixed(2) : '-' }}
+ </div>
+ </div>
+ <div class="col-auto">
+ <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="col-lg-3 col-md-6 mb-3">
+ <div class="card border-left-warning shadow h-100 py-2">
+ <div class="card-body">
+ <div class="row no-gutters align-items-center">
+ <div class="col mr-2">
+ <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+ Nilai Terakhir</div>
+ <div class="h5 mb-0 font-weight-bold text-gray-800">
+ {{ data2.length > 0 ? data2[0].total_nilai : '-' }}
+ </div>
+ </div>
+ <div class="col-auto">
+ <i class="fas fa-star fa-2x text-gray-300"></i>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <?php /* Timeline Riwayat */ ?>
+ <div class="col-12">
+ <div class="card shadow mb-4">
+ <div class="card-header py-3">
+ <h6 class="m-0 font-weight-bold text-primary">
+ <i class="fas fa-history"></i> Timeline Penilaian
+ </h6>
+ </div>
+ <div class="card-body">
+ <div v-if="data2.length > 0">
+ <div v-for="(penilaian, index) in data2" :key="penilaian.id" class="timeline-item">
+ <div class="card nilai-card shadow-sm">
+ <div class="card-body">
+ <div class="row align-items-center">
+ <div class="col-md-3">
+ <h5 class="text-primary mb-1">{{ penilaian.periode }}</h5>
+ <small class="text-muted">
+ <i class="fas fa-calendar"></i> {{ penilaian.tanggal_penilaian }}
+ </small>
+ </div>
+ <div class="col-md-3 text-center">
+ <h4 :class="'mb-0 text-' + getKlasifikasiClass(penilaian.klasifikasi)">
+ {{ penilaian.total_nilai }}
+ </h4>
+ <span :class="'badge  badge-' + getKlasifikasiClass(penilaian.klasifikasi)">
+ {{ penilaian.klasifikasi }}
+ </span>
+ <span class="d-inline-block ml-1 mt-1" :class="'badge badge-' + getKlasifikasiClass(penilaian.klasifikasi_knn)">
+ KNN: {{ penilaian.klasifikasi_knn || '-' }}
+ </span>
+ </div>
+ <div class="col-md-3">
+ <small class="text-muted">Dinilai oleh:</small>
+ <p class="mb-0 font-weight-bold">{{ penilaian.nama_penilai }}</p>
+ </div>
+ <div class="col-md-3 text-right">
+ <button @click="lihatDetail(penilaian)" class="btn btn-sm btn-info">
+ <i class="fas fa-eye"></i> Detail
+ </button>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div v-else class="text-center py-5">
+ <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+ <h5 class="text-muted">Belum ada riwayat penilaian</h5>
+ <p class="text-muted">Penilaian kinerja Anda akan muncul di sini setelah atasan melakukan penilaian</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+<?php $this->stopSection(); ?>
+
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('Layout.html'); } ?>

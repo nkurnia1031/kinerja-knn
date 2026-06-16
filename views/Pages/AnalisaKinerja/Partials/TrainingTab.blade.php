@@ -1,0 +1,102 @@
+<div class="col-12" v-show="activeTab === 'training' && !isLoading">
+    <div class="card shadow mb-4" v-if="dataTraining">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">
+                <i class="fas fa-database mr-2"></i>Data Training (@{{ dataTraining.length }} Data)
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="bg-secondary text-white">
+                        <tr>
+                            <th class="text-center" width="50">ID</th>
+                            <th>Nama</th>
+                            <th>Periode</th>
+                            <th class="text-center">Nilai per Kriteria</th>
+                            <th class="text-center" width="80">Rata-rata</th>
+                            <th class="text-center" width="120">Klasifikasi</th>
+                            <th class="text-center" width="120">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="t in dataTraining" :key="t.id">
+                            <td class="text-center">@{{ t.id || t.karyawan_id }}</td>
+                            <td>@{{ t.nama || t.nama_karyawan }}</td>
+                            <td>@{{ t.nama_periode || '-' }}</td>
+                            <td class="text-center">
+                                <span v-for="(n, idx) in (t.nilai_kriteria || [])" :key="idx" class="badge mr-1" :class="'badge-' + getNilaiClass(n)">
+                                    @{{ n }}
+                                </span>
+                            </td>
+                            <td class="text-center font-weight-bold">@{{ hitungRataRata(t.nilai_kriteria || []) }}</td>
+                            <td class="text-center">
+                                <span class="badge" :class="'badge-' + getKlasifikasiClass(t.klasifikasi || t.klasifikasi_label)">
+                                    @{{ t.klasifikasi || t.klasifikasi_label }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <button v-if="canManage" class="btn btn-sm btn-outline-danger" @click="removeFromTraining(t)" :disabled="isUpdatingTraining">
+                                    <i class="fas fa-minus-circle"></i> Hapus
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <h6 class="font-weight-bold text-primary mb-3">
+                <i class="fas fa-history mr-2"></i>Riwayat Penilaian untuk Data Training
+            </h6>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="text-center" width="50">ID</th>
+                            <th>Nama</th>
+                            <th>Periode</th>
+                            <th class="text-center" width="90">Nilai</th>
+                            <th class="text-center" width="120">Klasifikasi Penilaian</th>
+                            <th class="text-center" width="120">Klasifikasi KNN</th>
+                            <th>Penilai</th>
+                            <th class="text-center" width="120">Status Training</th>
+                            <th class="text-center" width="120">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in riwayatPenilaian" :key="'riwayat-' + item.id">
+                            <td class="text-center">@{{ item.id }}</td>
+                            <td>@{{ item.nama }}</td>
+                            <td>@{{ item.nama_periode || '-' }}</td>
+                            <td class="text-center">@{{ item.total_nilai || '-' }}</td>
+                            <td class="text-center">
+                                <span class="badge" :class="'badge-' + getKlasifikasiClass(item.klasifikasi)">
+                                    @{{ item.klasifikasi || '-' }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge" :class="'badge-' + getKlasifikasiClass(item.klasifikasi_knn)">
+                                    @{{ item.klasifikasi_knn || '-' }}
+                                </span>
+                            </td>
+                            <td>@{{ item.nama_penilai || '-' }}</td>
+                            <td class="text-center">
+                                <span class="badge" :class="item.is_training ? 'badge-success' : 'badge-secondary'">
+                                    @{{ item.is_training ? 'Training' : 'Non-Training' }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <button v-if="canManage && !item.is_training" class="btn btn-sm btn-outline-primary" @click="addToTraining(item)" :disabled="isUpdatingTraining || !item.klasifikasi">
+                                    <i class="fas fa-plus-circle"></i> Tambah
+                                </button>
+                                <button v-else-if="canManage" class="btn btn-sm btn-outline-danger" @click="removeFromTraining(item)" :disabled="isUpdatingTraining">
+                                    <i class="fas fa-minus-circle"></i> Hapus
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

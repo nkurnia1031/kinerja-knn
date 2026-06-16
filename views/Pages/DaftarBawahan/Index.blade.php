@@ -1,0 +1,276 @@
+@php
+    use app\Fungsi;
+@endphp
+@extends('Layout.html')
+@section('js')
+    <script>
+        const {
+            createApp
+        } = Vue
+
+        app = createApp({
+            data() {
+                data = dataAwal();
+                data.baseURL = 'DaftarBawahan';
+                data.periodeAktif = null;
+                return data;
+            },
+            computed: computedAwal,
+            mounted() {
+                this.GetData();
+                this.loadPeriodeAktif();
+            },
+            methods: {
+                ...methodAwal,
+                loadPeriodeAktif() {
+                    this.apiGet('PeriodePenilaian', {
+                        status: 'aktif'
+                    }).then(res => {
+                        this.periodeAktif = res.data.data.data[0] || null;
+                    });
+                },
+                lihatRiwayat(karyawanId) {
+                    window.location.href = 'ReviewPenilaian?karyawan_id=' + karyawanId;
+                },
+                nilaiKaryawan(karyawanId) {
+                    window.location.href = 'PenilaianBawahan?karyawan_id=' + karyawanId;
+                },
+                getKlasifikasiClass(klasifikasi) {
+                    const mapping = {
+                        'Sangat Baik': 'success',
+                        'Baik': 'primary',
+                        'Cukup': 'warning',
+                        'Kurang': 'danger',
+                        'Sangat Kurang': 'dark'
+                    };
+                    return mapping[klasifikasi] || 'secondary';
+                },
+                getStatusClass(status) {
+                    const mapping = {
+                        'aktif': 'success',
+                        'nonaktif': 'secondary',
+                        'cuti': 'warning',
+                        'resign': 'danger'
+                    };
+                    return mapping[status] || 'secondary';
+                },
+                getStatusLabel(status) {
+                    const mapping = {
+                        'aktif': 'Aktif',
+                        'nonaktif': 'Non-Aktif',
+                        'cuti': 'Cuti',
+                        'resign': 'Resign'
+                    };
+                    return mapping[status] || status;
+                },
+                getPekerjaanLabel(pekerjaan) {
+                    const mapping = {
+                        'tetap': 'Tetap',
+                        'kontrak': 'Kontrak',
+                        'magang': 'Magang',
+                        'outsource': 'Outsource'
+                    };
+                    return mapping[pekerjaan] || pekerjaan;
+                },
+                formatTanggal(tanggal) {
+                    if (!tanggal) return '-';
+                    const date = new Date(tanggal);
+                    return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+                }
+            }
+        }).mount('#app')
+    </script>
+@endsection
+@section('css')
+    <style>
+        .bawahan-card {
+            transition: all 0.3s ease;
+        }
+
+        .bawahan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+@endsection
+@section('modal')
+@endsection
+@section('isi')
+    <div class="row" id="app">
+        {{-- Header --}}
+        <div class="col-12 mb-3">
+            <div v-if="periodeAktif" class="alert alert-success">
+                <i class="fas fa-calendar-check"></i> 
+                <strong>Periode Penilaian Aktif:</strong> @{{ periodeAktif.nama_periode }} 
+                (@{{ periodeAktif.tanggal_mulai }} s/d @{{ periodeAktif.tanggal_selesai }})
+            </div>
+            <div v-else class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> 
+                <strong>Perhatian:</strong> Tidak ada periode penilaian yang aktif saat ini.
+            </div>
+        </div>
+
+        {{-- Statistik --}}
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Bawahan</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ data2.length }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div v-if="data2" class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Kinerja Baik</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @{{ data2.filter(d => ['Sangat Baik', 'Baik'].includes(d.klasifikasi_terakhir)).length }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-thumbs-up fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div v-if="data2" class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Perlu Perhatian</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @{{ data2.filter(d => ['Kurang', 'Sangat Kurang'].includes(d.klasifikasi_terakhir)).length }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div v-if="data2" class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Belum Dinilai</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @{{ data2.filter(d => !d.sudah_dinilai).length }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Daftar Bawahan --}}
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-user-friends"></i> Daftar Bawahan Langsung
+                    </h6>
+                    <button @click="GetData()" class="btn btn-sm btn-secondary">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div v-for="(bawahan, index) in data2" :key="bawahan.id" class="col-lg-4 col-md-6 mb-3">
+                            <div class="card bawahan-card h-100 shadow-sm position-relative">
+                                {{-- Status Indicator --}}
+                                <div class="status-indicator">
+                                    <span :class="'badge badge-' + getStatusClass(bawahan.status)">
+                                        @{{ getStatusLabel(bawahan.status) }}
+                                    </span>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="mr-3">
+                                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                                                style="width: 60px; height: 60px; font-size: 24px;">
+                                                @{{ bawahan.nama ? bawahan.nama.charAt(0).toUpperCase() : 'U' }}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h6 class="font-weight-bold mb-0">@{{ bawahan.nama }}</h6>
+                                            <small class="text-primary">@{{ bawahan.jabatan || '-' }}</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="row small">
+                                            <div class="col-6">
+                                                <span class="text-muted">Pekerjaan:</span><br>
+                                                <strong>@{{ getPekerjaanLabel(bawahan.pekerjaan) }}</strong>
+                                            </div>
+                                            <div class="col-6">
+                                                <span class="text-muted">Bergabung:</span><br>
+                                                <strong>@{{ formatTanggal(bawahan.tanggal_bergabung) }}</strong>
+                                            </div>
+                                        </div>
+                                        
+                                        <hr class="my-2">
+                                        
+                                        <small class="text-muted">Nilai Terakhir:</small>
+                                        <div class="d-flex align-items-center">
+                                            <h5 class="mb-0 mr-2" :class="'text-' + getKlasifikasiClass(bawahan.klasifikasi_terakhir)">
+                                                @{{ bawahan.nilai_terakhir || '-' }}
+                                            </h5>
+                                            <span v-if="bawahan.klasifikasi_terakhir" 
+                                                :class="'badge badge-' + getKlasifikasiClass(bawahan.klasifikasi_terakhir)">
+                                                @{{ bawahan.klasifikasi_terakhir }}
+                                            </span>
+                                            <span v-else class="badge badge-secondary">Belum Dinilai</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <button @click="nilaiKaryawan(bawahan.id)" class="btn btn-sm btn-primary"
+                                            :disabled="bawahan.status !== 'aktif' || !periodeAktif">
+                                            <i class="fas fa-edit"></i> Nilai
+                                        </button>
+                                        <button @click="lihatRiwayat(bawahan.id)" class="btn btn-sm btn-info">
+                                            <i class="fas fa-history"></i> Riwayat
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="data2.length == 0" class="text-center py-5">
+                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Tidak ada bawahan yang terdaftar</h5>
+                        <p class="text-muted">Hubungi admin untuk mengatur relasi atasan-bawahan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

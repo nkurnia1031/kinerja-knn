@@ -1,0 +1,83 @@
+<?php 
+ use app\Fungsi;
+ ?>
+<div class="modal fade" id="modal-contact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
+ <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+ <div class="modal-content">
+ <div class="modal-header">
+ <h5 class="modal-title h6"><i class="fa fa-receipt"></i> Nota : <span
+ class="font-weight-bold"><?php echo \htmlentities($data['key']->nota??'', ENT_QUOTES, 'UTF-8', false); ?></span> <span id="status-pengerjaan">
+ <span
+ class="<?php echo \htmlentities(Fungsi::$status[$data['key']->status]['class']??'', ENT_QUOTES, 'UTF-8', false); ?>"><?php echo \htmlentities(Fungsi::$status[$data['key']->status]['label']??'', ENT_QUOTES, 'UTF-8', false); ?></span>
+ </span>
+ </h5>
+ <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+ <span aria-hidden="true">&times;</span>
+ </button>
+ </div>
+ <div class="modal-body">
+ <div class="row">
+ <div class="col-lg-6 col-12 border-left-secondary">
+ <div class="form-group ">
+ <label class="font-weight-bold col-form-label "><i class="fa fa-laptop"></i> Device</label>
+ <p class="mb-0"><?php echo \htmlentities($data['key']->device_nama??'', ENT_QUOTES, 'UTF-8', false); ?> <?php echo \htmlentities($data['key']->merk??'', ENT_QUOTES, 'UTF-8', false); ?>
+
+ </p>
+ <p class="mb-0">Barcode : <?php echo \htmlentities($data['key']->barcode??'', ENT_QUOTES, 'UTF-8', false); ?></p>
+ </div>
+ <hr>
+ <div class="form-group ">
+ <label class="font-weight-bold col-form-label "><i class="fa fa-receipt"></i> Nota</label>
+ <p class="mb-0"><?php echo \htmlentities($data['key']->nota??'', ENT_QUOTES, 'UTF-8', false); ?>
+
+ </p>
+ <p class="mb-0">Tanggal Masuk : <?php echo \htmlentities($data['key']->tanggal_masuk??'', ENT_QUOTES, 'UTF-8', false); ?></p>
+ <p class="mb-0">Tanggal Selesai : <span
+ id="tanggal-selesai"><?php echo \htmlentities($data['key']->tanggal_selesai??'', ENT_QUOTES, 'UTF-8', false); ?></span></p>
+ <p class="mb-0">Tanggal Diambil : <span
+ id="tanggal-diambil"><?php echo \htmlentities($data['key']->tanggal_diambil??'', ENT_QUOTES, 'UTF-8', false); ?></span></p>
+ </div>
+
+ </div>
+ <div class="col-lg-6 col-12 border-left-secondary">
+ <div class="row">
+ <div class="col-lg-6  col-12">
+ <?php  $this->startComponent('Pages.Contact', ['data' => $data]); ?>
+ <?php echo $this->renderComponent(); ?>
+ </div>
+ <div class="col-lg-6 border-left-secondary col-12">
+ <?php  $this->startComponent('Pages.Penerima', ['data' => $data]); ?>
+ <?php echo $this->renderComponent(); ?>
+ </div>
+ </div>
+ <lampiran :transaksi_id="<?php echo \htmlentities($data['key']->transaksi_id??'', ENT_QUOTES, 'UTF-8', false); ?>"></lampiran>
+ </div>
+ <div class="col-lg-12 col-12 ">
+ <pengerjaan service_id="<?php echo \htmlentities($data['key']->id??'', ENT_QUOTES, 'UTF-8', false); ?>"></pengerjaan>
+
+
+ </div>
+ <div class="col-lg-12 col-12 ">
+ <?php  $this->startComponent('Pages.Items', ['data' => $data]); ?>
+ <?php echo $this->renderComponent(); ?>
+ </div>
+
+
+ </div>
+ </div>
+ <div class="modal-footer">
+ <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+ </div>
+
+ </div>
+ </div>
+</div>
+<?php echo $this->runChild('Komponen.Pengerjaan', ['data' => $data]); ?>
+<script>
+ const components = {
+ Lampiran,
+ Pengerjaan
+ };
+</script>
+<?php echo $this->runChild('Pages.Items-script', ['data' => $data]); ?>

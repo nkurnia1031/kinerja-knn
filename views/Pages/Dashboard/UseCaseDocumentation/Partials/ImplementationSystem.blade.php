@@ -1,0 +1,94 @@
+@php
+    $implementationPages = [
+        [
+            'no' => 1,
+            'title' => 'Tampilan Login',
+            'text' => 'Tampilan login merupakan halaman awal yang digunakan oleh pengguna untuk masuk ke dalam sistem dengan memasukkan username dan password yang telah terdaftar. Halaman ini menjadi gerbang autentikasi sebelum pengguna memperoleh akses ke fitur sesuai peran masing-masing, sebagaimana ditunjukkan pada gambar terkait.',
+        ],
+        [
+            'no' => 2,
+            'title' => 'Tampilan Dashboard',
+            'text' => 'Tampilan dashboard menyajikan informasi ringkas mengenai kondisi sistem, statistik utama, serta akses cepat menuju menu yang sering digunakan. Halaman ini dirancang sebagai pusat navigasi awal setelah proses login berhasil dilakukan.',
+        ],
+        [
+            'no' => 3,
+            'title' => 'Tampilan Data Karyawan',
+            'text' => 'Tampilan data karyawan digunakan untuk menampilkan, menambahkan, memperbarui, dan menghapus data karyawan yang menjadi objek penilaian kinerja. Melalui halaman ini, admin dapat memastikan bahwa data pegawai yang tersimpan di dalam sistem tetap lengkap dan terbarui.',
+        ],
+        [
+            'no' => 4,
+            'title' => 'Tampilan Relasi Atasan',
+            'text' => 'Tampilan relasi atasan digunakan untuk mengelola hubungan struktural antara atasan dan bawahan dalam organisasi. Implementasi halaman ini mendukung ketepatan proses penilaian karena setiap atasan hanya dapat menilai bawahan yang berada dalam lingkup tanggung jawabnya.',
+        ],
+        [
+            'no' => 5,
+            'title' => 'Tampilan Kriteria Penilaian',
+            'text' => 'Tampilan kriteria penilaian berfungsi untuk mengelola daftar kriteria beserta bobot yang digunakan dalam evaluasi kinerja karyawan. Halaman ini membantu admin menjaga konsistensi instrumen penilaian yang dipakai pada setiap periode.',
+        ],
+        [
+            'no' => 6,
+            'title' => 'Tampilan Periode Penilaian',
+            'text' => 'Tampilan periode penilaian digunakan untuk mengatur rentang waktu pelaksanaan penilaian kinerja, termasuk menentukan periode yang sedang aktif. Dengan adanya halaman ini, proses evaluasi dapat disesuaikan dengan jadwal penilaian yang berlaku.',
+        ],
+        [
+            'no' => 7,
+            'title' => 'Tampilan Penilaian Bawahan',
+            'text' => 'Tampilan penilaian bawahan digunakan oleh atasan untuk memberikan nilai kepada karyawan berdasarkan kriteria yang telah ditetapkan. Pada halaman ini, sistem menampilkan form penilaian, informasi periode aktif, serta hasil perhitungan nilai yang mendukung proses evaluasi secara lebih terstruktur.',
+        ],
+        [
+            'no' => 8,
+            'title' => 'Tampilan Review Penilaian',
+            'text' => 'Tampilan review penilaian berfungsi untuk meninjau kembali hasil penilaian yang telah tersimpan di dalam sistem. Halaman ini memudahkan pengguna dalam memeriksa detail nilai, klasifikasi, dan catatan penilaian yang telah diberikan sebelumnya.',
+        ],
+        [
+            'no' => 9,
+            'title' => 'Tampilan Daftar Bawahan',
+            'text' => 'Tampilan daftar bawahan menyajikan informasi mengenai karyawan yang berada di bawah tanggung jawab atasan. Melalui halaman ini, atasan dapat memantau daftar bawahan secara langsung sebelum melanjutkan ke proses penilaian atau peninjauan riwayat penilaian.',
+        ],
+        [
+            'no' => 10,
+            'title' => 'Tampilan Laporan',
+            'text' => 'Tampilan laporan digunakan untuk menyatukan kebutuhan penyajian data dalam bentuk rekap yang siap ditinjau maupun dicetak. Halaman ini menyediakan pilihan jenis laporan, fasilitas penyaringan data, serta pratinjau hasil laporan sesuai kebutuhan pengguna.',
+        ],
+        [
+            'no' => 11,
+            'title' => 'Tampilan Rekap Karyawan',
+            'text' => 'Tampilan rekap karyawan menampilkan rangkuman data karyawan berdasarkan kriteria penyaringan tertentu, seperti status, role, maupun jenis pekerjaan. Halaman ini mendukung kebutuhan dokumentasi dan pemantauan data pegawai secara menyeluruh.',
+        ],
+        [
+            'no' => 12,
+            'title' => 'Tampilan Rekap Penilaian',
+            'text' => 'Tampilan rekap penilaian digunakan untuk menampilkan hasil penilaian kinerja karyawan secara terstruktur berdasarkan periode yang dipilih. Implementasi halaman ini memudahkan pengguna dalam melihat nilai akhir, klasifikasi, serta detail penilaian tiap karyawan.',
+        ],
+        [
+            'no' => 13,
+            'title' => 'Tampilan Rekap Penilaian dan Klasifikasi',
+            'text' => 'Tampilan rekap penilaian dan klasifikasi menyajikan hasil penilaian yang telah dipadukan dengan keluaran klasifikasi metode KNN. Halaman ini berguna sebagai bahan pertimbangan dalam proses evaluasi, apresiasi, maupun pembinaan karyawan.',
+        ],
+        [
+            'no' => 14,
+            'title' => 'Tampilan Analisa Kinerja',
+            'text' => 'Tampilan analisa kinerja digunakan untuk mengolah data penilaian menjadi informasi klasifikasi dengan memanfaatkan metode k-nearest neighbor. Melalui halaman ini, admin dapat menentukan parameter analisa, meninjau hasil klasifikasi, serta melihat detail perhitungan yang dihasilkan sistem.',
+        ],
+        [
+            'no' => 15,
+            'title' => 'Tampilan Logout',
+            'text' => 'Tampilan logout merupakan bagian dari implementasi sistem yang berfungsi untuk mengakhiri sesi penggunaan secara aman. Proses ini memastikan bahwa akses pengguna ditutup dengan benar sebelum sistem mengarahkan kembali ke halaman login.',
+        ],
+    ];
+@endphp
+
+<div class="alert alert-secondary">
+    Implementasi sistem menggambarkan penerapan rancangan antarmuka ke dalam halaman-halaman yang dapat digunakan secara langsung oleh pengguna. Uraian berikut menjelaskan fungsi utama setiap halaman yang tersedia pada sistem berdasarkan menu sidebar dan kebutuhan proses bisnis yang telah dirancang.
+</div>
+
+@foreach ($implementationPages as $page)
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header bg-light">
+            <strong>4.8.{{ $page['no'] }} {{ $page['title'] }}</strong>
+        </div>
+        <div class="card-body">
+            <p class="mb-0">{{ $page['text'] }}</p>
+        </div>
+    </div>
+@endforeach

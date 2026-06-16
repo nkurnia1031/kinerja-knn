@@ -1,0 +1,18 @@
+<?php 
+ use app\Fungsi;
+ ?>
+<?php $_shouldextend[1]=1; ?>
+<?php $this->startSection('js'); ?>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('css'); ?>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('modal'); ?>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('isi'); ?>
+ <div class="row" id="app">
+
+
+ </div>
+<?php $this->stopSection(); ?>
+
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('Layout.html'); } ?>

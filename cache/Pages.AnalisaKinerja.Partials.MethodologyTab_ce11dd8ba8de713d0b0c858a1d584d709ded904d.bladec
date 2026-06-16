@@ -1,0 +1,53 @@
+<div class="col-12" v-show="activeTab === 'methodology' && !isLoading">
+ <div class="row" v-if="statistik">
+ <div class="col-lg-6 mb-4">
+ <div class="card shadow methodology-card">
+ <div class="card-header py-3">
+ <h6 class="m-0 font-weight-bold text-primary">
+ <i class="fas fa-cogs mr-2"></i>Apa itu K-Nearest Neighbor (KNN)?
+ </h6>
+ </div>
+ <div class="card-body">
+ <p>
+ K-Nearest Neighbor (KNN) adalah algoritma klasifikasi yang mengelompokkan data baru
+ berdasarkan <strong>K tetangga terdekat</strong> dari data training yang sudah ada.
+ </p>
+ <h6 class="font-weight-bold mt-4">Langkah-langkah KNN:</h6>
+ <ol class="mb-0">
+ <li class="mb-2"><span class="step-number">1</span>Tentukan nilai K (jumlah tetangga)</li>
+ <li class="mb-2"><span class="step-number">2</span>Hitung jarak data baru ke semua data training</li>
+ <li class="mb-2"><span class="step-number">3</span>Urutkan berdasarkan jarak terdekat</li>
+ <li class="mb-2"><span class="step-number">4</span>Ambil K tetangga terdekat</li>
+ <li class="mb-2"><span class="step-number">5</span>Lakukan voting mayoritas</li>
+ </ol>
+ </div>
+ </div>
+ </div>
+ <div class="col-lg-6 mb-4">
+ <div class="card shadow methodology-card">
+ <div class="card-header py-3">
+ <h6 class="m-0 font-weight-bold text-primary">
+ <i class="fas fa-calculator mr-2"></i>Rumus Perhitungan Jarak
+ </h6>
+ </div>
+ <div class="card-body">
+ <div class="formula-box">
+ <h6 class="font-weight-bold text-center">Euclidean Distance</h6>
+ <div class="formula">
+ d(x, y) = sqrt( SUM[ (xi - yi)^2 ] )
+ </div>
+ <hr>
+ <small>
+ <strong>Keterangan:</strong><br>
+ <ul class="mb-0">
+ <li>d(x, y) = Jarak antara data x dan y</li>
+ <li>xi = Nilai kriteria ke-i data testing</li>
+ <li>yi = Nilai kriteria ke-i data training</li>
+ </ul>
+ </small>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>

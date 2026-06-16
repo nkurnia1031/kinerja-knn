@@ -1,0 +1,68 @@
+<div class="modal fade" id="modal-contact<?php echo \htmlentities($data['num']??'', ENT_QUOTES, 'UTF-8', false); ?>" tabindex="-1" role="dialog"
+ aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog modal-lg" role="document">
+ <div class="modal-content">
+ <div class="modal-header">
+ <h4 class="h6">Form Device</h4>
+ </div>
+ <?php  $this->startComponent('Pages.FormComponent'); ?>
+ <?php  $this->slot('tambahan'); ?>
+ <template v-else-if="inArray(data.name,['nama'])">
+ <select v-model="data.val" class="form-control select-device" data-placeholder="Pilih Jenis Device"
+ :id="data.name + '1'" :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.device" :value="i">
+ {{ i }} </option>
+ </select>
+
+ </template>
+ <?php  $this->endSlot(); ?>
+ <?php echo $this->renderComponent(); ?>
+ </div>
+ </div>
+</div>
+
+
+
+<script>
+ if (window.appDevice) {
+ window.appDevice.unmount()
+ }
+ window.appDevice =
+ createApp({
+ data() {
+ data = dataAwal();
+ data.baseURL = 'Device';
+ data.idTable = null;
+ return data;
+ },
+ computed: computedAwal,
+ mounted() {
+ this.GetData();
+ },
+ beforeUpdated() {},
+ updated() {},
+ methods: {
+ ...methodAwal,
+ afterGetdata() {
+ setTimeout(() => {
+ if ($('.select-device').length) {
+ $('.select-device').select2({
+ theme: "bootstrap4",
+ tags: true,
+
+ });
+ }
+ }, 500);
+ app.tambahan['device'] = this.data;
+ },
+
+ }
+ });
+
+ appDeviceInstance = window.appDevice.mount('#modal-contact<?php echo \htmlentities($data['num']??'', ENT_QUOTES, 'UTF-8', false); ?>');
+ $('.resetnya').click(function(e) {
+ $('#modal-contact<?php echo \htmlentities($data['num']??'', ENT_QUOTES, 'UTF-8', false); ?>').modal('hide');
+
+ });
+</script>

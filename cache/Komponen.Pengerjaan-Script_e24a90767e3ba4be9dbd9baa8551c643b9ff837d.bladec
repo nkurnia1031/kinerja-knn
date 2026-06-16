@@ -1,0 +1,63 @@
+<script>
+ const Pengerjaan = {
+ props: ['service_id'],
+ template: '#pengerjaan-template',
+ data() {
+ const data = dataAwal();
+ data.baseURL = 'UpdateStatus';
+ data.idTable = null;
+ data.catatan = '';
+ data.catatanList = [];
+ data.saran = '';
+ data.saranList = [];
+ data.fieldholder = {
+ name: '',
+ label: '',
+ type: 'text',
+ req: false,
+ max: '',
+ val: '',
+ pnj: 12,
+ small: ''
+ };
+
+ return data;
+ },
+ computed: {
+ ...computedAwal,
+ fieldStatus() {
+ if (!this.fields) return this.fieldholder;
+ return this.fields.where('name', 'status').first();
+ }
+
+
+ },
+ mounted() {
+ this.lastQuery = 'service_id[]=' + this.service_id;
+ this.GetData();
+ },
+ beforeUpdated() {},
+ updated() {},
+ methods: {
+ ...methodAwal,
+
+ afterGetdata() {
+ this.setAwal();
+ this.form = false;
+ $('#status-pengerjaan').html(this.tambahan.service.status);
+ $('#tanggal-selesai').html(this.tambahan.service.tanggal_selesai);
+ $('#tanggal-diambil').html(this.tambahan.service.tanggal_diambil);
+
+ },
+ tambahList(nama) {
+ if (this[nama] != '') {
+ this[`${nama}List`].push(this[nama]);
+ this[nama] = '';
+ }
+ },
+ hapusList(nama, index) {
+ this[`${nama}List`].splice(index, 1);
+ },
+ }
+ }
+</script>

@@ -1,0 +1,57 @@
+<div class="col-12 mb-3">
+ <div class="card shadow">
+ <div class="card-header py-3">
+ <h6 class="m-0 font-weight-bold text-primary">
+ <i class="fas fa-cogs mr-2"></i>Parameter KNN
+ </h6>
+ </div>
+ <div class="card-body">
+ <div class="row align-items-end">
+ <div class="col-md-2 mb-2">
+ <label class="small font-weight-bold">Nilai K</label>
+ <select v-model.number="knnParams.k" class="form-control form-control-sm">
+ <option v-for="n in 10" :key="n" :value="n">K = {{ n }}</option>
+ </select>
+ </div>
+ <div class="col-md-2 mb-2">
+ <label class="small font-weight-bold">Metode Jarak</label>
+ <select v-model="knnParams.metode_jarak" class="form-control form-control-sm">
+ <option value="euclidean">Euclidean</option>
+ </select>
+ </div>
+ <div class="col-md-3 mb-2">
+ <label class="small font-weight-bold">Periode Penilaian</label>
+ <select v-model="knnParams.periode_id" class="form-control form-control-sm">
+ <option value="">Periode Aktif</option>
+ <option v-for="periode in periodeList" :key="periode.id" :value="periode.id">
+ {{ periode.nama_periode }} ({{ periode.status }})
+ </option>
+ </select>
+ </div>
+ <div class="col-md-3 mb-2">
+ <label class="small font-weight-bold">Nama Analisa (opsional)</label>
+ <input type="text" v-model="knnParams.nama_analisa" class="form-control form-control-sm"
+ placeholder="Nama analisa...">
+ </div>
+ <div class="col-md-2 mb-2">
+ <button class="btn btn-primary btn-sm mr-2" @click="previewAnalisaReal" :disabled="isLoading">
+ <i class="fas fa-play"></i> Preview
+ </button>
+ <button v-if="canManage" class="btn btn-success btn-sm mr-2" @click="prosesAnalisaBaru" :disabled="isLoading">
+ <i class="fas fa-save"></i> Proses & Simpan
+ </button>
+ <button class="btn btn-secondary btn-sm" @click="loadDaftarAnalisa" :disabled="isLoading">
+ <i class="fas fa-sync"></i> Refresh
+ </button>
+ </div>
+ </div>
+ <div class="alert alert-info mt-3 mb-0">
+ <small>
+ Data training KNN diambil dari seluruh riwayat penilaian yang ditandai training, tetapi selalu
+ <strong>mengabaikan periode yang sedang diklasifikasi</strong>. Data testing diambil dari
+ <strong>semua penilaian pada periode aktif / periode yang dipilih</strong>.
+ </small>
+ </div>
+ </div>
+ </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="modal fade" id="modal-contact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
+ <div class="modal-dialog modal-lg" role="document">
+ <div class="modal-content">
+ <?php  $this->startComponent('Pages.FormComponent'); ?>
+ <?php  $this->slot('tambahan'); ?>
+ <template v-else-if="inArray(data.name,['contact_id'])">
+
+ <div class="input-group ">
+ <select v-model="data.val" class="form-control select" data-placeholder="Pilih Customer/Supliter"
+ :id="data.name + '1'" :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.contact" :value="i.id">
+ {{ i.nama }} | {{ i.nohp }}</option>
+ </select>
+ <div class="input-group-append">
+ <button class="btn btn-primary btn-sm" @click="ModalContact(2)" type="button"
+ id="button-addon2"><i class="fa fa-plus"></i></button>
+ </div>
+ </div>
+
+ </template>
+ <template v-else-if="inArray(data.name,['jenis'])">
+ <select v-model="data.val" class="form-control select" data-placeholder="Pilih Jenis"
+ :id="data.name + '1'" :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.jenis" :value="i">
+ {{ i }}</option>
+ </select>
+ </template>
+ <?php  $this->endSlot(); ?>
+ <?php echo $this->renderComponent(); ?>
+ </div>
+ </div>
+</div>
+
+
+
+<script>
+ app2 = createApp({
+ data() {
+ data = dataAwal();
+ data.baseURL = 'Transaksi';
+ data.idTable = null;
+ return data;
+ },
+ computed: computedAwal,
+ mounted() {
+ this.GetData();
+ },
+ beforeUpdated() {},
+ updated() {},
+ methods: {
+ ...methodAwal,
+ afterGetdata() {
+ app.GetData();
+ },
+ }
+ }).mount('#modal-contact')
+ $('.resetnya').click(function(e) {
+ $('#modal-contact').modal('hide');
+
+ });
+</script>

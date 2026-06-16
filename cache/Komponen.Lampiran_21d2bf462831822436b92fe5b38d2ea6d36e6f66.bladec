@@ -1,0 +1,102 @@
+<script>
+ const Lampiran = {
+ props: ['transaksi_id'],
+ template: '#lampiran-template',
+ data() {
+ const data = dataAwal();
+ data.baseURL = 'Lampiran';
+ data.idTable = null;
+ data.fieldholder = {
+ name: '',
+ label: '',
+ type: 'text',
+ req: false,
+ max: '',
+ val: '',
+ pnj: 12,
+ small: ''
+ };
+
+ return data;
+ },
+ computed: {
+ ...computedAwal,
+ fieldFile() {
+ if (!this.fields) return this.fieldholder;
+ return this.fields.where('name', 'file').first();
+ },
+ fieldDeskripsi() {
+ if (!this.fields) return this.fieldholder;
+ return this.fields.where('name', 'deskripsi').first();
+ }
+
+ },
+ mounted() {
+ this.lastQuery = 'transaksi_id[]=' + this.transaksi_id;
+ this.GetData();
+ },
+ beforeUpdated() {},
+ updated() {},
+ methods: {
+ ...methodAwal,
+ afterGetdata() {
+ this.setAwal();
+ this.form = false;
+
+
+ },
+ }
+ }
+</script>
+<template id="lampiran-template">
+ <Transition name="slide-fade">
+ <div v-if="!form" class="form-group ">
+ <div class="d-flex align-items-center">
+ <label class="font-weight-bold col-form-label "><i class="fa fa-paperclip"></i> Lampiran</label>
+ <span>
+ <a href="javascript:;" @click="setAwal" class="badge ml-1 badge-primary"><i class="fa fa-plus"></i></a>
+ </span>
+ </div>
+ <div class="list-group">
+ <div v-for="(a,index) in data" href="javascript:;" :title="a.file"
+ class="list-group-item list-group-item-action " aria-current="true">
+ <div class="d-flex justify-content-between">
+ <a href="javascript:;" @click="LihatGambar(a.file)">
+ <i class="fa fa-paperclip"></i>
+ {{ a.deskripsi }}
+ </a>
+ <div>
+ <a :href="'upload/' + a.file" :download="a.file" class="badge badge-success"><i
+ class="fa fa-download"></i></a>
+ <a href="javascript:;" @click="HapusData(index)" class="badge ml-1 badge-danger"><i
+ class="fa fa-trash"></i></a>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ </div>
+ <form @submit.prevent="onSubmit" v-else class="form-group ">
+ <label class="font-weight-bold col-form-label ">Lampiran</label>
+ <div class="custom-file ">
+ <input
+ :onchange="'previewImage2(\'' + fieldFile.name + '1\', null,\'' + fieldFile.name +
+ '3\')'"
+ type="file" class="custom-file-input" accept=".jpg,.pdf, .png, .gif, .jpeg, .webp"
+ :name="'input[' + fieldFile.name + ']'" :id="fieldFile.name + '1'">
+ <label class="custom-file-label" :id="fieldFile.name + '3'">Choose
+ file...</label>
+ </div>
+ <input type="hidden" name="input[transaksi_id]" :value="transaksi_id">
+ <input type="text" class="form-control mt-2" :name="'input[' + fieldDeskripsi.name + ']'"
+ placeholder="Deskripsi" v-model="fieldDeskripsi.val" />
+ <div class="d-flex justify-content-end">
+ <button class="btn btn-sm btn-secondary mr-1 mt-2" type="button" @click="form=false">Batal</button>
+
+ <button type="submit" class="btn btn-sm btn-primary mt-2">Simpan</button>
+ </div>
+
+ </form>
+ </Transition>
+
+</template>

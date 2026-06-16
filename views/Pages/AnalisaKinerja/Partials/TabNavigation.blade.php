@@ -1,0 +1,34 @@
+<div class="col-12 mb-3">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" :class="{ active: activeTab === 'overview' }"
+               href="#" @click.prevent="setActiveTab('overview')">
+                <i class="fas fa-chart-pie mr-1"></i> Overview
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" :class="{ active: activeTab === 'methodology' }"
+               href="#" @click.prevent="setActiveTab('methodology')">
+                <i class="fas fa-book mr-1"></i> Metodologi KNN
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" :class="{ active: activeTab === 'kriteria' }"
+               href="#" @click.prevent="setActiveTab('kriteria')">
+                <i class="fas fa-list mr-1"></i> Kriteria Penilaian
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" :class="{ active: activeTab === 'training' }"
+               href="#" @click.prevent="setActiveTab('training')">
+                <i class="fas fa-database mr-1"></i> Data Training
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" :class="{ active: activeTab === 'hasil' }"
+               href="#" @click.prevent="setActiveTab('hasil')">
+                <i class="fas fa-poll mr-1"></i> Hasil Klasifikasi
+            </a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,14 @@
+<Transition name="slide-fade" @after-enter="onAfterEnter">
+    <div v-if="form" class="col-lg-12 mb-3 col-md-12" id="atas">
+        <div class="card o-hidden  border-bottom-info shadow  ">
+            <div class="card-header align-items-center justify-content-between d-flex py-3">
+                <span>
+                    <h6 class="m-0 font-weight-bold text-info">Form Input</h6>
+                </span>
+                <span>
+                </span>
+            </div>
+            @include('Pages.FormComponent')
+        </div>
+    </div>
+</Transition>

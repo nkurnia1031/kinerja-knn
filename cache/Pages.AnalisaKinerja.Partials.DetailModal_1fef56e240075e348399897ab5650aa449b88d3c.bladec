@@ -1,0 +1,321 @@
+<div class="modal fade" id="modalDetail" tabindex="-1" role="dialog">
+ <div class="modal-dialog modal-xl" role="document">
+ <div class="modal-content">
+ <div class="modal-header bg-primary text-white">
+ <h5 class="modal-title" v-if="selectedKaryawan">
+ <i class="fas fa-calculator mr-2"></i>
+ Detail Perhitungan KNN - {{ selectedKaryawan.karyawan.nama }}
+ </h5>
+ <button type="button" class="close text-white" data-dismiss="modal">
+ <span>&times;</span>
+ </button>
+ </div>
+ <div class="modal-body" v-if="selectedKaryawan">
+ <div v-if="isLoadingDetail" class="text-center py-4">
+ <div class="spinner-border text-primary" role="status">
+ <span class="sr-only">Loading...</span>
+ </div>
+ <p class="mt-2">Memuat detail perhitungan...</p>
+ </div>
+
+ <div v-else class="row">
+ <div class="col-md-4 mb-3">
+ <div class="card h-100">
+ <div class="card-header bg-light">
+ <strong>Data Karyawan</strong>
+ </div>
+ <div class="card-body">
+ <table class="table table-sm table-borderless">
+ <tr>
+ <td>Nomor Pekerja</td>
+ <td>: {{ selectedKaryawan.karyawan.nomor_pekerja || selectedKaryawan.karyawan.nip || '-' }}</td>
+ </tr>
+ <tr>
+ <td>Nama</td>
+ <td>: {{ selectedKaryawan.karyawan.nama }}</td>
+ </tr>
+ <tr>
+ <td>Jabatan</td>
+ <td>: {{ selectedKaryawan.karyawan.jabatan || '-' }}</td>
+ </tr>
+ <tr>
+ <td>Pekerjaan</td>
+ <td>: {{ selectedKaryawan.karyawan.pekerjaan || '-' }}</td>
+ </tr>
+ </table>
+ <hr>
+ <h6 class="font-weight-bold">Hasil Klasifikasi:</h6>
+ <span class="badge badge-lg" :class="'badge-' + getKlasifikasiClass(selectedKaryawan.hasil_klasifikasi)">
+ {{ selectedKaryawan.hasil_klasifikasi }}
+ </span>
+ <br><br>
+ <small class="text-muted">
+ Confidence: <strong>{{ selectedKaryawan.confidence }}%</strong>
+ </small>
+ </div>
+ </div>
+ </div>
+
+ <div class="col-md-8 mb-3">
+ <div class="card h-100">
+ <div class="card-header bg-light">
+ <strong>Visualisasi Nilai per Kriteria</strong>
+ </div>
+ <div class="card-body">
+ <canvas id="radarDetailChart" height="200"></canvas>
+ </div>
+ </div>
+ </div>
+
+ <div class="col-12 mb-3">
+ <div class="card">
+ <div class="card-header bg-light">
+ <strong>Nilai per Kriteria</strong>
+ </div>
+ <div class="card-body">
+ <div class="table-responsive">
+ <table class="table table-bordered table-sm">
+ <thead class="bg-primary text-white">
+ <tr>
+ <th>Kode</th>
+ <th>Kriteria</th>
+ <th class="text-center">Nilai (1-4)</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr v-for="(k, idx) in kriteria" :key="k.id">
+ <td><span class="badge badge-secondary">{{ k.kode }}</span></td>
+ <td>
+ {{ k.nama }}
+ <br><small class="text-muted">{{ k.nama_en }}</small>
+ </td>
+ <td class="text-center">
+ <span class="badge" :class="'badge-' + getNilaiClass(selectedKaryawan.karyawan.nilai[idx])">
+ {{ selectedKaryawan.karyawan.nilai[idx] }}
+ </span>
+ </td>
+ </tr>
+ </tbody>
+ <tfoot class="bg-light font-weight-bold">
+ <tr>
+ <td colspan="2">Total</td>
+ <td class="text-center">{{ hitungRataRata(selectedKaryawan.karyawan.nilai) }}</td>
+ </tr>
+ </tfoot>
+ </table>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="col-12 mb-3" v-if="selectedKaryawan.all_distances || detailPerhitungan">
+ <div class="card">
+ <div class="card-header bg-light">
+ <strong><i class="fas fa-ruler mr-2"></i>Perhitungan Jarak Euclidean ke Semua Data Training</strong>
+ </div>
+ <div class="card-body">
+ <div class="alert alert-info">
+ <strong>Rumus Euclidean Distance:</strong><br>
+ <code>d(x,y) = sqrt( SUM[ (xi - yi)^2 ] )</code><br>
+ <small>Contoh bentuk: √(4 − 4)^2 + (3 − 2)^2 + (4 − 3)^2</small>
+ </div>
+ <div class="table-responsive">
+ <table class="table table-bordered table-sm distance-table">
+ <thead class="bg-secondary text-white">
+ <tr>
+ <th>ID</th>
+ <th>Nama (Training)</th>
+ <th>Klasifikasi</th>
+ <th class="text-center">Jarak</th>
+ <th class="text-center">Ranking</th>
+ </tr>
+ </thead>
+ <tbody v-if="detailPerhitungan && detailPerhitungan.detail_jarak">
+ <tr v-for="(d, idx) in detailPerhitungan.detail_jarak"
+ :key="d.training_id || idx"
+ :class="d.is_k_nearest ? 'k-nearest-highlight' : ''">
+ <td>{{ d.training_id }}</td>
+ <td>
+ <div class="font-weight-bold">{{ d.nama_training }}</div>
+ <small class="text-muted d-block">Periode: {{ d.periode_training || '-' }}</small>
+ <span v-if="d.is_k_nearest" class="badge badge-success ml-2">K-Nearest</span>
+ </td>
+ <td>
+ <span class="badge" :class="'badge-' + getKlasifikasiClass(d.klasifikasi_training)">
+ {{ d.klasifikasi_training }}
+ </span>
+ </td>
+ <td>
+ <div class="text-center">
+ <div class="font-weight-bold mb-1">{{ formatDistance(d.nilai_jarak) }}</div>
+ <a v-if="d.detail_matematis"
+ class="btn btn-link btn-sm p-0"
+ data-toggle="collapse"
+ :href="'#' + getDistanceCollapseId(d, idx)"
+ role="button"
+ aria-expanded="false"
+ :aria-controls="getDistanceCollapseId(d, idx)">
+ Lihat langkah hitung
+ </a>
+ </div>
+ <div v-if="d.detail_matematis"
+ class="collapse text-left mt-2"
+ :id="getDistanceCollapseId(d, idx)">
+ <div class="card card-body bg-light">
+ <div class="font-weight-bold mb-2">Turunan Perhitungan:</div>
+ <div class="ml-3">
+ <div class="mb-2">
+ = √(
+ <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'raw-' + term.kode + '-' + termIdx">
+ <span>({{ formatMathNumber(term.testing, 0) }} − {{ formatMathNumber(term.training, 0) }})<sup>2</sup></span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
+ </template>
+ )
+ </div>
+ <div class="mb-2">
+ = √(
+ <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'diff-' + term.kode + '-' + termIdx">
+ <span>({{ formatMathNumber(term.selisih, 0) }})<sup>2</sup></span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
+ </template>
+ )
+ </div>
+ <div class="mb-2">
+ = √(
+ <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'square-' + term.kode + '-' + termIdx">
+ <span>{{ formatMathNumber(term.selisih_kuadrat, 0) }}</span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
+ </template>
+ )
+ </div>
+ <div class="mb-2">= √{{ formatMathNumber(d.detail_matematis.sum_squared, 0) }}</div>
+ <div>= <strong>{{ formatMathNumber(d.detail_matematis.sqrt_result, 4) }}</strong></div>
+ </div>
+ </div>
+ </div>
+ </td>
+ <td class="text-center font-weight-bold">{{ d.ranking }}</td>
+ </tr>
+ </tbody>
+ <tbody v-else-if="selectedKaryawan.all_distances">
+ <tr v-for="(d, idx) in selectedKaryawan.all_distances"
+ :key="d.training_id || d.id || idx"
+ :class="d.is_k_nearest ? 'k-nearest-highlight' : ''">
+ <td>{{ d.training_id || d.id }}</td>
+ <td>
+ <div class="font-weight-bold">{{ d.nama }}</div>
+ <small class="text-muted d-block">Periode: {{ d.nama_periode || '-' }}</small>
+ <span v-if="d.is_k_nearest" class="badge badge-success ml-2">K-Nearest</span>
+ </td>
+ <td>
+ <span class="badge" :class="'badge-' + getKlasifikasiClass(d.klasifikasi)">
+ {{ d.klasifikasi }}
+ </span>
+ </td>
+ <td class="text-center font-weight-bold">{{ formatDistance(d.distance) }}</td>
+ <td class="text-center">{{ d.ranking || (idx + 1) }}</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="col-md-6 mb-3">
+ <div class="card h-100 border-success">
+ <div class="card-header bg-success text-white">
+ <strong><i class="fas fa-users mr-2"></i>{{ knnParams.k }} Tetangga Terdekat</strong>
+ </div>
+ <div class="card-body">
+ <table class="table table-sm">
+ <thead>
+ <tr>
+ <th>#</th>
+ <th>Nama</th>
+ <th>Jarak</th>
+ <th>Klasifikasi</th>
+ </tr>
+ </thead>
+ <tbody v-if="detailPerhitungan && detailPerhitungan.k_nearest">
+ <tr v-for="(n, idx) in detailPerhitungan.k_nearest" :key="n.training_id || idx">
+ <td>{{ n.ranking || (idx + 1) }}</td>
+ <td>
+ <div class="font-weight-bold">{{ n.nama_training }}</div>
+ <small class="text-muted d-block">Periode: {{ n.periode_training || '-' }}</small>
+ </td>
+ <td>{{ formatDistance(n.nilai_jarak) }}</td>
+ <td>
+ <span class="badge" :class="'badge-' + getKlasifikasiClass(n.klasifikasi_training)">
+ {{ n.klasifikasi_training }}
+ </span>
+ </td>
+ </tr>
+ </tbody>
+ <tbody v-else-if="selectedKaryawan.k_nearest">
+ <tr v-for="(n, idx) in selectedKaryawan.k_nearest" :key="n.training_id || n.id || idx">
+ <td>{{ n.ranking || (idx + 1) }}</td>
+ <td>
+ <div class="font-weight-bold">{{ n.nama }}</div>
+ <small class="text-muted d-block">Periode: {{ n.nama_periode || '-' }}</small>
+ </td>
+ <td>{{ formatDistance(n.distance) }}</td>
+ <td>
+ <span class="badge" :class="'badge-' + getKlasifikasiClass(n.klasifikasi)">
+ {{ n.klasifikasi }}
+ </span>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+
+ <div class="col-md-6 mb-3">
+ <div class="card h-100 border-primary">
+ <div class="card-header bg-primary text-white">
+ <strong><i class="fas fa-vote-yea mr-2"></i>Hasil Voting</strong>
+ </div>
+ <div class="card-body">
+ <table class="table table-sm">
+ <thead>
+ <tr>
+ <th>Klasifikasi</th>
+ <th class="text-center">Jumlah Vote</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr v-for="(count, kelas) in selectedKaryawan.voting" :key="kelas"
+ :class="kelas === selectedKaryawan.hasil_klasifikasi ? 'table-success' : ''">
+ <td>
+ <span class="badge" :class="'badge-' + getKlasifikasiClass(kelas)">
+ {{ kelas }}
+ </span>
+ <span v-if="kelas === selectedKaryawan.hasil_klasifikasi" class="ml-2">
+ <i class="fas fa-check-circle text-success"></i> Terpilih
+ </span>
+ </td>
+ <td class="text-center font-weight-bold">{{ count }}</td>
+ </tr>
+ </tbody>
+ </table>
+ <hr>
+ <div class="alert alert-success mb-0">
+ <strong>Kesimpulan:</strong><br>
+ Berdasarkan voting dari {{ knnParams.k }} tetangga terdekat,
+ karyawan <strong>{{ selectedKaryawan.karyawan.nama }}</strong>
+ diklasifikasikan sebagai
+ <span class="badge" :class="'badge-' + getKlasifikasiClass(selectedKaryawan.hasil_klasifikasi)">
+ {{ selectedKaryawan.hasil_klasifikasi }}
+ </span>
+ dengan tingkat kepercayaan <strong>{{ selectedKaryawan.confidence }}%</strong>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="modal-footer">
+ <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+ </div>
+ </div>
+ </div>
+</div>

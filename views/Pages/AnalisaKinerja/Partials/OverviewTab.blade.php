@@ -1,0 +1,116 @@
+<div class="col-12" v-show="activeTab === 'overview' && !isLoading">
+    <div class="row" v-if="statistik">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Sangat Baik</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ statistik.total_sangat_baik }} Karyawan</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-star fa-2x text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Baik</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ statistik.total_baik }} Karyawan</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-thumbs-up fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Cukup</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ statistik.total_cukup }} Karyawan</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-minus-circle fa-2x text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Kurang</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ statistik.total_kurang }} Karyawan</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exclamation-triangle fa-2x text-danger"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-pie mr-2"></i>Distribusi Klasifikasi Kinerja
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-info-circle mr-2"></i>Informasi Analisa
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-sm table-borderless">
+                                <tr><td class="font-weight-bold">Nilai K</td><td>: @{{ knnParams.k }}</td></tr>
+                                <tr><td class="font-weight-bold">Metode Jarak</td><td>: @{{ knnParams.metode_jarak }}</td></tr>
+                                <tr><td class="font-weight-bold">Normalisasi</td><td>: @{{ knnParams.normalisasi }}</td></tr>
+                                <tr><td class="font-weight-bold">Periode</td><td>: @{{ selectedPeriodeLabel }}</td></tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-sm table-borderless">
+                                <tr><td class="font-weight-bold">Data Training</td><td>: @{{ totalDataTraining }} data</td></tr>
+                                <tr><td class="font-weight-bold">Data Testing</td><td>: @{{ totalDataTesting }} data</td></tr>
+                                <tr><td class="font-weight-bold">Kriteria</td><td>: @{{ kriteria.length }} kriteria</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="alert alert-info mb-0">
+                        <small>
+                            <strong>Catatan:</strong> Analisa ini menggunakan algoritma K-Nearest Neighbor (KNN)
+                            untuk mengklasifikasikan kinerja karyawan berdasarkan @{{ kriteria.length }} kriteria penilaian.
+                            Semua perhitungan dilakukan di server untuk memastikan akurasi dan konsistensi data.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

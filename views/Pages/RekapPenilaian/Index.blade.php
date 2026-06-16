@@ -1,0 +1,231 @@
+@php
+    use app\Fungsi;
+@endphp
+@extends('Layout.html')
+@section('js')
+    <script>
+        const { createApp } = Vue
+
+        app = createApp({
+            data() {
+                data = dataAwal();
+                data.baseURL = 'RekapPenilaian';
+                data.detailPenilaian = null;
+                data.showDetail = false;
+                return data;
+            },
+            computed: computedAwal,
+            mounted() {
+             
+                this.GetData();
+               
+            },
+            methods: {
+                ...methodAwal,
+                getKlasifikasiClass(klasifikasi) {
+                    const mapping = {
+                        'Sangat Baik': 'success',
+                        'Baik': 'primary',
+                        'Cukup': 'warning',
+                        'Kurang': 'danger',
+                        'Sangat Kurang': 'dark'
+                    };
+                    return mapping[klasifikasi] || 'secondary';
+                },
+                lihatDetail(item) {
+                    axiosInstance.get(`RekapPenilaian-Detail?id=${item.id}`).then(res => {
+                        if (res.data.status) {
+                            this.detailPenilaian = res.data.data || null;
+                            this.showDetail = true;
+                            $('#modalDetailRekap').modal('show');
+                        } else {
+                            new Toast({
+                                message: res.data.message || 'Detail penilaian tidak ditemukan',
+                                type: 'danger'
+                            });
+                        }
+                    }).catch(err => {
+                        new Toast({
+                            message: err.message || 'Terjadi kesalahan saat memuat detail',
+                            type: 'danger'
+                        });
+                    });
+                },
+                tutupDetail() {
+                    this.showDetail = false;
+                    this.detailPenilaian = null;
+                },
+                afterGetdata() {
+                    this.fields = collect([
+                        { name: 'nomor_pekerja', label: 'Nomor Pekerja' },
+                        { name: 'nama', label: 'Nama Karyawan' },
+                        { name: 'jabatan', label: 'Jabatan' },
+                        { name: 'pekerjaan', label: 'Pekerjaan' },
+                        { name: 'periode', label: 'Periode' },
+                        { name: 'nama_penilai', label: 'Penilai' },
+                        { name: 'total_nilai', label: 'Total Nilai' },
+                        { name: 'klasifikasi', label: 'Klasifikasi Penilaian' },
+                        { name: 'klasifikasi_knn', label: 'Klasifikasi KNN' },
+                        { name: 'tanggal_penilaian', label: 'Tanggal' }
+                    ]);
+                    $('#modalDetailRekap').off('hidden.bs.modal').on('hidden.bs.modal', () => {
+                        this.tutupDetail();
+                    });
+                }
+            }
+        }).mount('#app')
+    </script>
+@endsection
+@section('css')
+    <style>
+        .table-bordered td,
+        .table-bordered th {
+            color: black !important;
+            border: 1px solid #000000 !important;
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+        }
+    </style>
+@endsection
+@section('modal')
+   
+@endsection
+@section('isi')
+    <div class="row" id="app">
+        <div class="modal fade" id="modalDetailRekap" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content" v-if="detailPenilaian">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-file-alt mr-2"></i>Detail Rekap Penilaian - @{{ detailPenilaian.nama_karyawan }}
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr><td width="160">Nomor Pekerja</td><td>: @{{ detailPenilaian.nomor_pekerja || '-' }}</td></tr>
+                                    <tr><td>Nama Karyawan</td><td>: <strong>@{{ detailPenilaian.nama_karyawan }}</strong></td></tr>
+                                    <tr><td>Jabatan</td><td>: @{{ detailPenilaian.jabatan || '-' }}</td></tr>
+                                    <tr><td>Pekerjaan</td><td>: @{{ detailPenilaian.pekerjaan || '-' }}</td></tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr><td width="160">Periode</td><td>: @{{ detailPenilaian.periode || '-' }}</td></tr>
+                                    <tr><td>Penilai</td><td>: @{{ detailPenilaian.nama_penilai || '-' }}</td></tr>
+                                    <tr><td>Tanggal Penilaian</td><td>: @{{ detailPenilaian.tanggal_penilaian || '-' }}</td></tr>
+                                    <tr><td>Total Nilai</td><td>: <strong>@{{ detailPenilaian.total_nilai || 0 }}</strong></td></tr>
+                                </table>
+                            </div>
+                        </div>
+    
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Klasifikasi Penilaian</h6>
+                                        <span :class="'badge badge-lg badge-' + getKlasifikasiClass(detailPenilaian.klasifikasi)">
+                                            @{{ detailPenilaian.klasifikasi || '-' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Klasifikasi KNN</h6>
+                                        <span :class="'badge badge-lg badge-' + getKlasifikasiClass(detailPenilaian.klasifikasi_knn)">
+                                            @{{ detailPenilaian.klasifikasi_knn || '-' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="bg-light text-center">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Kriteria</th>
+                                        <th>Bobot</th>
+                                        <th>Nilai</th>
+                                        <th>Nilai x Bobot</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(detail, index) in detailPenilaian.detail_kriteria" :key="index">
+                                        <td class="text-center">@{{ index + 1 }}</td>
+                                        <td>@{{ detail.nama_kriteria }}</td>
+                                        <td class="text-center">@{{ detail.bobot }}%</td>
+                                        <td class="text-center">@{{ detail.nilai }}</td>
+                                        <td class="text-center">@{{ detail.nilai_bobot }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+    
+                        <div v-if="detailPenilaian.catatan" class="alert alert-secondary mb-0">
+                            <strong>Catatan:</strong> @{{ detailPenilaian.catatan }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <div class="card bg-gradient-info text-white shadow">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h4 class="mb-1">Rekap Penilaian Kinerja</h4>
+                            <p class="mb-0 opacity-75">
+                                Rekap data karyawan, kriteria, dan hasil penilaian kinerja
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                            <i class="fas fa-file-alt fa-4x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @component('Pages.Filter')
+        @endcomponent
+
+        @component('Pages.Table', [
+            'title' => 'Data Rekap Penilaian',
+            'showAdd' => false,
+            'showDefaultAksi' => false,
+            'customAksi' => '
+                <div class="d-none d-sm-block text-center">
+                    <button @click="lihatDetail(i)" class="shadow btn btn-sm btn-info mx-1 my-1">
+                        Detail
+                    </button>
+                </div>
+            '
+        ])
+            @slot('td')
+                <template v-else-if="inArray(a.name,['total_nilai'])">
+                    <span class="text-nowrap font-weight-bold">@{{ i[a.name] }}</span>
+                </template>
+                <template v-else-if="inArray(a.name,['klasifikasi'])">
+                    <span :class="'badge badge-' + getKlasifikasiClass(i[a.name])">
+                        @{{ i[a.name] }}
+                    </span>
+                </template>
+                <template v-else-if="inArray(a.name,['klasifikasi_knn'])">
+                    <span :class="'badge badge-' + getKlasifikasiClass(i[a.name])">
+                        @{{ i[a.name] || '-' }}
+                    </span>
+                </template>
+            @endslot
+        @endcomponent
+    </div>
+@endsection

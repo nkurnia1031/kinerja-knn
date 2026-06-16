@@ -1,0 +1,471 @@
+@php
+    use app\Fungsi;
+@endphp
+@extends('Layout.html')
+@section('js')
+    <script>
+        const {
+            createApp
+        } = Vue
+
+        app = createApp({
+            data() {
+                data = dataAwal();
+                data.baseURL = 'PenilaianBawahan';
+                data.selectedKaryawan = null;
+                data.requestedKaryawanId = null;
+                data.hasAutoOpenedRequestedKaryawan = false;
+                data.kriteria = [];
+                data.nilaiKriteria = {};
+                data.periodeAktif = null;
+                data.showFormPenilaian = false;
+                data.catatanPenilaian = '';
+                data.klasifikasiManual = '';
+                data.isTraining = false;
+                data.opsiKlasifikasi = [
+                    { value: 'Sangat Baik', label: 'Sangat Baik' },
+                    { value: 'Baik', label: 'Baik' },
+                    { value: 'Cukup', label: 'Cukup' },
+                    { value: 'Kurang', label: 'Kurang' },
+                ];
+                return data;
+            },
+            computed: {
+                ...computedAwal,
+                totalNilai() {
+                    let total = 0;
+                    this.kriteria.forEach(k => {
+                        const nilai = parseFloat(this.nilaiKriteria[k.id]) || 0;
+                        const bobot = parseFloat(k.bobot) || 0;
+                        total += (nilai * bobot / 100);
+                    });
+                    return total.toFixed(2);
+                },
+                klasifikasiOtomatis() {
+                    const total = parseFloat(this.totalNilai);
+                    if (total >= 3.5) return { label: 'Sangat Baik', class: 'success' };
+                    if (total >= 2.75) return { label: 'Baik', class: 'primary' };
+                    if (total >= 2.0) return { label: 'Cukup', class: 'warning' };
+                    return { label: 'Kurang', class: 'danger' };
+                },
+                klasifikasiKinerja() {
+                    const selected = this.klasifikasiManual || this.klasifikasiOtomatis.label;
+                    const mapClass = {
+                        'Sangat Baik': 'success',
+                        'Baik': 'primary',
+                        'Cukup': 'warning',
+                        'Kurang': 'danger',
+                    };
+                    return { label: selected, class: mapClass[selected] || 'secondary' };
+                },
+                isEditPenilaian() {
+                    return !!(this.selectedKaryawan && this.selectedKaryawan.sudah_dinilai && this.periodeAktif);
+                }
+            },
+            mounted() {
+                this.requestedKaryawanId = this.getQueryParam('karyawan_id');
+                this.GetData();
+                this.loadKriteria();
+                this.loadPeriodeAktif();
+            },
+            methods: {
+                ...methodAwal,
+                syncSelectedKaryawanToUrl(karyawanId = null) {
+                    const queryString = this.normalizeQueryParams(
+                        karyawanId ? { karyawan_id: karyawanId } : {}
+                    ).replace(/^\?/, '');
+                    this.syncUrlQuery(queryString);
+                },
+                fokusFormPenilaian() {
+                    this.$nextTick(() => {
+                        const formPanel = this.$refs.formPenilaian;
+                        if (formPanel) {
+                            formPanel.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                },
+                tryOpenRequestedKaryawan() {
+                    if (!this.requestedKaryawanId || this.hasAutoOpenedRequestedKaryawan) {
+                        return;
+                    }
+
+                    if (!Array.isArray(this.data2) || this.data2.length === 0 || this.kriteria.length === 0) {
+                        return;
+                    }
+
+                    const karyawan = this.data2.find(item => item.id == this.requestedKaryawanId);
+                    if (!karyawan) {
+                        return;
+                    }
+
+                    this.hasAutoOpenedRequestedKaryawan = true;
+                    this.pilihKaryawan(karyawan);
+                },
+                loadKriteria() {
+                    this.apiGet('Kriteria', {
+                        status: 'aktif'
+                    }).then(res => {
+                        this.kriteria = res.data.data.data || [];
+                        this.kriteria.forEach(k => {
+                            this.nilaiKriteria[k.id] = 0;
+                        });
+                        this.tryOpenRequestedKaryawan();
+                    });
+                },
+                loadPeriodeAktif() {
+                    this.apiGet('PeriodePenilaian', {
+                        status: 'aktif'
+                    }).then(res => {
+                        this.periodeAktif = res.data.data.data[0] || null;
+                        this.tryOpenRequestedKaryawan();
+                    });
+                },
+                pilihKaryawan(karyawan) {
+                    this.selectedKaryawan = karyawan;
+                    this.requestedKaryawanId = karyawan.id;
+                    this.showFormPenilaian = true;
+                    this.syncSelectedKaryawanToUrl(karyawan.id);
+                    this.catatanPenilaian = '';
+                    this.klasifikasiManual = '';
+                    this.isTraining = false;
+                    // Reset nilai
+                    this.kriteria.forEach(k => {
+                        this.nilaiKriteria[k.id] = 0;
+                    });
+                    // Load existing penilaian if any
+                    if (this.periodeAktif) {
+                        this.apiGet(this.baseURL, {
+                            karyawan_id: karyawan.id,
+                            periode_id: this.periodeAktif.id
+                        }).then(res => {
+                            const existingData = res.data.data?.data || [];
+                            if (existingData.length > 0) {
+                                const existing = existingData[0];
+                                (existing.nilai_kriteria || []).forEach(p => {
+                                    this.nilaiKriteria[p.kriteria_id] = p.nilai;
+                                });
+                                this.catatanPenilaian = existing.catatan || '';
+                                this.klasifikasiManual = existing.klasifikasi || '';
+                                this.klasifikasiManual = existing.klasifikasi || '';
+                                this.isTraining = !!parseInt(existing.is_training || 0);
+                                this.fokusFormPenilaian();
+                            }
+                        }).finally(() => {
+                            this.fokusFormPenilaian();
+                        });
+                        return;
+                    }
+
+                    this.fokusFormPenilaian();
+                },
+                getKeteranganSkala(nilai) {
+                    const n = parseInt(nilai) || 0;
+                    if (n === 4) return { label: 'Baik Sekali (Istimewa)', class: 'success' };
+                    if (n === 3) return { label: 'Baik', class: 'primary' };
+                    if (n === 2) return { label: 'Sedang', class: 'warning' };
+                    if (n === 1) return { label: 'Kurang Baik', class: 'danger' };
+                    return { label: 'Belum Dinilai', class: 'secondary' };
+                },
+                simpanPenilaian() {
+                    if (!this.selectedKaryawan || !this.periodeAktif) {
+                        alert('Pilih karyawan dan pastikan periode penilaian aktif!');
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('input[karyawan_id]', this.selectedKaryawan.id);
+                    formData.append('input[periode_id]', this.periodeAktif.id);
+                    formData.append('input[total_nilai]', this.totalNilai);
+                    formData.append('input[klasifikasi]', this.klasifikasiKinerja.label);
+                    formData.append('input[catatan]', this.catatanPenilaian);
+                    formData.append('input[is_training]', this.isTraining ? 1 : 0);
+
+                    Object.entries(this.nilaiKriteria).forEach(([kriteriaId, nilai]) => {
+                        formData.append(`input[nilai_kriteria][${kriteriaId}]`, nilai);
+                    });
+
+                    axiosInstance.post(this.buildCrudUrl(), formData).then(res => {
+                        if (res.data.status) {
+                            alert(res.data.data.msg || 'Penilaian berhasil disimpan!');
+                            this.showFormPenilaian = false;
+                            this.selectedKaryawan = null;
+                            this.requestedKaryawanId = null;
+                            this.syncSelectedKaryawanToUrl();
+                            this.GetData();
+                        } else {
+                            alert('Gagal menyimpan penilaian: ' + (res.data.data?.msg || 'Tidak diketahui'));
+                        }
+                    }).catch(err => {
+                        alert('Terjadi kesalahan: ' + (err.response?.data?.data?.msg || err.message));
+                    });
+                },
+                batalPenilaian() {
+                    this.showFormPenilaian = false;
+                    this.selectedKaryawan = null;
+                    this.requestedKaryawanId = null;
+                    this.syncSelectedKaryawanToUrl();
+                },
+                afterGetdata() {
+                    this.tryOpenRequestedKaryawan();
+                }
+            }
+        }).mount('#app')
+    </script>
+@endsection
+@section('css')
+    <style>
+        .slide-fade-enter-active {
+            transition: all 0.3s ease-out;
+        }
+
+        .slide-fade-leave-active {
+            transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+        }
+
+        .slide-fade-enter-from,
+        .slide-fade-leave-to {
+            transform: translateX(20px);
+            opacity: 0;
+        }
+
+        .karyawan-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .karyawan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .nilai-input {
+            width: 80px;
+            text-align: center;
+        }
+
+        .kriteria-row {
+            padding: 10px;
+            border-bottom: 1px solid #e3e6f0;
+        }
+
+        .kriteria-row:hover {
+            background-color: #f8f9fc;
+        }
+    </style>
+@endsection
+@section('modal')
+@endsection
+@section('isi')
+    <div class="row" id="app">
+        {{-- Info Periode --}}
+        <div class="col-12 mb-3">
+            <div v-if="periodeAktif" class="alert alert-success">
+                <i class="fas fa-calendar-check"></i> 
+                <strong>Periode Penilaian Aktif:</strong> @{{ periodeAktif.nama_periode }} 
+                (@{{ periodeAktif.tanggal_mulai }} s/d @{{ periodeAktif.tanggal_selesai }})
+            </div>
+            <div v-else class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> 
+                <strong>Perhatian:</strong> Tidak ada periode penilaian yang aktif saat ini.
+            </div>
+        </div>
+
+        {{-- Form Penilaian --}}
+        <div v-if="showFormPenilaian" class="col-12 mb-3" ref="formPenilaian">
+                <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="fas fa-edit"></i> @{{ isEditPenilaian ? 'Edit Penilaian Kinerja' : 'Form Penilaian Kinerja' }}
+                    </h6>
+                    <button @click="batalPenilaian" class="btn btn-sm btn-light">
+                        <i class="fas fa-times"></i> Tutup
+                    </button>
+                </div>
+                <div class="card-body">
+                    {{-- Info Karyawan --}}
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="font-weight-bold">@{{ selectedKaryawan.nama }}</h5>
+                            <p class="mb-1"><strong>Jabatan:</strong> @{{ selectedKaryawan.jabatan }}</p>
+                            <p class="mb-1"><strong>Pekerjaan:</strong> @{{ selectedKaryawan.pekerjaan }}</p>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted">Total Nilai</h6>
+                                    <h2 :class="'text-' + klasifikasiKinerja.class">@{{ totalNilai }}</h2>
+                                    <span :class="'badge badge-' + klasifikasiKinerja.class">
+                                        @{{ klasifikasiKinerja.label }}
+                                    </span>
+                                    <div class="small text-muted mt-2">
+                                        Otomatis: @{{ klasifikasiOtomatis.label }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Kriteria Penilaian --}}
+                    <div class="alert alert-info py-2">
+                        <strong>Skala Penilaian:</strong>
+                        4 = Baik Sekali (Istimewa),
+                        3 = Baik,
+                        2 = Sedang,
+                        1 = Kurang Baik.
+                    </div>
+
+                    <h6 class="font-weight-bold mb-3">Kriteria Penilaian</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th width="5%">No</th>
+                                    <th width="35%">Kriteria</th>
+                                    <th width="10%">Bobot</th>
+                                    <th width="20%">Nilai (1-4)</th>
+                                    <th width="15%">Nilai x Bobot</th>
+                                    <th width="15%">Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(k, index) in kriteria" :key="k.id" class="kriteria-row">
+                                    <td class="text-center">@{{ index + 1 }}</td>
+                                    <td>
+                                        <strong>@{{ k.nama }}</strong>
+                                        <br><small class="text-muted">@{{ k.deskripsi }}</small>
+                                    </td>
+                                    <td class="text-center">@{{ k.bobot }}%</td>
+                                    <td class="text-center">
+                                        <input type="number" v-model="nilaiKriteria[k.id]" 
+                                            class="form-control nilai-input mx-auto" 
+                                            min="1" max="4" step="1">
+                                    </td>
+                                    <td class="text-center">
+                                        @{{ ((parseFloat(nilaiKriteria[k.id]) || 0) * parseFloat(k.bobot) / 100).toFixed(2) }}
+                                    </td>
+                                    <td class="text-center">
+                                        <span :class="'badge badge-' + getKeteranganSkala(nilaiKriteria[k.id]).class">
+                                            @{{ getKeteranganSkala(nilaiKriteria[k.id]).label }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="bg-light font-weight-bold">
+                                <tr>
+                                    <td colspan="4" class="text-right">Total Nilai Akhir:</td>
+                                    <td class="text-center">@{{ totalNilai }}</td>
+                                    <td class="text-center">
+                                        <span :class="'badge badge-' + klasifikasiKinerja.class">
+                                            @{{ klasifikasiKinerja.label }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    {{-- Catatan --}}
+                    <div class="form-group mt-3">
+                        <label class="font-weight-bold">Klasifikasi Kinerja (Bisa Disesuaikan)</label>
+                        <select class="form-control" v-model="klasifikasiManual">
+                            <option value="">Gunakan hasil otomatis (@{{ klasifikasiOtomatis.label }})</option>
+                            <option v-for="opsi in opsiKlasifikasi" :key="opsi.value" :value="opsi.value">
+                                @{{ opsi.label }}
+                            </option>
+                        </select>
+                        <small class="text-muted">
+                            Nilai ini akan disimpan sebagai label klasifikasi final untuk kebutuhan data training.
+                        </small>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="isTrainingSwitch" v-model="isTraining">
+                            <label class="custom-control-label font-weight-bold" for="isTrainingSwitch">
+                                Masukkan hasil penilaian ini ke data training
+                            </label>
+                        </div>
+                        <small class="text-muted">
+                            Aktifkan jika hasil penilaian ini layak dipakai sebagai data training KNN.
+                        </small>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label class="font-weight-bold">Catatan Penilaian</label>
+                        <textarea class="form-control" rows="3" v-model="catatanPenilaian" 
+                            placeholder="Tambahkan catatan atau komentar untuk karyawan..."></textarea>
+                    </div>
+
+                    {{-- Tombol Aksi --}}
+                    <div class="mt-4 text-right">
+                        <button @click="batalPenilaian" class="btn btn-secondary mr-2">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                        <button @click="simpanPenilaian" class="btn btn-primary" :disabled="!periodeAktif">
+                            <i class="fas fa-save"></i> @{{ isEditPenilaian ? 'Update Penilaian' : 'Simpan Penilaian' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Daftar Bawahan --}}
+        <div v-else class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-users"></i> Daftar Bawahan untuk Dinilai
+                    </h6>
+                    <button @click="GetData()" class="btn btn-sm btn-secondary">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div v-for="(karyawan, index) in data2" :key="karyawan.id" class="col-lg-4 col-md-6 mb-3">
+                            <div class="card karyawan-card h-100 border-left-primary shadow-sm" 
+                                @click="pilihKaryawan(karyawan)">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-3">
+                                            <img v-if="karyawan.foto" :src="'upload/' + karyawan.foto" 
+                                                class="rounded-circle" width="60" height="60" style="object-fit: cover;">
+                                            <div v-else class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                                                style="width: 60px; height: 60px; font-size: 24px;">
+                                                @{{ karyawan.nama?.charAt(0).toUpperCase() }}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h6 class="font-weight-bold mb-1">@{{ karyawan.nama }}</h6>
+                                            <small class="text-primary">@{{ karyawan.jabatan }}</small>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span v-if="karyawan.sudah_dinilai" class="badge badge-success">
+                                            <i class="fas fa-check"></i> Sudah Dinilai
+                                        </span>
+                                        <span v-else class="badge badge-warning">
+                                            <i class="fas fa-clock"></i> Belum Dinilai
+                                        </span>
+                                        <button class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i> @{{ karyawan.sudah_dinilai && periodeAktif ? 'Edit' : 'Nilai' }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="data2.length == 0" class="text-center py-5">
+                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Tidak ada bawahan yang perlu dinilai</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

@@ -1,0 +1,332 @@
+<?php 
+ use app\Fungsi;
+ ?>
+<?php $_shouldextend[1]=1; ?>
+<?php $this->startSection('js'); ?>
+ <script>
+ const {
+ createApp
+ } = Vue
+
+ app = createApp({
+ data() {
+ data = dataAwal();
+ data.baseURL = 'Service';
+ data.perlengkapan = '';
+ data.perlengkapanList = [];
+ data.keluhan = '';
+ data.keluhanList = [];
+ data.kecualiField = ['keluhan', 'tanggal_selesai', 'tanggal_diambil', 'teknisi_id', 'status'];
+ return data;
+ },
+ computed: computedAwal,
+ mounted() {
+ this.GetData();
+ },
+ beforeUpdated() {},
+ updated() {},
+ methods: {
+ ...methodAwal,
+ tambahanEdit(data) {
+ this.perlengkapanList = [];
+ this.keluhanList = [];
+ if (data.perlengkapan != null) {
+ this.perlengkapanList = data.perlengkapan.split('|');
+ }
+ if (data.keluhan != null) {
+ this.keluhanList = data.keluhan.split('|');
+ }
+
+ },
+
+ tambahList(nama) {
+ if (this[nama] != '') {
+ this[`${nama}List`].push(this[nama]);
+ this[nama] = '';
+ }
+ },
+ hapusList(nama, index) {
+ this[`${nama}List`].splice(index, 1);
+ },
+ setAwal() {
+ methodAwal.setAwal.call(this);
+ this.perlengkapan = '';
+ this.perlengkapanList = [];
+ this.keluhan = '';
+ this.keluhanList = [];
+ },
+ }
+ }).mount('#app')
+ </script>
+ <script></script>
+ <?php echo $this->runChild('Komponen.Lampiran'); ?>
+ <?php echo $this->runChild('Komponen.Pengerjaan-Script'); ?>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('css'); ?>
+ <style>
+ .slide-fade-enter-active {
+ transition: all 0.3s ease-out;
+ }
+
+ .slide-fade-leave-active {
+ transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+ }
+
+ .slide-fade-enter-from,
+ .slide-fade-leave-to {
+ transform: translateX(20px);
+ opacity: 0;
+ }
+
+ .table-surat {
+ color: black !important
+ }
+
+ .table-surat th {
+
+ padding: 0.1rem !important;
+ }
+
+ .table-bordered td,
+ .table-bordered th {
+ color: black !important;
+ border: 1px solid #000000 !important;
+ padding-top: 5px !important;
+ padding-bottom: 5px !important;
+ padding-left: 8px !important;
+ padding-right: 8px !important;
+ }
+
+
+
+ .nol {
+ padding: 0px !important;
+
+ }
+
+ pre {
+ border: 0;
+ padding: 0;
+ font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+ }
+ </style>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('modal'); ?>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('isi'); ?>
+ <div class="row" id="app">
+
+ <?php  $this->startComponent('Pages.Form'); ?>
+ <?php  $this->slot('tambahan'); ?>
+ <template v-else-if="inArray(data.name,['deskripsi'])">
+ <textarea rows="4"
+ style="width: 1px; height: 1px;position: absolute;left: 50%;
+ top: 50%;z-index: -9;"
+ :required="data.req" :maxlength="data.max" :name="'input[' + data.name + ']'" class="form-control summernote  "
+ v-model="data.val" :id="data.name + '1'" :placeholder="data.label" :aria-describedby="data.name + '12'"></textarea>
+ </template>
+ <template v-else-if="inArray(data.name,['device_id'])">
+ <div class="input-group ">
+ <select v-model="data.val" class="form-control select" data-placeholder="Pilih Device" :id="data.name + '1'"
+ :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.device" :value="i.id">
+ {{ i.nama }} {{ i.merk }} - {{ i.barcode }}</option>
+ </select>
+ <div class="input-group-append">
+ <button class="btn btn-primary btn-sm" @click="FormDevice('')" type="button"><i
+ class="fa fa-plus"></i></button>
+ </div>
+ </div>
+ </template>
+
+ <template v-else-if="inArray(data.name,['transaksi_id'])">
+ <div class="input-group ">
+
+ <select v-model="data.val[0]" class="form-control select" data-placeholder="Pilih Contact"
+ :id="data.name + '1'" :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.contact" :value="i.id">
+ {{ i.nama }} | {{ i.nohp }}</option>
+ </select>
+ <div class="input-group-append">
+ <button class="btn btn-primary btn-sm" @click="ModalContact('')" type="button" id="button-addon2"><i
+ class="fa fa-plus"></i></button>
+ </div>
+ </div>
+ <label class=" col-form-label ">Nota</label>
+ <input type="text" v-model="data.val[1]" required name="input[nota]" class="form-control ">
+ <template v-if="edit">
+ <label class=" col-form-label ">Diskon</label>
+ <input type="text" v-model="data.val[2]" required name="input[diskon]" class="form-control ">
+ <label class=" col-form-label ">Catatan</label>
+ <textarea type="text" v-model="data.val[3]" required name="input[catatan]" class="form-control "></textarea>
+ </template>
+ </template>
+ <template v-else-if="inArray(data.name,['status'])">
+ <select v-model="data.val" class="form-control select-status" data-placeholder="Pilih Status"
+ :id="data.name + '1'" :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="(i,key) in tambahan.status" :value="i.key">
+ {{ i.label }} </option>
+ </select>
+ </template>
+ <template v-else-if="inArray(data.name,['perlengkapan'])">
+ <ul class="mb-0">
+ <li v-for="(a,index) in perlengkapanList">
+ <div class="d-flex justify-content-between w-100 mb-1">
+ <span>{{ a }}
+ <input type="hidden" name="input[perlengkapan][]" :value="a"></span>
+ <span>
+ <a href="javascript:;" class="text-danger" @click="hapusList('perlengkapan',index)"><i
+ class="fa fa-trash"></i></a>
+ </span>
+ </div>
+ </li>
+ </ul>
+ <div class="input-group   ">
+ <input type="text" v-model="perlengkapan" @keydown.enter.prevent="tambahList('perlengkapan')"
+ class="form-control ":placeholder="data.label" :aria-describedby="data.name + '12'">
+ <div class="input-group-append">
+ <button class="btn btn-success btn-sm" @click="tambahList('perlengkapan')" type="button"
+ id="button-addon2"><i class="fa fa-plus"></i></button>
+ </div>
+ </div>
+ <label class=" col-form-label ">Keluhan</label>
+
+ <ul class="mb-0">
+ <li v-for="(a,index) in keluhanList">
+ <div class="d-flex justify-content-between w-100 mb-1">
+ <span>{{ a }}
+ <input type="hidden" name="input[keluhan][]" :value="a"></span>
+ <span>
+ <a href="javascript:;" class="text-danger" @click="hapusList('keluhan',index)"><i
+ class="fa fa-trash"></i></a>
+ </span>
+ </div>
+ </li>
+ </ul>
+ <div class="input-group ">
+
+ <input type="text" v-model="keluhan" @keydown.enter.prevent="tambahList('keluhan')" class="form-control "
+ placeholder="Keluhan" aria-describedby="keluhan12">
+ <div class="input-group-append">
+ <button class="btn btn-success btn-sm" @click="tambahList('keluhan')" type="button"><i
+ class="fa fa-plus"></i></button>
+ </div>
+ </div>
+ </template>
+
+ <template v-else-if="inArray(data.name,['keluhan'])">
+
+ </template>
+ <template v-else-if="inArray(data.name,['penerima_id'])">
+ <div class="input-group ">
+ <select v-model="data.val" class="form-control select-status" data-placeholder="Pilih User"
+ :id="data.name + '1'" :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.teknisi" :value="i.id">
+ {{ i.nama }} | {{ i.nohp }} </option>
+ </select>
+ <div class="input-group-append">
+ <button class="btn btn-primary btn-sm" @click="FormUser('')" type="button"><i
+ class="fa fa-plus"></i></button>
+ </div>
+ </div>
+
+ </template>
+ <template v-else-if="inArray(data.name,['teknisi_id'])">
+ <div class="input-group ">
+ <select v-model="data.val" class="form-control select-status" data-placeholder="Pilih Teknisi"
+ :id="data.name + '1'" :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.teknisi" :value="i.id">
+ {{ i.nama }} | {{ i.nohp }} </option>
+ </select>
+ <div class="input-group-append">
+ <button class="btn btn-primary btn-sm" @click="FormUser('')" type="button"><i
+ class="fa fa-plus"></i></button>
+ </div>
+ </div>
+
+ </template>
+ <?php  $this->endSlot(); ?>
+ <?php echo $this->renderComponent(); ?>
+ <?php  $this->startComponent('Pages.Filter'); ?>
+ <?php echo $this->renderComponent(); ?>
+
+ <?php  $this->startComponent('Pages.Table'); ?>
+ <?php  $this->slot('tambahanth'); ?>
+ <th data-priority="1">Total</th>
+ <?php  $this->endSlot(); ?>
+ <?php  $this->slot('td'); ?>
+ <template v-else-if="inArray(a.name,['transaksi_id'])">
+
+ <a href="javascript:;" v-bind:onclick="'app.ViewService('+i.transaksi_id2+')'">
+ <strong>{{ i.nota }}</strong></a>
+ <a href="javascript:;" v-bind:onclick="'app.ModalContactView('+i.contact_id+', 2)'">
+ <div class="text-muted">No HP. {{ i.nohp }} ({{ i.contact_nama }})</div>
+ </a>
+ </template>
+ <template v-else-if="inArray(a.name,['device_id'])">
+
+ <a href="javascript:;" v-bind:onclick="'app.ViewDevice('+i.device_id+', 2)'"> <strong>{{ i.device_nama }}
+ {{ i.device_merk }}</strong>
+
+ </a>
+ <div class="text-muted">Barcode: <strong>{{ i.device_barcode }}</strong></div>
+
+ </template>
+ <template v-else-if="inArray(a.name,['teknisi_id'])">
+ <div v-if="i.teknisi_nama">
+ <a href="javascript:;" v-bind:onclick="'app.ViewUser('+i.teknisi_id+', 2)'">
+ <strong>{{ i.teknisi_nama }}</strong>
+ </a>
+ <div class="text-muted">Jabatan : <strong>{{ i.teknisi_nohp }}</strong></div>
+ </div>
+ </template>
+ <template v-else-if="inArray(a.name,['penerima_id'])">
+ <div v-if="i.penerima_nama">
+
+ <a href="javascript:;" v-bind:onclick="'app.ViewUser('+i.penerima_id+', 2)'">
+ <strong>{{ i.penerima_nama }}</strong>
+
+ </a>
+ <div class="text-muted">Jabatan : <strong>{{ i.penerima_nohp }}</strong></div>
+ </div>
+
+
+ </template>
+ <template v-else-if="inArray(a.name,['status'])">
+ <span v-html="i.status2"></span>
+
+ </template>
+ <template v-else-if="inArray(a.name,['perlengkapan','keluhan'])">
+
+ <ul class="mb-0">
+ <li v-for="(b,index) in i[a.name]?.split('|')">
+ {{ b }}
+ </li>
+ </ul>
+ </template>
+ <?php  $this->endSlot(); ?>
+ <?php  $this->slot('tambahantd'); ?>
+ <th>
+ Rp {{ numberFormat(i.final) }}
+ </th>
+ <?php  $this->endSlot(); ?>
+ <?php  $this->slot('tfoot'); ?>
+ <tr>
+ <th>Total</th>
+ <th v-for="a in countFields"> </th>
+ <th>Rp {{ numberFormat(tambahan.final) }}</th>
+ <th></th>
+ </tr>
+ <?php  $this->endSlot(); ?>
+ <?php echo $this->renderComponent(); ?>
+
+ <!-- Column -->
+ </div>
+<?php $this->stopSection(); ?>
+
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('Layout.html'); } ?>

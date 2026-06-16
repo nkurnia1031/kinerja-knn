@@ -1,0 +1,22 @@
+<div class="col-12 mb-3">
+ <div class="card bg-gradient-primary text-white shadow">
+ <div class="card-body">
+ <div class="row align-items-center">
+ <div class="col-md-8">
+ <h4 class="mb-1">
+ <i class="fas fa-brain mr-2"></i>
+ Analisa Klasifikasi Kinerja - Metode K-Nearest Neighbor (KNN)
+ </h4>
+ <p class="mb-0 opacity-75">
+ Sistem klasifikasi kinerja karyawan menggunakan algoritma KNN dengan perhitungan di server
+ </p>
+ </div>
+ <div class="col-md-4 text-md-right mt-3 mt-md-0">
+ <button class="btn btn-light btn-sm mr-2" @click="exportJSON" :disabled="isLoading">
+ <i class="fas fa-download"></i> Export JSON
+ </button>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>

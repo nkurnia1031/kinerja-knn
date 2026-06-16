@@ -1,0 +1,650 @@
+@php
+    use app\Fungsi;
+@endphp
+@extends('Layout.html')
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const {
+            createApp
+        } = Vue
+
+        app = createApp({
+            data() {
+                return {
+                    userRole: '{{ $Session["admin"]->role ?? "guest" }}',
+                    userName: '{{ $Session["admin"]->nama ?? "Pengunjung" }}',
+                    stats: {
+                        total_karyawan: 0,
+                        total_kriteria: 0,
+                        total_penilaian: 0,
+                        periode_aktif: null
+                    },
+                    recentPenilaian: [],
+                    myStats: {
+                        total_bawahan: 0,
+                        sudah_dinilai: 0,
+                        belum_dinilai: 0
+                    },
+                    myPenilaian: [],
+                    klasifikasi: {
+                        sangat_baik: 0,
+                        baik: 0,
+                        cukup: 0,
+                        kurang: 0,
+                        sangat_kurang: 0
+                    },
+                    chartInstance: null,
+                    recentPenilaianTable: null
+                };
+            },
+            mounted() {
+                this.loadDashboardData();
+            },
+            methods: {
+                destroyRecentPenilaianTable() {
+                    if (this.recentPenilaianTable) {
+                        this.recentPenilaianTable.destroy();
+                        this.recentPenilaianTable = null;
+                    }
+                },
+                initRecentPenilaianTable() {
+                    this.destroyRecentPenilaianTable();
+
+                    if (!this.recentPenilaian.length) {
+                        return;
+                    }
+
+                    this.$nextTick(() => {
+                        if ($('#dashboardRecentPenilaianTable').length) {
+                            this.recentPenilaianTable = AktifDataTable2('#dashboardRecentPenilaianTable');
+                        }
+                    });
+                },
+                loadDashboardData() {
+                    if (this.userRole === 'admin') {
+                        this.loadAdminDashboard();
+                    } else if (this.userRole === 'pimpinan') {
+                        this.loadManagementDashboard();
+                    } else if (this.userRole === 'atasan') {
+                        this.loadSupervisorDashboard();
+                    } else if (this.userRole === 'karyawan') {
+                        this.loadKaryawanDashboard();
+                    }
+                },
+                loadAdminDashboard() {
+                    axiosInstance.get('Dashboard/admin').then(res => {
+                        const data = res.data.data || {};
+                        this.destroyRecentPenilaianTable();
+                        this.stats = data.stats || this.stats;
+                        this.recentPenilaian = data.recent || [];
+                        this.klasifikasi = data.klasifikasi || this.klasifikasi;
+                        this.$nextTick(() => {
+                            this.renderChart();
+                            this.initRecentPenilaianTable();
+                        });
+                    });
+                },
+                loadSupervisorDashboard() {
+                    axiosInstance.get('Dashboard/atasan').then(res => {
+                        const data = res.data.data || {};
+                        this.myStats = data.stats || this.myStats;
+                        this.recentPenilaian = data.recent || [];
+                    });
+                },
+                loadKaryawanDashboard() {
+                    axiosInstance.get('Dashboard/karyawan').then(res => {
+                        const data = res.data.data || {};
+                        this.myPenilaian = data.penilaian || [];
+                    });
+                },
+                loadManagementDashboard() {
+                    axiosInstance.get('Dashboard/pimpinan').then(res => {
+                        const data = res.data.data || {};
+                        this.stats = data.stats || this.stats;
+                        this.klasifikasi = data.klasifikasi || this.klasifikasi;
+                        this.$nextTick(() => this.renderChart());
+                    });
+                },
+                renderChart() {
+                    if (this.chartInstance) this.chartInstance.destroy();
+                    
+                    const ctx = document.getElementById('klasifikasiChart');
+                    if (ctx) {
+                        this.chartInstance = new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Sangat Baik', 'Baik', 'Cukup', 'Kurang', 'Sangat Kurang'],
+                                datasets: [{
+                                    data: [
+                                        this.klasifikasi.sangat_baik,
+                                        this.klasifikasi.baik,
+                                        this.klasifikasi.cukup,
+                                        this.klasifikasi.kurang,
+                                        this.klasifikasi.sangat_kurang
+                                    ],
+                                    backgroundColor: ['#1cc88a', '#4e73df', '#f6c23e', '#e74a3b', '#5a5c69'],
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                    }
+                                }
+                            }
+                        });
+                    }
+                },
+                getKlasifikasiClass(klasifikasi) {
+                    const mapping = {
+                        'Sangat Baik': 'success',
+                        'Baik': 'primary',
+                        'Cukup': 'warning',
+                        'Kurang': 'danger',
+                        'Sangat Kurang': 'dark'
+                    };
+                    return mapping[klasifikasi] || 'secondary';
+                }
+            }
+        }).mount('#app')
+    </script>
+@endsection
+@section('css')
+    <style>
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .quick-link {
+            transition: all 0.3s ease;
+        }
+
+        .quick-link:hover {
+            transform: scale(1.05);
+        }
+    </style>
+@endsection
+@section('modal')
+@endsection
+@section('isi')
+    <div class="row" id="app">
+        {{-- Welcome Card --}}
+        <div class="col-12 mb-4">
+            <div class="card welcome-card text-white shadow">
+                <div class="card-body py-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3 class="mb-1">Selamat Datang, @{{ userName }}!</h3>
+                            <p class="mb-0 opacity-75">
+                                Sistem Penilaian Kinerja Karyawan - 
+                                <span v-if="userRole == 'admin'">Administrator</span>
+                                <span v-else-if="userRole == 'pimpinan'">Pimpinan</span>
+                                <span v-else-if="userRole == 'atasan'">Atasan</span>
+                                <span v-else-if="userRole == 'karyawan'">Karyawan</span>
+                                <span v-else>Pengunjung</span>
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                            <i class="fas fa-chart-line fa-4x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Admin Dashboard --}}
+        <template v-if="userRole == 'admin'">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Karyawan</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ stats.total_karyawan }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Kriteria Penilaian</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ stats.total_kriteria }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Total Penilaian</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ stats.total_penilaian }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Periode Aktif</div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                    @{{ stats.periode_aktif || 'Tidak Ada' }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Chart & Quick Links --}}
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-chart-pie"></i> Distribusi Klasifikasi Kinerja
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="klasifikasiChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-link"></i> Menu Cepat
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <a href="Karyawan" class="btn btn-outline-primary btn-block quick-link py-3">
+                                    <i class="fas fa-users fa-2x mb-2"></i><br>
+                                    Data Karyawan
+                                </a>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <a href="Kriteria" class="btn btn-outline-success btn-block quick-link py-3">
+                                    <i class="fas fa-clipboard-list fa-2x mb-2"></i><br>
+                                    Kriteria
+                                </a>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <a href="KlasifikasiKinerja" class="btn btn-outline-info btn-block quick-link py-3">
+                                    <i class="fas fa-chart-bar fa-2x mb-2"></i><br>
+                                    Klasifikasi
+                                </a>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <a href="RekapPenilaian" class="btn btn-outline-warning btn-block quick-link py-3">
+                                    <i class="fas fa-file-alt fa-2x mb-2"></i><br>
+                                    Rekap
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-history"></i> Penilaian Terbaru Periode Aktif
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" v-if="recentPenilaian.length > 0">
+                            <table class="table table-bordered table-hover mb-0" id="dashboardRecentPenilaianTable">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Periode</th>
+                                        <th class="text-center">Nilai</th>
+                                        <th class="text-center">Klasifikasi Penilaian</th>
+                                        <th class="text-center">Klasifikasi KNN</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in recentPenilaian" :key="item.id">
+                                        <td>
+                                            <strong>@{{ item.nama }}</strong>
+                                            <br><small class="text-muted">@{{ item.jabatan || '-' }}</small>
+                                        </td>
+                                        <td>@{{ item.periode || '-' }}</td>
+                                        <td class="text-center font-weight-bold">@{{ item.total_nilai }}</td>
+                                        <td class="text-center">
+                                            <span :class="'badge badge-' + getKlasifikasiClass(item.klasifikasi)">
+                                                @{{ item.klasifikasi || '-' }}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span :class="'badge badge-' + getKlasifikasiClass(item.klasifikasi_knn)">
+                                                @{{ item.klasifikasi_knn || '-' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div v-else class="text-muted text-center py-3">
+                            Belum ada hasil penilaian / klasifikasi tersimpan pada periode aktif.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        {{-- Atasan Dashboard --}}
+        <template v-if="userRole == 'atasan'">
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card stat-card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Bawahan</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ myStats.total_bawahan }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-user-friends fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card stat-card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Sudah Dinilai</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ myStats.sudah_dinilai }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card stat-card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Belum Dinilai</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ myStats.belum_dinilai }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clock fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-tasks"></i> Tugas Penilaian
+                        </h6>
+                        <a href="PenilaianBawahan" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i> Mulai Penilaian
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div v-if="myStats.belum_dinilai > 0" class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Anda memiliki <strong>@{{ myStats.belum_dinilai }}</strong> bawahan yang belum dinilai pada periode ini.
+                        </div>
+                        <div v-else class="alert alert-success">
+                            <i class="fas fa-check-circle"></i>
+                            Semua bawahan sudah dinilai pada periode ini.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        {{-- Karyawan Dashboard --}}
+        <template v-if="userRole == 'karyawan'">
+            <div class="col-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-history"></i> Riwayat Penilaian Terakhir
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div v-if="myPenilaian.length > 0">
+                            <div v-for="p in myPenilaian" :key="p.id" class="mb-3 p-3 border rounded">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <strong>@{{ p.periode }}</strong><br>
+                                        <small class="text-muted">@{{ p.tanggal_penilaian }}</small>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <h4 :class="'mb-0 text-' + getKlasifikasiClass(p.klasifikasi)">
+                                            @{{ p.total_nilai }}
+                                        </h4>
+                                        <span class="d-inline-block mr-1" :class="'badge badge-' + getKlasifikasiClass(p.klasifikasi)">
+                                            Penilaian: @{{ p.klasifikasi }}
+                                        </span>
+                                        <span class="d-inline-block mt-1" :class="'badge badge-' + getKlasifikasiClass(p.klasifikasi_knn)">
+                                            KNN: @{{ p.klasifikasi_knn || '-' }}
+                                        </span>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <a :href="'RiwayatPenilaian?id=' + p.id" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> Detail
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="text-center py-4">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Belum ada riwayat penilaian</h5>
+                            <p class="text-muted">Penilaian kinerja Anda akan muncul di sini</p>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="RiwayatPenilaian" class="btn btn-primary">
+                                <i class="fas fa-list"></i> Lihat Semua Riwayat
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        {{-- Pimpinan Dashboard --}}
+        <template v-if="userRole == 'pimpinan'">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Karyawan</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ stats.total_karyawan }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Berkinerja Baik</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @{{ klasifikasi.sangat_baik + klasifikasi.baik }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-thumbs-up fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    Perlu Perhatian</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @{{ klasifikasi.cukup + klasifikasi.kurang }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Total Penilaian</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ stats.total_penilaian }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-chart-pie"></i> Distribusi Klasifikasi
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="klasifikasiChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-link"></i> Akses Cepat
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <a href="AnalisaKinerja" class="btn btn-outline-primary btn-block quick-link py-3">
+                                    <i class="fas fa-chart-line fa-2x mb-2"></i><br>
+                                    Analisa Kinerja
+                                </a>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <a href="RekapPenilaian" class="btn btn-outline-success btn-block quick-link py-3">
+                                    <i class="fas fa-file-invoice fa-2x mb-2"></i><br>
+                                    Rekap Nilai
+                                </a>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <a href="KlasifikasiKinerja" class="btn btn-outline-warning btn-block quick-link py-3">
+                                    <i class="fas fa-chart-pie fa-2x mb-2"></i><br>
+                                    Klasifikasi
+                                </a>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <a href="Karyawan" class="btn btn-outline-info btn-block quick-link py-3">
+                                    <i class="fas fa-users fa-2x mb-2"></i><br>
+                                    Data Karyawan
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        {{-- Guest View --}}
+        <template v-if="!userRole || userRole == 'guest'">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-lock fa-4x text-muted mb-4"></i>
+                        <h4>Silakan Login untuk Mengakses Sistem</h4>
+                        <p class="text-muted">Sistem Penilaian Kinerja Karyawan</p>
+                        <a href="Login" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        @include('Pages.Dashboard.UseCaseDocumentation')
+    </div>
+@endsection

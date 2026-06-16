@@ -1,0 +1,113 @@
+<?php 
+ use app\Fungsi;
+ ?>
+<?php $_shouldextend[1]=1; ?>
+<?php $this->startSection('js'); ?>
+ <script>
+ const {
+ createApp
+ } = Vue
+
+ app = createApp({
+ data() {
+ data = dataAwal();
+ data.baseURL = 'Device';
+ return data;
+ },
+ computed: computedAwal,
+ mounted() {
+ this.GetData();
+ },
+ beforeUpdated() {},
+ updated() {},
+ methods: methodAwal
+ }).mount('#app')
+ </script>
+ <script></script>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('css'); ?>
+ <style>
+ .slide-fade-enter-active {
+ transition: all 0.3s ease-out;
+ }
+
+ .slide-fade-leave-active {
+ transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+ }
+
+ .slide-fade-enter-from,
+ .slide-fade-leave-to {
+ transform: translateX(20px);
+ opacity: 0;
+ }
+
+ .table-surat {
+ color: black !important
+ }
+
+ .table-surat th {
+
+ padding: 0.1rem !important;
+ }
+
+ .table-bordered td,
+ .table-bordered th {
+ color: black !important;
+ border: 1px solid #000000 !important;
+ padding-top: 5px !important;
+ padding-bottom: 5px !important;
+ padding-left: 8px !important;
+ padding-right: 8px !important;
+ }
+
+
+
+ .nol {
+ padding: 0px !important;
+
+ }
+
+ pre {
+ border: 0;
+ padding: 0;
+ font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+ }
+ </style>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('modal'); ?>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('isi'); ?>
+ <div class="row" id="app">
+
+ <?php  $this->startComponent('Pages.Form'); ?>
+ <?php  $this->slot('tambahan'); ?>
+ <template v-else-if="inArray(data.name,['nama'])">
+ <select v-model="data.val" class="form-control select-device" data-placeholder="Pilih Jenis Device"
+ :id="data.name + '1'" :required="data.req" :name="'input[' + data.name + ']'">
+ <option value=""></option>
+ <option v-for="i in tambahan.device" :value="i">
+ {{ i }} </option>
+ </select>
+
+ </template>
+ <?php  $this->endSlot(); ?>
+ <?php echo $this->renderComponent(); ?>
+ <?php  $this->startComponent('Pages.Filter'); ?>
+ <?php echo $this->renderComponent(); ?>
+
+ <?php  $this->startComponent('Pages.Table'); ?>
+ <?php  $this->slot('tambahanth'); ?>
+ <?php  $this->endSlot(); ?>
+ <?php  $this->slot('td'); ?>
+ <?php  $this->endSlot(); ?>
+ <?php  $this->slot('tambahantd'); ?>
+ <?php  $this->endSlot(); ?>
+ <?php  $this->slot('tfoot'); ?>
+ <?php  $this->endSlot(); ?>
+ <?php echo $this->renderComponent(); ?>
+
+ <!-- Column -->
+ </div>
+<?php $this->stopSection(); ?>
+
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('Layout.html'); } ?>
