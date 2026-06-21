@@ -110,110 +110,178 @@
 
                     <div class="col-12 mb-3" v-if="selectedKaryawan.all_distances || detailPerhitungan">
                         <div class="card">
-                                <div class="card-header bg-light">
-                                    <strong><i class="fas fa-ruler mr-2"></i>Perhitungan Jarak Euclidean ke Semua Data Training</strong>
+                            <div class="card-header bg-light">
+                                <strong><i class="fas fa-ruler mr-2"></i>Perhitungan Jarak Euclidean ke Semua Data Training</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <strong>Rumus Euclidean Distance:</strong><br>
+                                    <code>d(x,y) = sqrt( SUM[ (xi - yi)^2 ] )</code><br>
+                                    <small>Contoh bentuk: sqrt((4 - 4)^2 + (3 - 2)^2 + (4 - 3)^2)</small>
                                 </div>
-                                <div class="card-body">
-                                    <div class="alert alert-info">
-                                        <strong>Rumus Euclidean Distance:</strong><br>
-                                        <code>d(x,y) = sqrt( SUM[ (xi - yi)^2 ] )</code><br>
-                                        <small>Contoh bentuk: √(4 − 4)^2 + (3 − 2)^2 + (4 − 3)^2</small>
-                                    </div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-sm distance-table">
-                                        <thead class="bg-secondary text-white">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Nama (Training)</th>
-                                                <th>Klasifikasi</th>
-                                                <th class="text-center">Jarak</th>
-                                                <th class="text-center">Ranking</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-if="detailPerhitungan && detailPerhitungan.detail_jarak">
-                                            <tr v-for="(d, idx) in detailPerhitungan.detail_jarak"
-                                                :key="d.training_id || idx"
-                                                :class="d.is_k_nearest ? 'k-nearest-highlight' : ''">
-                                                <td>@{{ d.training_id }}</td>
-                                                <td>
-                                                    <div class="font-weight-bold">@{{ d.nama_training }}</div>
-                                                    <small class="text-muted d-block">Periode: @{{ d.periode_training || '-' }}</small>
-                                                    <span v-if="d.is_k_nearest" class="badge badge-success ml-2">K-Nearest</span>
-                                                </td>
-                                                <td>
-                                                    <span class="badge" :class="'badge-' + getKlasifikasiClass(d.klasifikasi_training)">
-                                                        @{{ d.klasifikasi_training }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <div class="text-center">
-                                                        <div class="font-weight-bold mb-1">@{{ formatDistance(d.nilai_jarak) }}</div>
-                                                        <a v-if="d.detail_matematis"
-                                                            class="btn btn-link btn-sm p-0"
-                                                            data-toggle="collapse"
-                                                            :href="'#' + getDistanceCollapseId(d, idx)"
-                                                            role="button"
-                                                            aria-expanded="false"
-                                                            :aria-controls="getDistanceCollapseId(d, idx)">
-                                                            Lihat langkah hitung
-                                                        </a>
-                                                    </div>
-                                                    <div v-if="d.detail_matematis"
-                                                        class="collapse text-left mt-2"
-                                                        :id="getDistanceCollapseId(d, idx)">
-                                                        <div class="card card-body bg-light">
-                                                            <div class="font-weight-bold mb-2">Turunan Perhitungan:</div>
-                                                            <div class="ml-3">
-                                                                <div class="mb-2">
-                                                                    = √(
-                                                                    <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'raw-' + term.kode + '-' + termIdx">
-                                                                        <span>(@{{ formatMathNumber(term.testing, 0) }} − @{{ formatMathNumber(term.training, 0) }})<sup>2</sup></span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
-                                                                    </template>
-                                                                    )
+
+                                <div class="mb-4">
+                                    <h6 class="font-weight-bold text-secondary">1. Urutan Awal Data Training</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-sm distance-table mb-0">
+                                            <thead class="bg-light">
+                                                <tr>
+                                                    <th class="text-center">Urutan</th>
+                                                    <th>ID</th>
+                                                    <th>Nama (Training)</th>
+                                                    <th>Klasifikasi</th>
+                                                    <th class="text-center">Jarak (D)</th>
+                                                    <th class="text-center">Ranking Jarak</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-if="detailPerhitungan && detailPerhitungan.detail_jarak_urutan_awal">
+                                                <tr v-for="(d, idx) in detailPerhitungan.detail_jarak_urutan_awal"
+                                                    :key="'original-' + (d.training_id || idx)"
+                                                    :class="d.is_k_nearest ? 'k-nearest-highlight' : ''">
+                                                    <td class="text-center font-weight-bold">@{{ d.training_order || (idx + 1) }}</td>
+                                                    <td>@{{ d.training_id }}</td>
+                                                    <td>
+                                                        <div class="font-weight-bold">@{{ d.nama_training }}</div>
+                                                        <small class="text-muted d-block">Periode: @{{ d.periode_training || '-' }}</small>
+                                                        <span v-if="d.is_k_nearest" class="badge badge-success ml-2">K-Nearest</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge" :class="'badge-' + getKlasifikasiClass(d.klasifikasi_training)">
+                                                            @{{ d.klasifikasi_training }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-center">
+                                                            <div class="font-weight-bold mb-1">@{{ formatDistance(d.nilai_jarak) }}</div>
+                                                            <a v-if="d.detail_matematis"
+                                                                class="btn btn-link btn-sm p-0"
+                                                                data-toggle="collapse"
+                                                                :href="'#' + getDistanceCollapseId(d, idx, 'original')"
+                                                                role="button"
+                                                                aria-expanded="false"
+                                                                :aria-controls="getDistanceCollapseId(d, idx, 'original')">
+                                                                Lihat langkah hitung
+                                                            </a>
+                                                        </div>
+                                                        <div v-if="d.detail_matematis"
+                                                            class="collapse text-left mt-2"
+                                                            :id="getDistanceCollapseId(d, idx, 'original')">
+                                                            <div class="card card-body bg-light">
+                                                                <div class="font-weight-bold mb-2">Turunan Perhitungan:</div>
+                                                                <div class="ml-3">
+                                                                    <div class="mb-2">
+                                                                        = sqrt(
+                                                                        <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'original-raw-' + term.kode + '-' + termIdx">
+                                                                            <span>(@{{ formatMathNumber(term.testing, 0) }} - @{{ formatMathNumber(term.training, 0) }})<sup>2</sup></span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
+                                                                        </template>
+                                                                        )
+                                                                    </div>
+                                                                    <div class="mb-2">
+                                                                        = sqrt(
+                                                                        <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'original-diff-' + term.kode + '-' + termIdx">
+                                                                            <span>(@{{ formatMathNumber(term.selisih, 0) }})<sup>2</sup></span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
+                                                                        </template>
+                                                                        )
+                                                                    </div>
+                                                                    <div class="mb-2">
+                                                                        = sqrt(
+                                                                        <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'original-square-' + term.kode + '-' + termIdx">
+                                                                            <span>@{{ formatMathNumber(term.selisih_kuadrat, 0) }}</span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
+                                                                        </template>
+                                                                        )
+                                                                    </div>
+                                                                    <div class="mb-2">= sqrt(@{{ formatMathNumber(d.detail_matematis.sum_squared, 0) }})</div>
+                                                                    <div>= <strong>@{{ formatDistance(d.detail_matematis.sqrt_result) }}</strong></div>
                                                                 </div>
-                                                                <div class="mb-2">
-                                                                    = √(
-                                                                    <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'diff-' + term.kode + '-' + termIdx">
-                                                                        <span>(@{{ formatMathNumber(term.selisih, 0) }})<sup>2</sup></span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
-                                                                    </template>
-                                                                    )
-                                                                </div>
-                                                                <div class="mb-2">
-                                                                    = √(
-                                                                    <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'square-' + term.kode + '-' + termIdx">
-                                                                        <span>@{{ formatMathNumber(term.selisih_kuadrat, 0) }}</span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
-                                                                    </template>
-                                                                    )
-                                                                </div>
-                                                                <div class="mb-2">= √@{{ formatMathNumber(d.detail_matematis.sum_squared, 0) }}</div>
-                                                                <div>= <strong>@{{ formatMathNumber(d.detail_matematis.sqrt_result, 4) }}</strong></div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center font-weight-bold">@{{ d.ranking }}</td>
-                                            </tr>
-                                        </tbody>
-                                        <tbody v-else-if="selectedKaryawan.all_distances">
-                                            <tr v-for="(d, idx) in selectedKaryawan.all_distances"
-                                                :key="d.training_id || d.id || idx"
-                                                :class="d.is_k_nearest ? 'k-nearest-highlight' : ''">
-                                                <td>@{{ d.training_id || d.id }}</td>
-                                                <td>
-                                                    <div class="font-weight-bold">@{{ d.nama }}</div>
-                                                    <small class="text-muted d-block">Periode: @{{ d.nama_periode || '-' }}</small>
-                                                    <span v-if="d.is_k_nearest" class="badge badge-success ml-2">K-Nearest</span>
-                                                </td>
-                                                <td>
-                                                    <span class="badge" :class="'badge-' + getKlasifikasiClass(d.klasifikasi)">
-                                                        @{{ d.klasifikasi }}
-                                                    </span>
-                                                </td>
-                                                <td class="text-center font-weight-bold">@{{ formatDistance(d.distance) }}</td>
-                                                <td class="text-center">@{{ d.ranking || (idx + 1) }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                    </td>
+                                                    <td class="text-center">@{{ d.ranking || '-' }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h6 class="font-weight-bold text-primary">2. Urutan Berdasarkan Jarak Terkecil</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-sm distance-table mb-0">
+                                            <thead class="bg-secondary text-white">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Nama (Training)</th>
+                                                    <th>Klasifikasi</th>
+                                                    <th class="text-center">Jarak (D)</th>
+                                                    <th class="text-center">Ranking</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-if="detailPerhitungan && (detailPerhitungan.detail_jarak_terurut || detailPerhitungan.detail_jarak)">
+                                                <tr v-for="(d, idx) in (detailPerhitungan.detail_jarak_terurut || detailPerhitungan.detail_jarak)"
+                                                    :key="'sorted-' + (d.training_id || idx)"
+                                                    :class="d.is_k_nearest ? 'k-nearest-highlight' : ''">
+                                                    <td>@{{ d.training_id }}</td>
+                                                    <td>
+                                                        <div class="font-weight-bold">@{{ d.nama_training }}</div>
+                                                        <small class="text-muted d-block">Periode: @{{ d.periode_training || '-' }}</small>
+                                                        <span v-if="d.is_k_nearest" class="badge badge-success ml-2">K-Nearest</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge" :class="'badge-' + getKlasifikasiClass(d.klasifikasi_training)">
+                                                            @{{ d.klasifikasi_training }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-center">
+                                                            <div class="font-weight-bold mb-1">@{{ formatDistance(d.nilai_jarak) }}</div>
+                                                            <a v-if="d.detail_matematis"
+                                                                class="btn btn-link btn-sm p-0"
+                                                                data-toggle="collapse"
+                                                                :href="'#' + getDistanceCollapseId(d, idx, 'sorted')"
+                                                                role="button"
+                                                                aria-expanded="false"
+                                                                :aria-controls="getDistanceCollapseId(d, idx, 'sorted')">
+                                                                Lihat langkah hitung
+                                                            </a>
+                                                        </div>
+                                                        <div v-if="d.detail_matematis"
+                                                            class="collapse text-left mt-2"
+                                                            :id="getDistanceCollapseId(d, idx, 'sorted')">
+                                                            <div class="card card-body bg-light">
+                                                                <div class="font-weight-bold mb-2">Turunan Perhitungan:</div>
+                                                                <div class="ml-3">
+                                                                    <div class="mb-2">
+                                                                        = sqrt(
+                                                                        <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'raw-' + term.kode + '-' + termIdx">
+                                                                            <span>(@{{ formatMathNumber(term.testing, 0) }} - @{{ formatMathNumber(term.training, 0) }})<sup>2</sup></span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
+                                                                        </template>
+                                                                        )
+                                                                    </div>
+                                                                    <div class="mb-2">
+                                                                        = sqrt(
+                                                                        <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'diff-' + term.kode + '-' + termIdx">
+                                                                            <span>(@{{ formatMathNumber(term.selisih, 0) }})<sup>2</sup></span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
+                                                                        </template>
+                                                                        )
+                                                                    </div>
+                                                                    <div class="mb-2">
+                                                                        = sqrt(
+                                                                        <template v-for="(term, termIdx) in d.detail_matematis.terms" :key="'square-' + term.kode + '-' + termIdx">
+                                                                            <span>@{{ formatMathNumber(term.selisih_kuadrat, 0) }}</span><span v-if="termIdx < d.detail_matematis.terms.length - 1"> + </span>
+                                                                        </template>
+                                                                        )
+                                                                    </div>
+                                                                    <div class="mb-2">= sqrt(@{{ formatMathNumber(d.detail_matematis.sum_squared, 0) }})</div>
+                                                                    <div>= <strong>@{{ formatDistance(d.detail_matematis.sqrt_result) }}</strong></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center font-weight-bold">@{{ d.ranking }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

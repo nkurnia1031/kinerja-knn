@@ -25,6 +25,7 @@ class KriteriaController extends Controller
         $this->Link = 'Kriteria';
         $this->files = [];
         $this->SortBy = 'id';
+        $this->SortWith = 'ASC';
         $this->selectWhere = [];
 
         // $this->tambahan['pengawas'] = $this->getDB()->run("SELECT nama FROM anggota WHERE level IN ('Pengawas')  ORDER BY nama ASC");

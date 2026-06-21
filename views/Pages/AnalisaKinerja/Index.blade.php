@@ -507,8 +507,8 @@
                     return Number.isFinite(number) ? number.toFixed(decimals) : value;
                 },
 
-                getDistanceCollapseId(item, index) {
-                    return `distance-detail-${item.training_id || item.id || 'row'}-${index}`;
+                getDistanceCollapseId(item, index, section = 'default') {
+                    return `distance-detail-${section}-${item.training_id || item.id || 'row'}-${index}`;
                 },
 
                 buildPreviewDistanceBreakdown(testingValues = [], trainingValues = []) {
@@ -544,21 +544,56 @@
                     };
                 },
 
-                buildPreviewDetailPerhitungan(hasil) {
-                    const testingValues = hasil?.karyawan?.nilai || [];
-                    const detailJarak = (hasil?.all_distances || []).map((item, index) => ({
+                buildPreviewDetailRows(items = [], testingValues = []) {
+                    return (items || []).map((item, index) => ({
                         training_id: item.id || item.training_id || null,
+                        training_order: item.training_order || (index + 1),
                         nama_training: item.nama || item.nama_training || '',
                         periode_training: item.nama_periode || item.periode_training || '-',
                         klasifikasi_training: item.klasifikasi || item.klasifikasi_training || '',
                         nilai_jarak: item.distance ?? item.nilai_jarak ?? 0,
-                        ranking: item.ranking || (index + 1),
+                        ranking: item.ranking || null,
                         is_k_nearest: !!item.is_k_nearest,
                         detail_matematis: this.buildPreviewDistanceBreakdown(
                             testingValues,
                             item.nilai_training || item.nilai || []
                         ),
                     }));
+                },
+
+                buildPreviewOriginalDistanceOrder(hasil) {
+                    const sortedMap = new Map(
+                        (hasil?.all_distances || []).map(item => [
+                            String(item.id || item.training_id || ''),
+                            item,
+                        ])
+                    );
+
+                    return (this.dataTraining || []).map((training, index) => {
+                        const key = String(training.id || training.training_id || '');
+                        const matched = sortedMap.get(key) || {};
+
+                        return {
+                            ...matched,
+                            id: matched.id || matched.training_id || training.id || null,
+                            nama: matched.nama || matched.nama_training || training.nama || '',
+                            nama_periode: matched.nama_periode || matched.periode_training || training.nama_periode || '-',
+                            nilai_training: matched.nilai_training || matched.nilai || training.nilai_kriteria || training.nilai || [],
+                            klasifikasi: matched.klasifikasi || matched.klasifikasi_training || training.klasifikasi || '',
+                            training_order: matched.training_order || (index + 1),
+                        };
+                    });
+                },
+
+                buildPreviewDetailPerhitungan(hasil) {
+                    const testingValues = hasil?.karyawan?.nilai || [];
+                    const originalItems = (hasil?.all_distances_original && hasil.all_distances_original.length)
+                        ? hasil.all_distances_original
+                        : this.buildPreviewOriginalDistanceOrder(hasil);
+                    const sortedItems = hasil?.all_distances || [];
+
+                    const detailJarakUrutanAwal = this.buildPreviewDetailRows(originalItems, testingValues);
+                    const detailJarakTerurut = this.buildPreviewDetailRows(sortedItems, testingValues);
 
                     const kNearest = (hasil?.k_nearest || []).map((item, index) => ({
                         training_id: item.id || item.training_id || null,
@@ -572,13 +607,21 @@
                     return {
                         hasil,
                         kriteria: this.kriteria,
-                        detail_jarak: detailJarak,
+                        detail_jarak: detailJarakTerurut,
+                        detail_jarak_terurut: detailJarakTerurut,
+                        detail_jarak_urutan_awal: detailJarakUrutanAwal,
                         k_nearest: kNearest,
                     };
                 },
                 
                 formatDistance(d) {
-                    return typeof d === 'number' ? d.toFixed(4) : d;
+                    const number = Number(d);
+                    return Number.isFinite(number)
+                        ? number.toLocaleString('id-ID', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })
+                        : d;
                 },
                 
                 hitungRataRata(nilai) {

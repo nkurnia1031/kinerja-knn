@@ -74,25 +74,43 @@ trait KnnHelperTrait
     protected function klasifikasiKNN(array $dataTest, array $dataTraining, int $k, array $bobot, string $metode = 'euclidean'): array
     {
         // Calculate distances to all training data
-        $distances = [];
-        foreach ($dataTraining as $train) {
+        $distancesOriginal = [];
+        foreach (array_values($dataTraining) as $index => $train) {
             $distance = $this->hitungJarak($dataTest['nilai'], $train['nilai'], $bobot, $metode);
-            $distances[] = [
+            $distancesOriginal[] = [
                 'id'              => $train['id'],
                 'nama'            => $train['nama'],
                 'nama_periode'    => $train['nama_periode'] ?? '',
                 'nilai_training'  => $train['nilai'],
                 'klasifikasi'     => $train['klasifikasi'],
-                'distance'        => $distance
+                'distance'        => $distance,
+                'training_order'  => $index + 1,
             ];
         }
+
+        $distances = $distancesOriginal;
 
         // Sort by distance (ascending)
         usort($distances, fn($a, $b) => $a['distance'] <=> $b['distance']);
 
+        $rankingById = [];
         foreach ($distances as $index => &$distanceItem) {
             $distanceItem['ranking'] = $index + 1;
             $distanceItem['is_k_nearest'] = $index < $k;
+            $rankingById[(string) ($distanceItem['id'] ?? '')] = [
+                'ranking' => $distanceItem['ranking'],
+                'is_k_nearest' => $distanceItem['is_k_nearest'],
+            ];
+        }
+        unset($distanceItem);
+
+        foreach ($distancesOriginal as &$distanceItem) {
+            $rankingMeta = $rankingById[(string) ($distanceItem['id'] ?? '')] ?? [
+                'ranking' => null,
+                'is_k_nearest' => false,
+            ];
+            $distanceItem['ranking'] = $rankingMeta['ranking'];
+            $distanceItem['is_k_nearest'] = $rankingMeta['is_k_nearest'];
         }
         unset($distanceItem);
 
@@ -117,12 +135,13 @@ trait KnnHelperTrait
         }
 
         return [
-            'karyawan'          => $dataTest,
-            'all_distances'     => $distances,
-            'k_nearest'         => $kNearest,
-            'voting'            => $votes,
-            'hasil_klasifikasi' => $hasil,
-            'confidence'        => round(($maxVotes / $k) * 100, 1)
+            'karyawan'              => $dataTest,
+            'all_distances_original'=> $distancesOriginal,
+            'all_distances'         => $distances,
+            'k_nearest'             => $kNearest,
+            'voting'                => $votes,
+            'hasil_klasifikasi'     => $hasil,
+            'confidence'            => round(($maxVotes / $k) * 100, 1)
         ];
     }
 

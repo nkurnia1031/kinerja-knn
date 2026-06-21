@@ -645,7 +645,7 @@
  </div>
  </template>
 
- <?php echo $this->runChild('Pages.Dashboard.UseCaseDocumentation'); ?>
+ <?php /* <?php echo $this->runChild('Pages.Dashboard.UseCaseDocumentation'); ?> */ ?>
  </div>
 <?php $this->stopSection(); ?>
 

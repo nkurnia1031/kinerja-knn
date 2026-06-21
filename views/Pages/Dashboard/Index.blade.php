@@ -645,6 +645,6 @@
             </div>
         </template>
 
-        @include('Pages.Dashboard.UseCaseDocumentation')
+        {{-- @include('Pages.Dashboard.UseCaseDocumentation') --}}
     </div>
 @endsection

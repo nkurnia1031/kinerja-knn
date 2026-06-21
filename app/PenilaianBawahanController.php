@@ -143,13 +143,17 @@ class PenilaianBawahanController extends Controller
     }
     private function getPeriodeAktif()
     {
-        return $this->getDB()->run(
+        $no=$this->getDB()->run(
             "SELECT id, nama_periode, tanggal_mulai, tanggal_selesai, status
              FROM periode_penilaian
              WHERE status = 'aktif'
              ORDER BY tanggal_mulai DESC
              LIMIT 1"
-        )[0];
+        );
+        if(empty($no)){
+            return null;
+        }
+        return$no[0];
     }
     private function getExistingPenilaianId($periodeId, $karyawanId)
     {

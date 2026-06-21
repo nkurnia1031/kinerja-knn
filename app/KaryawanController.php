@@ -10,7 +10,7 @@ class KaryawanController extends Controller
         $this->judul = "Karyawan";
         $this->allowedWhere = ['status', 'role', 'pekerjaan', 'tanggal_bergabung'];
         $this->selectFilter = ['status', 'role', 'pekerjaan'];
-        $this->fulltext = '`nama`, `nohp`, `username`, `jabatan`';
+        $this->fulltext = '`nama`, `jabatan`, `pekerjaan`, `status`, `username`';
         $this->mainModel = 'app\Model\Karyawan';
         $this->hapusHuruf = [];
         $this->formatUang = [];

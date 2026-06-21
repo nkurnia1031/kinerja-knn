@@ -35,7 +35,11 @@
                 formatTanggal(tanggal) {
                     if (!tanggal) return '-';
                     const date = new Date(tanggal);
-                    return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+                    return date.toLocaleDateString('id-ID', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                    });
                 },
                 getStatusClass(status) {
                     const mapping = {
@@ -174,83 +178,11 @@
 @endsection
 @section('isi')
     <div class="row" id="app">
-        {{-- Info Card --}}
         <div class="col-12 mb-3">
             <div class="alert alert-info">
-                <i class="fas fa-info-circle"></i> 
-                <strong>Data Karyawan</strong> - Kelola data karyawan yang akan dinilai kinerjanya. 
-                Pastikan data jabatan, status, dan role sudah diisi dengan benar.
-            </div>
-        </div>
-
-        {{-- Statistik Cards --}}
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Karyawan</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">@{{ data2.length }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Karyawan Aktif</div>
-                            <div v-if="data2" class="h5 mb-0 font-weight-bold text-gray-800">
-                                @{{ data2.filter(i => i.status === 'aktif').length }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-user-check fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Karyawan Tetap</div>
-                            <div v-if="data2" class="h5 mb-0 font-weight-bold text-gray-800">
-                                @{{ data2.filter(i => i.pekerjaan === 'tetap').length }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-id-badge fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Karyawan Kontrak</div>
-                            <div v-if="data2" class="h5 mb-0 font-weight-bold text-gray-800">
-                                @{{ data2.filter(i => i.pekerjaan === 'kontrak').length }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-file-contract fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
+                <i class="fas fa-info-circle"></i>
+                <strong>Data Karyawan</strong> - Kelola data karyawan yang akan dinilai kinerjanya.
+                Pastikan data jabatan, pekerjaan, status, dan role sudah diisi dengan benar.
             </div>
         </div>
 
@@ -288,12 +220,12 @@
                 </template>
                 {{-- Field: Tanggal Bergabung --}}
                 <template v-else-if="inArray(data.name,['tanggal_bergabung'])">
-                    <input type="date" class="form-control" :name="'input[' + data.name + ']'" 
+                    <input type="date" class="form-control" :name="'input[' + data.name + ']'"
                         :id="data.name + '1'" :value="data.val">
                 </template>
                 {{-- Field: Password --}}
                 <template v-else-if="inArray(data.name,['password'])">
-                    <input type="password" class="form-control" :name="'input[' + data.name + ']'" 
+                    <input type="password" class="form-control" :name="'input[' + data.name + ']'"
                         :id="data.name + '1'" :value="data.val" placeholder="Kosongkan jika tidak ingin mengubah password">
                     <small class="text-muted">Password akan dienkripsi secara otomatis</small>
                 </template>
@@ -330,9 +262,7 @@
                     <button @click="EditData(index)" class="shadow btn btn-sm btn-warning mx-1 my-1" title="Edit">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button @click="lihatRelasi(i.id)" class="shadow btn btn-sm btn-info mx-1 my-1" title="Atur Atasan">
-                        <i class="fas fa-sitemap"></i>
-                    </button>
+                   
                     <button @click="HapusData(index)" class="shadow btn btn-sm btn-danger mx-1 my-1" title="Hapus">
                         <i class="fas fa-trash"></i>
                     </button>

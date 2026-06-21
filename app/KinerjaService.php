@@ -348,28 +348,51 @@ class KinerjaService
         $kriteria = $analysis['kriteria'] ?? [];
         $trainingMap = [];
 
-        foreach (($analysis['data_training'] ?? []) as $training) {
+        foreach (($analysis['data_training'] ?? []) as $trainingIndex => $training) {
+            $training['training_order'] = $training['training_order'] ?? ($trainingIndex + 1);
             $trainingMap[(string) ($training['id'] ?? '')] = $training;
         }
 
-        $detailJarak = [];
-        foreach (($result['all_distances'] ?? []) as $index => $item) {
-            $training = $trainingMap[(string) ($item['id'] ?? '')] ?? [];
-            $detailJarak[] = [
-                'training_id' => $item['id'] ?? null,
-                'nama_training' => $item['nama'] ?? ($training['nama'] ?? ''),
-                'periode_training' => $training['nama_periode'] ?? '-',
-                'klasifikasi_training' => $item['klasifikasi'] ?? ($training['klasifikasi'] ?? ''),
-                'nilai_jarak' => $item['distance'] ?? 0,
-                'ranking' => $index + 1,
-                'is_k_nearest' => $index < count($result['k_nearest'] ?? []) ? 1 : 0,
-                'detail_matematis' => $this->buildDistanceBreakdown(
-                    $result['karyawan']['nilai'] ?? [],
-                    $item['nilai_training'] ?? ($training['nilai'] ?? []),
-                    $kriteria
-                ),
-            ];
+        $sortedDistances = array_values($result['all_distances'] ?? []);
+        $originalDistances = array_values($result['all_distances_original'] ?? []);
+
+        if (empty($originalDistances) && !empty($analysis['data_training'])) {
+            $sortedMap = [];
+            foreach ($sortedDistances as $item) {
+                $sortedMap[(string) ($item['id'] ?? '')] = $item;
+            }
+
+            foreach (($analysis['data_training'] ?? []) as $trainingIndex => $training) {
+                $matched = $sortedMap[(string) ($training['id'] ?? '')] ?? [
+                    'id' => $training['id'] ?? null,
+                    'nama' => $training['nama'] ?? '',
+                    'nama_periode' => $training['nama_periode'] ?? '',
+                    'nilai_training' => $training['nilai'] ?? ($training['nilai_kriteria'] ?? []),
+                    'klasifikasi' => $training['klasifikasi'] ?? '',
+                    'distance' => 0,
+                    'ranking' => null,
+                    'is_k_nearest' => false,
+                ];
+                $matched['training_order'] = $matched['training_order'] ?? ($trainingIndex + 1);
+                $originalDistances[] = $matched;
+            }
         }
+
+        $detailJarakUrutanAwal = $this->buildDetailJarakRows(
+            $originalDistances,
+            $trainingMap,
+            $result['karyawan']['nilai'] ?? [],
+            $kriteria,
+            true
+        );
+
+        $detailJarakTerurut = $this->buildDetailJarakRows(
+            $sortedDistances,
+            $trainingMap,
+            $result['karyawan']['nilai'] ?? [],
+            $kriteria,
+            false
+        );
 
         $kNearest = [];
         foreach (($result['k_nearest'] ?? []) as $index => $item) {
@@ -377,10 +400,10 @@ class KinerjaService
             $kNearest[] = [
                 'training_id' => $item['id'] ?? null,
                 'nama_training' => $item['nama'] ?? ($training['nama'] ?? ''),
-                'periode_training' => $training['nama_periode'] ?? '-',
+                'periode_training' => $item['nama_periode'] ?? ($training['nama_periode'] ?? '-'),
                 'klasifikasi_training' => $item['klasifikasi'] ?? ($training['klasifikasi'] ?? ''),
                 'nilai_jarak' => $item['distance'] ?? 0,
-                'ranking' => $index + 1,
+                'ranking' => $item['ranking'] ?? ($index + 1),
             ];
         }
 
@@ -388,7 +411,9 @@ class KinerjaService
             'hasil' => $result,
             'kriteria' => $kriteria,
             'k_nearest' => $kNearest,
-            'detail_jarak' => $detailJarak,
+            'detail_jarak' => $detailJarakTerurut,
+            'detail_jarak_terurut' => $detailJarakTerurut,
+            'detail_jarak_urutan_awal' => $detailJarakUrutanAwal,
         ];
     }
 
@@ -422,6 +447,32 @@ class KinerjaService
             'sum_squared' => $totalSquared,
             'sqrt_result' => sqrt($totalSquared),
         ];
+    }
+
+    protected function buildDetailJarakRows(array $items, array $trainingMap, array $nilaiTesting, array $kriteria, bool $preferTrainingOrder = false): array
+    {
+        $rows = [];
+
+        foreach (array_values($items) as $index => $item) {
+            $training = $trainingMap[(string) ($item['id'] ?? '')] ?? [];
+            $rows[] = [
+                'training_id' => $item['id'] ?? ($training['id'] ?? null),
+                'training_order' => $item['training_order'] ?? ($training['training_order'] ?? ($index + 1)),
+                'nama_training' => $item['nama'] ?? ($training['nama'] ?? ''),
+                'periode_training' => $item['nama_periode'] ?? ($training['nama_periode'] ?? '-'),
+                'klasifikasi_training' => $item['klasifikasi'] ?? ($training['klasifikasi'] ?? ''),
+                'nilai_jarak' => isset($item['distance']) ? floatval($item['distance']) : 0,
+                'ranking' => $item['ranking'] ?? ($preferTrainingOrder ? null : ($index + 1)),
+                'is_k_nearest' => !empty($item['is_k_nearest']),
+                'detail_matematis' => $this->buildDistanceBreakdown(
+                    $nilaiTesting,
+                    $item['nilai_training'] ?? ($training['nilai'] ?? ($training['nilai_kriteria'] ?? [])),
+                    $kriteria
+                ),
+            ];
+        }
+
+        return $rows;
     }
 
     public function getStatistikAnalisaSummary(): array
