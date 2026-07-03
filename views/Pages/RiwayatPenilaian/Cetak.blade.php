@@ -126,8 +126,8 @@
         <tr>
             <td class="label">Pekerjaan</td>
             <td>: {{ $data['penilaian']->pekerjaan ?? '-' }}</td>
-            <td></td>
-            <td></td>
+            <td class="label">Klasifikasi KNN</td>
+            <td>: {{ $data['penilaian']->klasifikasi_knn ?? '-' }}@if(isset($data['penilaian']->knn_confidence) && $data['penilaian']->knn_confidence !== null) ({{ rtrim(rtrim(number_format($data['penilaian']->knn_confidence, 1, '.', ''), '0'), '.') }}%)@endif</td>
         </tr>
     </table>
 
@@ -152,10 +152,11 @@
                 <td>{{ $detail->nilai }}</td>
                 <td>{{ number_format($detail->nilai_bobot, 2) }}</td>
                 <td>
-                    @if($detail->nilai >= 90) Sangat Baik
-                    @elseif($detail->nilai >= 80) Baik
-                    @elseif($detail->nilai >= 70) Cukup
-                    @elseif($detail->nilai >= 60) Kurang
+                    @php $persentaseNilai = ($detail->nilai / 4) * 100; @endphp
+                    @if($persentaseNilai >= 90) Sangat Baik
+                    @elseif($persentaseNilai >= 80) Baik
+                    @elseif($persentaseNilai >= 70) Cukup
+                    @elseif($persentaseNilai >= 60) Kurang
                     @else Sangat Kurang
                     @endif
                 </td>
@@ -213,6 +214,9 @@
     </div>
 
     <div class="no-print" style="margin-top: 30px; text-align: center;">
+        <button onclick="window.print()" style="padding: 10px 30px; cursor: pointer;">
+            Cetak
+        </button>
         <button onclick="window.close()" style="padding: 10px 30px; cursor: pointer; margin-left: 10px;">
             Tutup
         </button>

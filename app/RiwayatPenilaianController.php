@@ -30,6 +30,32 @@ class RiwayatPenilaianController
         }, array_values($lookup));
     }
 
+    private function buildKnnMap(?int $periodeId = null): array
+    {
+        $knnMap = [];
+        foreach ($this->getLatestKnnRows($periodeId) as $row) {
+            $knnMap[$row->karyawan_id . '-' . $row->periode_id] = $row;
+        }
+
+        return $knnMap;
+    }
+
+    private function attachKnnFields($penilaian, ?array $knnMap = null)
+    {
+        if (!$penilaian) {
+            return null;
+        }
+
+        $knnMap = $knnMap ?? $this->buildKnnMap();
+        $key = intval($penilaian->karyawan_id ?? 0) . '-' . intval($penilaian->periode_id ?? 0);
+        $knn = $knnMap[$key] ?? null;
+
+        $penilaian->klasifikasi_knn = $knn->hasil_klasifikasi ?? null;
+        $penilaian->knn_confidence = isset($knn->confidence) ? floatval($knn->confidence) : null;
+
+        return $penilaian;
+    }
+
     public function indexApi($Request, $Session, $blade)
     {
         $db = DB::con();
@@ -50,7 +76,7 @@ class RiwayatPenilaianController
         }
 
         $rows = $db->run(
-            "SELECT p.id, p.karyawan_id, p.total_nilai, p.klasifikasi, p.catatan, p.updated_at,
+            "SELECT p.id, p.karyawan_id, p.periode_id, p.total_nilai, p.klasifikasi, p.catatan, p.updated_at,
                     pp.nama_periode AS periode, pen.nama AS nama_penilai
              FROM penilaian p
              LEFT JOIN periode_penilaian pp ON pp.id = p.periode_id
@@ -59,17 +85,11 @@ class RiwayatPenilaianController
              ORDER BY p.periode_id DESC",
             $karyawanId
         );
-        $knnMap = [];
-        foreach ($this->getLatestKnnRows() as $row) {
-            $knnMap[$row->karyawan_id . '-' . $row->periode_id] = $row;
-        }
+        $knnMap = $this->buildKnnMap();
 
         foreach ($rows as $row) {
-            $userId = $row->karyawan_id ?? 0;
             $row->tanggal_penilaian = !empty($row->updated_at) ? date('d/m/Y H:i', strtotime($row->updated_at)) : '-';
-            $key = $userId . '-' . ($row->periode_id ?? '');
-            $knn = $knnMap[$key] ?? null;
-            $row->klasifikasi_knn = $knn->hasil_klasifikasi ?? null;
+            $this->attachKnnFields($row, $knnMap);
         }
 
         // foreach ($rows as $row) {
@@ -200,6 +220,7 @@ class RiwayatPenilaianController
 
         $penilaian->tanggal_penilaian = !empty($penilaian->updated_at) ? date('d/m/Y H:i', strtotime($penilaian->updated_at)) : '-';
         $penilaian->detail_kriteria = $detail;
+        $this->attachKnnFields($penilaian);
 
         return $penilaian;
     }

@@ -115,6 +115,9 @@
  <i class="fas fa-file-alt"></i> Detail Penilaian - {{ detailPenilaian.periode }}
  </h6>
  <div>
+ <button @click="cetakPenilaian(detailPenilaian.id)" class="btn btn-sm btn-light mr-2">
+ <i class="fas fa-print"></i> Cetak
+ </button>
  <button @click="tutupDetail" class="btn btn-sm btn-light">
  <i class="fas fa-times"></i> Tutup
  </button>
@@ -136,6 +139,9 @@
  <span class="d-inline-block ml-1 mt-1" :class="'badge badge-' + getKlasifikasiClass(detailPenilaian.klasifikasi_knn)">
  KNN: {{ detailPenilaian.klasifikasi_knn || '-' }}
  </span>
+ <div v-if="detailPenilaian.knn_confidence" class="small text-muted mt-2">
+ Confidence: {{ detailPenilaian.knn_confidence }}%
+ </div>
  </div>
  </div>
  </div>

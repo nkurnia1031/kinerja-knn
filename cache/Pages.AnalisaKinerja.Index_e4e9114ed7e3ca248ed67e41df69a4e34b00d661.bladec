@@ -587,9 +587,7 @@
 
  buildPreviewDetailPerhitungan(hasil) {
  const testingValues = hasil?.karyawan?.nilai || [];
- const originalItems = (hasil?.all_distances_original && hasil.all_distances_original.length)
- ? hasil.all_distances_original
- : this.buildPreviewOriginalDistanceOrder(hasil);
+ const originalItems = this.buildPreviewOriginalDistanceOrder(hasil);
  const sortedItems = hasil?.all_distances || [];
 
  const detailJarakUrutanAwal = this.buildPreviewDetailRows(originalItems, testingValues);
